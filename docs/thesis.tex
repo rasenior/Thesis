@@ -27,8 +27,6 @@
 \usepackage[left=4cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={Thesis},
-            pdfauthor={Rebecca Anne Senior},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -79,24 +77,39 @@
 }
 
 \setlength{\droptitle}{-2em}
-  \title{Thesis}
-  \pretitle{\vspace{\droptitle}\centering\huge}
-  \posttitle{\par}
-  \author{Rebecca Anne Senior}
-  \preauthor{\centering\large\emph}
-  \postauthor{\par}
+  \title{}
+  \pretitle{\vspace{\droptitle}}
+  \posttitle{}
+  \author{}
+  \preauthor{}\postauthor{}
   \date{}
   \predate{}\postdate{}
 
 \usepackage{booktabs}
+
 \usepackage[table]{xcolor}
 \definecolor{lightgrey}{gray}{0.85}
+
 \usepackage{pdfpages}
+
 \usepackage{rotating}
+
 \usepackage{multirow}
+
 \usepackage{array}
+
 \usepackage{setspace}
 \onehalfspacing
+
+\usepackage{gensymb}
+
+\usepackage{chngcntr}
+
+\usepackage{appendix}
+
+\usepackage{fancyhdr}
+
+\pagenumbering{roman}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -113,7 +126,26 @@
 \newtheorem*{remark}{Remark}
 \newtheorem*{solution}{Solution}
 \begin{document}
-\maketitle
+
+\thispagestyle{empty}
+\begin{center}
+\includegraphics{logos/tuoslogo_cmyk_hi.jpg}
+\vspace{1.5cm}
+ {\Huge\bfseries \\The impacts of tropical forest degradation and conversion on resilience to climate change\par}
+ \vspace{1.5cm}
+ {\Large By:\\ Rebecca Anne Senior\par}
+ \vspace{1.5cm}
+ {A thesis submitted in partial fulfilment of the requirements for the degree of\\ Doctor of Philosophy\par}
+ \vspace{2cm}\bfseries
+ The University of Sheffield\\
+ Faculty of Science\\
+ Department of Animal and Plant Sciences\par
+ \vfill
+ {\large {\normalfont Submission Date\par}}
+\end{center}
+
+\setlength{\abovedisplayskip}{-5pt}
+\setlength{\abovedisplayshortskip}{-5pt}
 
 {
 \setcounter{tocdepth}{1}
@@ -121,10 +153,30 @@
 }
 \listoftables
 \listoffigures
-\chapter*{Preface}\label{preface}
-\addcontentsline{toc}{chapter}{Preface}
+\chapter*{Abstract}\label{abstract}
+\addcontentsline{toc}{chapter}{Abstract}
 
-This is the very first part of the book.
+Stuff about tropical forests being important and blah blah blah.
+
+\pagebreak
+
+\chapter*{Acknowledgements}\label{acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+
+Thanks everyone for being alright.
+
+\pagebreak
+
+\chapter*{Author's declaration}\label{authors-declaration}
+\addcontentsline{toc}{chapter}{Author's declaration}
+
+I did all this shit yo.
+
+\pagebreak
+
+\pagestyle{fancyplain} \fancyhf{}
+\fancyhead[R]{\chaptername \space \thechapter} \fancyfoot[R]{\thepage}
+\pagenumbering{arabic}
 
 \chapter{General introduction}\label{general-introduction}
 
@@ -257,7 +309,7 @@ to events that would have been anomalous under the previous probability
 distribution. Figure taken directly from \citet{ipcc_climate2007}.}
 \end{figure}
 
-\subsubsection{Range shifts due to climate
+\subsection{Range shifts due to climate
 change}\label{range-shifts-due-to-climate-change}
 
 Species may track optimal climatic conditions by shifting their range.
@@ -276,22 +328,22 @@ seen in birds and butterflies of temperate regions
 Until recently, there were very few studies of range shifts due to
 climate change in tropical species, with some suggesting that the
 response should be less extreme given the slower rates of warming in the
-tropics \citep{freeman_rapid2014, stocker_climate2013}. It is now
-apparent that tropical species do shift their ranges to track climate,
-particularly to higher elevations
-\citep{chen_elevation2009, pounds_biological1999} owing to shallow
-temperature gradients across latitudes \citep{colwell_global2008}. In
-fact, tropical species track climate more closely than temperate species
-\citep{freeman_rapid2014}. This effect could be due to: (1) greater
-thermal specialisation as a result of long-term thermal stability in the
-tropics \citep{freeman_rapid2014}; (2) slower velocity of climate change
-up mountains \citep{loarie_velocity2009} meaning it is easier for
-species to keep pace; or (3) fewer barriers to dispersal in the tropics,
-since tropical biomes have thus far retained a greater proportion of
-natural habitat than temperate regions. In any case, even tropical
-species do not track climate precisely \citep{chen_elevation2009}.
+tropics \citep{freeman_rapid2014, ipcc2013}. It is now apparent that
+tropical species do shift their ranges to track climate, particularly to
+higher elevations \citep{chen_elevation2009, pounds_biological1999}
+owing to shallow temperature gradients across latitudes
+\citep{colwell_global2008}. In fact, tropical species track climate more
+closely than temperate species \citep{freeman_rapid2014}. This effect
+could be due to: (1) greater thermal specialisation as a result of
+long-term thermal stability in the tropics \citep{freeman_rapid2014};
+(2) slower velocity of climate change up mountains
+\citep{loarie_velocity2009} meaning it is easier for species to keep
+pace; or (3) fewer barriers to dispersal in the tropics, since tropical
+biomes have thus far retained a greater proportion of natural habitat
+than temperate regions. In any case, even tropical species do not track
+climate precisely \citep{chen_elevation2009}.
 
-\subsubsection{In situ adaptation to climate
+\subsection{In situ adaptation to climate
 change}\label{in-situ-adaptation-to-climate-change}
 
 In situ adaptation encompasses biochemical buffering, gene expression,
@@ -368,12 +420,12 @@ change}\label{influence-of-land-use-change}
 
 The most well-known interaction between climate change and land-use
 change is probably that the latter can cause the former, on a global
-scale, through the release of GHGs \citep{stocker_climate2013}.
-Deforestation marginally reduces the net radiative forcing that leads to
-global climate warming through decreases in surface albedo
-\citep{stocker_climate2013}. Climate change could also cause land-use
-change, such as through shifting the areas which are most climatically
-suited for agriculture \citep{opdam_climate2004}.
+scale, through the release of GHGs \citep{ipcc2013}. Deforestation
+marginally reduces the net radiative forcing that leads to global
+climate warming through decreases in surface albedo \citep{ipcc2013}.
+Climate change could also cause land-use change, such as through
+shifting the areas which are most climatically suited for agriculture
+\citep{opdam_climate2004}.
 
 In this review, however, I have focused on how organisms can adaptively
 respond to change. The question then becomes: how does land-use change
@@ -485,7 +537,7 @@ should first explore the impacts of habitat degradation, as a priority.
 
 \section{Thesis aims and rationale}\label{thesis-aims-and-rationale}
 
-\subsubsection{Definitions}\label{definitions}
+\subsection{Definitions}\label{definitions}
 
 `Microhabitats' are fine-scale (mm to cm) features within a habitat,
 including leaf litter, deadwood, tree holes and epiphytes within
@@ -496,37 +548,35 @@ offer a more desirable microclimate than the macroclimate, the features
 can be referred to as `thermal microrefugia' (`microrefugia'
 henceforth).
 
-\subsubsection{Chapter 2 -- A pantropical analysis of the impacts of
-forest degradation and conversion on local
+\subsection{Chapter 2 -- A pantropical analysis of the impacts of forest
+degradation and conversion on local
 temperature}\label{chapter-2-a-pantropical-analysis-of-the-impacts-of-forest-degradation-and-conversion-on-local-temperature}
 
 SUMMARY
 
-\subsubsection{Chapter 3 -- A framework for quantifying fine-scale
-thermal heterogeneity in the
+\subsection{Chapter 3 -- A framework for quantifying fine-scale thermal
+heterogeneity in the
 field}\label{chapter-3-a-framework-for-quantifying-fine-scale-thermal-heterogeneity-in-the-field}
 
 SUMMARY
 
-\subsubsection{Chapter 4 -- Tropical forests are thermally buffered
-despite intensive selective
+\subsection{Chapter 4 -- Tropical forests are thermally buffered despite
+intensive selective
 logging}\label{chapter-4-tropical-forests-are-thermally-buffered-despite-intensive-selective-logging}
 
 SUMMARY
 
-\subsubsection{Chapter 5 -- The impact of recent forest cover change on
+\subsection{Chapter 5 -- The impact of recent forest cover change on
 climate connectivity in the
 tropics}\label{chapter-5-the-impact-of-recent-forest-cover-change-on-climate-connectivity-in-the-tropics}
 
 SUMMARY
 
-\section{References}\label{references}
-
 \chapter{A pantropical analysis of the impacts of forest degradation and
 conversion on local
 temperature}\label{a-pantropical-analysis-of-the-impacts-of-forest-degradation-and-conversion-on-local-temperature}
 
-\section{Abstract}\label{abstract}
+\section{Abstract}\label{abstract-1}
 
 Temperature is a core component of a species' fundamental niche. At the
 fine scale over which most organisms experience climate (mm to ha),
@@ -557,6 +607,777 @@ perturbations, such as severe droughts and global warming, will exceed
 species' tolerances. By contrast, degraded forests and below-ground
 habitats may provide important refugia for thermally-restricted species
 in landscapes dominated by agricultural land.
+
+\section{Introduction}\label{introduction}
+
+It is well established that temperature is important in ecology, for
+everything from biochemistry, to physiology, to biogeography
+\citep{thomas_extinction2004, kearney_potential2009, kingsolver_welltemperatured2009, puurtinen_temperature-dependent2015}.
+Temperature is a key explanatory variable in species distribution models
+that predict the likely impacts of projected global climate change on
+biodiversity \citep[e.g.][]{thomas_extinction2004}. However, the
+majority of organisms experience temperature at much finer spatial scale
+\citep{gillingham_relative2010, suggitt_habitat2011} than assumed in
+species distribution models (often \textgreater{} 100
+km\textsuperscript{2}), and at local scales temperature is more
+dependent on local factors \citep{suggitt_habitat2011} than on regional
+or global atmospheric circulation
+\citep{oke_boundary1987, davin_climatic2010, wiens_matching2010, pielke_land2011}.
+One such local factor is vegetation cover, which influences temperature
+through direct absorption and reflection of incident solar radiation
+\citep{oke_boundary1987, murcia_edge1995, snyder_analyzing2004} and
+through evapotranspiration, by determining the amount of thermal energy
+dissipated through the evaporation of water as opposed to a change in
+temperature
+\citep{oke_boundary1987, findell_modeled2007, lawrence_effects2015}.
+
+Land-use change can profoundly influence vegetation cover. Current and
+future land-use change is concentrated in the tropics, where
+\textgreater{} 150 million hectares of forest was converted between 1980
+and 2012 \citep{gibbs_tropical2010, hansen_high-resolution2013} and 20\%
+of the humid tropical biome was selectively logged from 2000 to 2005
+\citep{asner_contemporary2009}. Previous studies, from a range of
+disciplines, demonstrate that land-use change in the tropics tends to
+increase temperature
+\citep{findell_modeled2007, loarie_velocity2009, davin_climatic2010, luskin_microclimate2011, pielke_land2011, ramdani_local2014, lawrence_effects2015}.
+This suggests severe consequences for global terrestrial biodiversity,
+most of which is found in tropical rainforests
+\citep{myers_biodiversity2000} and is thought to be especially sensitive
+to temperature change, owing to narrow thermal limits
+\citep{deutsch_impacts2008, tewksbury_putting2008, kingsolver_welltemperatured2009}.
+
+Additionally, while absolute warming from global climate change will be
+highest at the poles \citep{ipcc_2013}, it is the tropics where relative
+warming will be greatest, with historically unprecedented temperatures
+occurring by 2050 \citep{mora_projected2013}. It is frequently stated
+that habitat fragmentation from land-use change will make it
+increasingly difficult for tropical species to track climate
+\citep{brook_synergies2008, scriven_protected2015}, hampered by the poor
+dispersal ability of many tropical species
+\citep{van_houtan_dispersal2007} and shallow latitudinal temperature
+gradients \citep{colwell_global2008}. However, it is less commonly
+discussed that the baseline temperature onto which global climate
+predictions are projected might itself be dramatically higher in altered
+land-use types \citep{foster_establishing2011, tuff_framework2016}.
+
+To understand current and future consequences for tropical biodiversity
+from land-use change and climate change it is vital to understand
+thermal change at the scale at which temperature is experienced by
+organisms
+\citep{wiens_matching2010, gillingham_relative2010, suggitt_habitat2011}.
+Prior evidence for local warming in the tropics as a result of land-use
+change originates from global General Circulation Models
+\citep{findell_modeled2007, davin_climatic2010, pielke_land2011} and
+observational studies focused on particular locations, such as Brazil
+\citep{loarie_velocity2009}, Malaysia \citep{luskin_microclimate2011}
+and Indonesia \citep{ramdani_local2014}. While General Circulation
+Models are limited in biological relevance by their coarse spatial
+resolution, observational studies are limited in generality by the
+site-specificity required to achieve their fine spatial resolution
+\citep{li_local2015}. Any studies that utilise meteorological station
+data have limited biological relevance because stations are specifically
+positioned to minimise the influence of the very same local
+characteristics that are important to local biota, such as vegetation
+cover, slope and aspect \citep{frenne_weather2016}.
+
+There are several conditions under which local warming due to land-use
+change might be ameliorated, which have yet to be explicitly tested. We
+hypothesise that low intensity forest degradation, including commercial
+selective logging, fragmentation and forest regrowth
+\citep{lewis_increasing2015}, will correspond to relatively little net
+change in vegetation, and hence a smaller difference in temperature. Any
+warming effects of land-use change are likely reversed at night, as
+habitats with relatively low vegetation cover will radiate heat back to
+the atmosphere more freely
+\citep{oke_boundary1987, chen_growing-season1995}. Water availability is
+fundamental in determining how much thermal energy can be dissipated
+through evaporation, and so we also expect that warming would be less
+during the wet season given the high water availability (and more cloudy
+weather) relative to dry season, and below-ground relative to
+above-ground. In the latter case, even when water availability is very
+low, soil buffers external temperature change
+\citep{scheffers_microhabitats2014-1} because soil has a higher specific
+heat capacity than air, and thus requires a greater change in thermal
+energy to achieve the same change in temperature
+\citep{oke_boundary1987}.
+
+In the present study, we carry out analyses of published data to test
+the effect of land-use change on local temperature across the tropics.
+We collected local, in situ temperature data from the literature for
+paired sites (\textless{} 1ha) that differed in land-use type.
+Categories of land use we studied were primary forest, degraded forest,
+plantation, pasture and cropland \citep[\autoref{tab:tab-2-1}; modified
+from Extended Data Table 1 in][]{newbold_global2015}. We examine how
+land-use change affects day-time temperature at fine-scale spatial
+resolution, and we quantify the effects of: (1) forest conversion
+compared with forest degradation; (2) below-ground compared to
+above-ground; and (3) wet season conditions compared to the dry season.
+We focus on day-time temperatures because few studies collected
+night-time temperature, although we also separately test how the latter
+is impacted by land-use change for the subset of studies able to provide
+these data. Recent studies also highlight the importance of climatic
+extremes for species' survival
+\citep[e.g.][]{deutsch_impacts2008, christidis_role2013}, hence we
+conduct additional analyses for those studies that provide these data.
+
+\begin{table}
+\begin{center}
+\renewcommand{\arraystretch}{1} % reduce space between rows
+\setlength{\tabcolsep}{5pt} % reduce space between columns
+    \begin{tabular}{ lp{11cm}}
+    \toprule 
+    \bfseries Land-use type & \bfseries Definition \\ \midrule
+    Primary forest  & Forest where any disturbances identified are very minor (e.g. a trail or path)
+                      or very limited in the scope of their effect (e.g. hunting of a particular
+                      species of limited ecological importance).\\
+    Degraded forest & Forest with one or more disturbances ranging from moderate intensity/breadth
+                      of impact (e.g. selective logging and bushmeat extraction), to severe
+                      intensity/breadth of impact (e.g. regrowth after clear-felling).\\
+    Plantation      & Extensively managed or mixed timber, fruit/coffee, oil-palm or rubber
+                      plantations.\\
+    Cropland        & Farming for herbaceous crops, without presence of livestock. \\
+    Pasture         & Farming of livestock.\\
+    \bottomrule
+    \end{tabular}
+\end{center}
+\caption{\label{tab:tab-2-1}Land use classification definitions (modified from Extended Data Table 1 in \citet{newbold_global2015}.}
+\end{table}
+
+\section{Methods}\label{methods}
+
+\subsection{Literature search}\label{literature-search}
+
+We collated temperature data from peer-reviewed literature using ISI Web
+of Knowledge. The search terms were: ``tropic*'' AND (``temperature'' OR
+``local climate'') AND (``land use'' OR landuse OR ``land cover'' OR
+landcover OR urban* OR city OR cities OR agri* OR arable OR built* OR
+metropol* OR deforest* OR forest\emph{) AND (change OR expansion OR
+growth OR encroach} OR modif* OR conversion OR convert*). We refined the
+search output by including only the following research areas:
+``environmental sciences ecology'', ``remote sensing'', ``agriculture'',
+``biodiversity conservation'', ``forestry'', ``urban studies''; this
+returned 1,372 published studies. Excluding book chapters (21) and
+articles that were deemed irrelevant based on the title (298) or
+abstract (484) reduced the total to 525 articles. We reviewed each of
+these articles manually. Additional unpublished data (two studies) were
+also provided by co-authors (P.G., L.K.G.).
+
+\subsection{Selection criteria}\label{selection-criteria}
+
+All data originated from studies with at least two different sites in at
+least two different land-use types. Sites were located between 23.44°
+North and South, and the natural vegetation type was defined by authors
+as forest. Sites were fully contained within the land-use type of
+interest and positioned beneath the canopy (where applicable). Within a
+single study, sampling methodology was consistent across all sites and
+land-use types. Differences between studies, such as soil depth or the
+use of radiation shields for dataloggers, were accounted for by the
+analytical approach (see `Statistical analysis'). All sites within a
+single study differed in elevation by no more than 150 m.
+
+Data collected through remote sensing or from meteorological stations
+were excluded, because they are inherently unrepresentative of local
+climatic conditions in forested areas. Meteorological stations are
+established to strategically avoid the very same local conditions in
+which we are primarily interested \citep{frenne_weather2016}. Acceptable
+methods of temperature measurement were those taken in situ, using a
+thermometer, temperature probe or temperature dataloggers. We included
+temperature data reported as an average across multiple spatial
+replicates for each land-use type within a study, provided that (1) the
+area over which data were averaged and (2) the number of spatial
+replicates within this area was consistent across different land-use
+types within the study. We set the maximum area over which data could be
+averaged as 1 ha, to ensure our study focused on temperature changes at
+a fine spatial scale. Aggregated spatial replicates of measurements
+within 1 ha were considered as a single site. Where raw data were
+provided, a single site comprised the individual point at which
+measurements were taken.
+
+We included data reported as an average across multiple temporal
+replicates within a study site, provided that (1) the period of time
+over which data were averaged and (2) the number of temporal replicates
+within this period was within either day or night and was consistent
+across different sites within the study. We set the maximum time period
+over which data could be averaged as 183 days (half a year), provided
+this time period was entirely within either the dry season or the wet
+season, as defined by the authors. Aggregated temporal replicates within
+a study site were recorded as a single observation. Where raw data
+provided more than one measurement per day, we calculated a daily mean
+for each study site (between sunrise and sunset only), each of which
+represented a distinct observation. If night-time data were available,
+we applied the same approach for observations measured between sunset
+and sunrise. For those studies providing more than one temperature
+observation per day or night, we also calculated temperature minima and
+maxima for the time period(s) available (day or night).
+
+\subsection{Data collation}\label{data-collation}
+
+Where possible, temperature data were extracted from text, tables or
+graphs in the publication. Data in graphs were extracted using
+DigitizeIt \citep[www.digitizeit.de;][]{scheffers_microhabitats2014}. We
+also extracted: site coordinates and elevation; site descriptions of
+sufficient detail to enable categorisation into land-use types; season
+(dry or wet); time of measurements (day or night); and whether
+temperature was recorded above- or below-ground. In many cases,
+temperature data or methodological information were reported
+inadequately or not at all, in which case authors were contacted
+directly for information.
+
+In some cases we were unable to retrieve all the required methodological
+information, and made estimates. We estimated coordinates from Google
+Earth, based on detailed descriptions in the text, and we estimated
+elevation from coordinates using a global digital elevation map at 3-arc
+second resolution \citep{nasa_srtm2017}. Unless authors had explicitly
+stated that data were collected during day or night, we determined this
+by comparing the time of data collection to the time of sunrise and
+sunset, estimated from the date of collection and the site coordinates
+using solar calculations developed by the National Oceanic and
+Atmospheric Administration \citep{noaa_solar}, and implemented in R
+using custom functions (\url{https://github.com/rasenior/SolarCalc}).
+Our main analyses use day-time temperature only because very few studies
+considered night-time temperature, though we retained night-time
+temperature data where they were available for an additional, simplified
+analysis.
+
+We assigned categories of land use based on Extended Data Table 1 in
+\citet{newbold_global2015}, which comprise `primary forest, 'degraded
+forest' (renamed from `secondary'), `plantation', `pasture' and
+`cropland' (\autoref{tab:tab-2-1}). `Urban' could not be included due to
+insufficient data.
+
+\subsection{Statistical analysis}\label{statistical-analysis}
+
+Each data point in our main analysis comprised an observation of
+day-time temperature in a particular land-use type. We modelled each
+temperature observation against land-use type using a linear mixed
+effects model, implemented in the lme4 package \citep{bates_fitting2015}
+in R \citep{r_core_team_r:2017}. Studies differed substantially in
+methodology and location, hence the identity of the study from which
+data were taken was included as a random intercept term. Exploratory
+plots suggested that the slope of the relationship between land-use type
+and temperature, as well as the intercept, varied by study. The decision
+to include a random slope of land-use type, with respect to study
+identity, was determined using AIC with the full fixed effects structure
+\citep{zuur_mixed2009}. Fixed effects were then selected using backward
+stepwise model simplification \citep{zuur_mixed2009}, with the following
+categorical variables: land-use type (five levels); position relative to
+ground level (above- or below-ground); and season (dry or wet season),
+as well as pairwise interactions between land-use type and the latter
+two variables. We tested interactions using likelihood ratio tests, and
+then removed interactions to test main effects independently. For a
+subset of studies with suitable data, we used an analogous approach with
+only land-use type included as a fixed effect, to model nocturnal
+temperature and also temperature minima and maxima (for day-time and
+night-time separately).
+
+Model estimates of local temperature are presented relative to the model
+estimate for primary forest (above-ground and in the dry season). Both
+the position relative to ground level and seasonality interacted with
+land-use change to influence local temperature, but for clarity we
+discuss each explanatory variable separately. As such, temperature
+differences between primary forest and altered land-use types are
+averages across all combinations of position and season. The influence
+of position on these thermal differences is presented as an average
+across seasons, and the influence of seasonality is an average across
+positions.
+
+\begin{figure}
+\includegraphics{./figures/fig-2-1-1} \caption{Locations of the 25 studies contributing data to the analyses. Point labels correspond to the study number in  Table 1. The shading and size of concentric points corresponds to different land-use types, to indicate the data provided by each study.}\label{fig:fig-2-1}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{figs/fig2.2.pdf}
+\caption{\label{fig:fig-2-2}Raw day-time temperature against land-use type, across all studies contributing data to the analyses (plotted by study in \autoref{fig:fig-A-1-1}). Point shading indicates temperatures measured above-ground (orange) or below-ground (blue), and different symbols indicate temperatures measured during the dry season (circles) or wet season (triangles).}
+\end{figure}
+
+\section{Results}\label{results}
+
+In total, 25 studies met the criteria for inclusion
+(\autoref{tab:tab-2-2}). Studies spanned 12 countries, across every
+continent within the tropics (\autoref{fig:fig-2-1}), and provided
+113,894 observations of day-time temperature (\autoref{fig:fig-2-2} and
+\autoref{fig:fig-A-1-1}). Most observations represented either a single
+temperature observation within, or mean temperature across, a single day
+at the point location where measurements were taken. Six studies
+reported temperature at a coarser temporal resolution (mean = 107 days;
+minimum = 14 days; maximum = 183 days), and six studies reported
+temperature at a coarser spatial resolution (mean = 527
+m\textsuperscript{2}; minimum = 64 m\textsuperscript{2}; maximum = 1,000
+m\textsuperscript{2}). The maximum elevational difference between sites
+within a single study ranged from 0 to 141 m (mean = 33 m), and site
+elevation was random with respect to land-use type (LMM,
+Χ\textsuperscript{2} = 19.33, df = 14, P \textgreater{} 0.05;
+\autoref{fig:fig-A-1-2}). We were also able to obtain 113,459 night-time
+temperature observations (including temperature extremes) from 10
+studies, plus 113,230 observations of day-time temperature extremes from
+11 studies; but none of these data were collected in cropland or
+pasture.
+
+In all cases, the final model included a random slope for land-use type
+(`LUT') and random intercept with respect to the identity of the study
+(`studyID') from which data originated. The final model of day-time
+temperature (`temp\_day') included land-use type, position relative to
+ground level (`position') and season, as well as pairwise interactions
+between land-use type and the latter two fixed effects:
+
+\texttt{lmer(temp\_day\ \textasciitilde{}\ LUT*position\ +\ LUT*season\ +\ (LUT\textbar{}studyID))}
+
+The final models of (1) night-time temperature, and temperature extremes
+(minimum and maximum) (2) during the day and (3) during the night, all
+had the same model structure, with land-use type as the only fixed
+effect:
+
+\texttt{lmer(temp\ \textasciitilde{}\ LUT\ +\ (LUT\textbar{}studyID))}
+
+\begin{sidewaystable}
+\renewcommand{\arraystretch}{0.85} % reduce space between rows
+\setlength{\tabcolsep}{5pt} % reduce space between columns
+\rowcolors{1}{lightgrey}{white}
+\begin{tabular}{p{6.5cm}p{2.5cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.1cm}p{1.1cm}p{1.13cm}p{1.13cm}}\toprule \hiderowcolors
+\bfseries Study & \bfseries Country & \multicolumn{5}{l}{\bfseries Land-use type} & \multicolumn{2}{l}{\bfseries Position} & \multicolumn{2}{l}{\bfseries Season}\\ 
+\cmidrule(l{2pt}r{2pt}){3-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
+    & & \bfseries Primary forest & \bfseries Degraded forest & \bfseries Plantation & \bfseries Pasture & \bfseries Cropland & \bfseries Above-ground &
+    \bfseries Below-ground & \bfseries Dry season & \bfseries Wet season \\ \midrule \showrowcolors
+    1. González del Pliego (Unpublished data) & Colombia      & X & X &   &   &  & X &   & X & \\
+    2. González-Di Pierro et al. (2011)       & Mexico        & X & X &   &   &  & X &   &  & X \\
+    3. Goode (Unpublished data)               & Mexico        & X & X &   &   &  & X &   &X & X \\
+    4. Goode and Allen (2009)                 & Mexico        & X & X &   &   &  & X &   &X & X \\
+    5. Ibanez et al. (2013)                   & New Caledonia & X & X &   &   &  & X &   &X & X \\
+    6. Lebrija-Trejos et al. (2011)           & Mexico        & X & X &   &   &  & X & X &X & X \\
+    7. Negrete-Yankelevich et al. (2007)      & Mexico        & X & X &   &   &  &   & X &  & X \\
+    8. Santos (2011)                          & Mexico        & X & X &   &   &  & X & X &  & X \\
+    9. Santos and Benítez-Malvido (2012)      & Mexico        & X & X &   &   &  & X & X &  & X \\
+    10. Sonnleitner et al. (2009)             & Costa Rica    & X & X &   &   &  & X &   &X &   \\
+    11. Wood and Lawrence (2008)              & Costa Rica    & X & X &   &   &  &   & X &  & X \\
+    12. Yashiro et al. (2008)                 & Malaysia      & X & X &   &   &  &   & X &X & X \\
+    13. Adachi et al. (2006)                  & Malaysia      & X & X & X &   &  &   & X &X &   \\
+    14. Hardwick and Orme (2016)              & Malaysia      & X & X & X &   &  & X &   &X & X \\
+    15. Hardwick et al. (2015)                & Malaysia      & X & X & X &   &  & X &   &X & X \\
+    16. Klein et al. (2002)                   & Indonesia     &   & X & X &   &  & X &   &  & X \\
+    17. Wangluk et al. (2013)                 & Thailand      &   & X & X &   &  &   & X &X & X \\
+    18. Werner et al. (2006)                  & China         &   & X & X &   &  &   & X &X &   \\
+    19. Holl (1999)                           & Costa Rica    & X &   &   & X &  & X & X &X &   \\
+    20. Liu and Zou (2002)                    & Puerto Rico   & X &   &   & X &  &   & X &X & X \\
+    21. King et al. (1998)                    & Australia     &   & X &   & X &  & X & X &  & X \\
+    22. Badejo et al. (2004)                  & Brazil        & X &   &   & X &X &   & X &  & X \\
+    23. Campos (2006)                         & Mexico        & X &   &   & X &X &   & X &X & X \\
+    24. Badejo (1990)                         & Nigeria       &   & X &   &   &X &   & X &X & X \\
+    25. Furukawa et al. (2005)                & Indonesia     &   & X &   &   &X & X & X &X & X \\
+\bottomrule
+\end{tabular}
+\caption{\label{tab:tab-2-2}Summary of the 25 studies contributing data to analyses. Study number corresponds to point labels in \autoref{fig:fig-2-1}. Crosses indicate the land-use types, position(s) relative to ground level and season(s) considered by each study.}
+\end{sidewaystable}
+
+\subsection{Effect of land-use change}\label{effect-of-land-use-change}
+
+Altered land-use types were substantially hotter than primary forest
+(LMM, Χ\textsuperscript{2} = 29.49, df = 4, P \textless{} 0.001;
+\autoref{tab:tab-2-3}; \autoref{fig:fig-2-3}), and the magnitude of the
+warming broadly matched the intensity of vegetation change associated
+with each land-use type. Thus, degraded forests in our sample were the
+most similar to primary forest with an average difference of only
++1.1°C, which was not statistically significant based on 95\% confidence
+intervals (\autoref{fig:fig-2-3}). By contrast, converted habitats in
+our dataset -- plantation, pasture and cropland -- were, on average,
+hotter than primary forest by 2.7°C, 6.2°C and 7.6°C, respectively.
+Results were robust to resampling from studies that provided
+disproportionate numbers of observations (Supplementary Text S1 and
+\autoref{fig:fig-A-1-3}).
+
+Night-time temperature, and day-time and night-time temperature
+extremes, showed varying results relative to primary forest in the two
+altered land-use types for which data were available: degraded forest
+and plantation. In all cases, sample sizes were very limited and
+confidence intervals were large, hence results should be interpreted
+with caution. Night-time temperature in degraded forest and plantation
+did not differ from that of primary forest (LMM, Χ\textsuperscript{2} =
+2.09, df = 2, P \textgreater{} 0.05; \autoref{fig:fig-A-1-4}), and
+neither did night-time minimum temperature (LMM, Χ\textsuperscript{2} =
+2.31, df = 2, P \textgreater{} 0.05; \autoref{fig:fig-A-1-5}D). Maximum
+night-time temperature was slightly higher overall in degraded forest
+and plantation compared to primary forest (LMM, Χ\textsuperscript{2} =
+6.35, df = 2, P \textless{} 0.05; \autoref{fig:fig-A-1-5}C), although
+pairwise differences were not statistically significant according to
+95\% confidence intervals. There was no difference between primary
+forest and degraded forest and plantation in terms of day-time maximum
+temperature (LMM, Χ\textsuperscript{2} = 4.87, df = 2, P \textgreater{}
+0.05; \autoref{fig:fig-A-1-5}A), or day-time minimum temperature (LMM,
+Χ\textsuperscript{2} = 4.60, df = 2, P \textgreater{} 0.05;
+\autoref{fig:fig-A-1-5}B).
+
+\begin{figure}
+\centering
+\includegraphics{figs/fig2.3.pdf}
+\caption{\label{fig:fig-2-3}Model estimates of local day-time temperature in altered land-use types relative to primary forest (depicted by the black dashed line). In Panel A, different symbols denote position relative to the ground (above-or below-ground), and the season is held at the reference level (dry season). In Panel B, different symbols denote the season (dry or wet), and the position relative to the ground is held at the reference level (above-ground). Error bars are 95\% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081–2100 compared to the period 1986–2005, as a result of global climate change \citep{ipcc_2013}. Shaded bands indicate 5\%–95\% ranges from the distribution of the climate model ensemble. Colors represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).}
+\end{figure}
+
+\subsection{Above- versus
+below-ground}\label{above--versus-below-ground}
+
+The warming effect of land-use change was much stronger above-ground
+than below-ground (LMM, Χ\textsuperscript{2} = 1115, df = 4, P
+\textless{} 0.001; \autoref{tab:tab-2-3}; \autoref{fig:fig-2-3}A). The
+average difference between the local temperature of altered land-use
+types and primary forest was greater if measured above-ground rather
+than below-ground, by 1.9°C in plantation, 4.3°C in pasture, and 11.4°C
+in cropland. In degraded forest, the temperature relative to primary
+forest was very similar above- (+1°C) and below-ground (+1.1°C).
+Notably, the buffering effect below ground was so great that any
+difference between primary forest and impacted land uses was effectively
+negated in all land-use types but pasture (based on 95\% confidence
+intervals; \autoref{fig:fig-2-3}A).
+
+\subsection{Dry versus wet season}\label{dry-versus-wet-season}
+
+Seasonality had some influence on the relationship between land-use
+change and temperature (LMM, Χ\textsuperscript{2} = 14.91, df = 4, P
+\textless{} 0.01; \autoref{tab:tab-2-3}; \autoref{fig:fig-2-3}B), but
+the direction of the interaction varied by land-use type, and in all
+cases the effect size was very small. In degraded forest and plantation,
+seasonality had no appreciable effect on temperature relative to primary
+forest (dry vs.~wet season: +0.1°C in both degraded forest and
+plantation). In contrast, the temperature difference between pasture and
+primary forest was 1.9°C greater in the wet versus dry season, while in
+cropland the differential was 0.6°C greater in the dry versus wet
+season.
+
+\begin{sidewaystable}
+\renewcommand{\arraystretch}{1.1} % reduce space between rows
+\setlength{\tabcolsep}{5pt} % reduce space between columns
+\begin{center}
+\begin{tabular}{p{3cm}p{1.3cm}p{1.3cm}p{1.3cm}p{1.3cm}p{1.3cm}p{1.3cm}p{1.3cm}p{1.3cm}p{1.5cm}p{1.3cm}p{1.3cm}p{1.5cm}}\toprule
+    \bfseries Land-use type & \bfseries Position & \bfseries Season & \bfseries Temp. vs. PF & \bfseries Lower CI & \bfseries Upper CI & \bfseries LUT mean & \bfseries Position & \bfseries Position mean & \bfseries Position effect (AG-BG) & \bfseries Season & \bfseries Season mean & \bfseries Season effect (dry-wet) \\
+    \hline
+    Degraded forest & AG & Dry & 1.1 & -0.5 & 2.6 &                     & AG & 1   &                      & Dry & 1.1 &                      \\
+                    &    & Wet & 1   & -0.5 & 2.5 &                     &    &     &                      & Wet & 1   &                      \\
+                    & BG & Dry & 1.1 & -0.4 & 2.6 &                     & BG & 1.1 &                      &     &     &                      \\
+                    &    & Wet & 1   & -0.5 & 2.6 &\multirow{-4}{*}{1.1}&    &     &\multirow{-4}{*}{0.1} &     &     &\multirow{-4}{*}{0.1} \\\rowcolor{lightgrey}
+    Plantation      & AG & Dry & 3.6 & 1.6  & 5.6 &                     & AG & 3.6 &                      & Dry & 2.7 &                      \\\rowcolor{lightgrey}
+                    &    & Wet & 3.6 & 1.6  & 5.6 &                     &    &     &                      & Wet & 2.6 &                      \\\rowcolor{lightgrey}
+                    & BG & Dry & 1.8 & -0.7 & 4.2 &                     & BG & 1.7 &                      &     &     &                      \\\rowcolor{lightgrey}
+                    &    & Wet & 1.7 & -0.7 & 4.2 &\multirow{-4}{*}{2.7}&    &     &\multirow{-4}{*}{1.9} &     &     &\multirow{-4}{*}{0.1} \\
+    Pasture         & AG & Dry & 7.4 & 4.7  & 10  &                     & AG & 8.3 &                      & Dry & 5.2 &                      \\
+                    &    & Wet & 9.2 & 6.7  & 11.8&                     &    &     &                      & Wet & 7.1 &                      \\
+                    & BG & Dry & 3.1 & 0.5  & 5.7 &                     & BG & 4   &                      &     &     &                      \\
+                    &    & Wet & 5   & 2.4  & 7.5 &\multirow{-4}{*}{6.2}&    &     &\multirow{-4}{*}{4.3} &     &     &\multirow{-4}{*}{-1.9}\\\rowcolor{lightgrey}
+    Cropland        & AG & Dry & 13.6& 11.3 & 15.9&                     & AG & 13.3&                      & Dry & 7.9 &                      \\\rowcolor{lightgrey}
+                    &    & Wet & 13  & 10.7 & 15.2&                     &    &     &                      & Wet & 7.3 &                      \\\rowcolor{lightgrey}
+                    & BG & Dry & 2.2 & 0    & 4.4 &                     & BG & 1.9 &                      &     &     &                      \\\rowcolor{lightgrey}
+                    &    & Wet & 1.6 &-0.6  & 3.7 &\multirow{-4}{*}{7.6}&    &     &\multirow{-4}{*}{11.4}&     &     &\multirow{-4}{*}{0.6} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{\label{tab:tab-2-3}Model estimates (with 95\% confidence intervals) of local day-time temperature in altered land-use types relative to primary forest (PF), with respect to position relative to ground level and season. 'Position effect' refers to the difference between temperature measured above-ground (AG) versus below-ground (BG), averaged across seasons. 'Season effect' refers to the difference between temperature measured in the dry season versus the wet season, averaged across positions. All figures are quoted in \degree C.}
+\end{sidewaystable}
+
+\section{Discussion}\label{discussion}
+
+Our results show that land-use change increases local temperature in the
+tropics (\autoref{fig:fig-2-3}). In all conditions where this
+relationship was evident, the temperature rise due to land-use change
+exceeded that predicted for the tropics by the end of the 21st Century
+under the minimum climate warming scenario \citep[+0.9°C in
+RCP2.6;][]{ipcc_2013}, and frequently also exceeded the maximum warming
+scenario \citep[+3.3°C in RCP8.5;][]{ipcc_2013}. Previous studies show
+that land-use change tends to increase local temperature
+\citep[e.g.][]{findell_modeled2007, loarie_velocity2009, davin_climatic2010, luskin_microclimate2011, ramdani_local2014, tuff_framework2016}
+but this is the first study, to our knowledge, that demonstrates this
+effect across many locations in the tropics at a site-level resolution
+(\textless{} 1 ha), considering multiple modes of land-use change
+concurrently, and comparing the relationship above- and below-ground and
+between wet and dry seasons.
+
+\subsection{Thermal differences between land-use
+types}\label{thermal-differences-between-land-use-types}
+
+Human-impacted land-use types are likely hotter than intact primary
+forest because of changes in evapotranspiration and the amount of solar
+radiation reaching the Earth's surface
+\citep{oke_boundary1987, findell_modeled2007, davin_climatic2010}.
+Degradation and deforestation cause a lowering and thinning of the
+canopy, and reduction in rooting depth, leaf area index and surface
+roughness, all of which reduce evapotranspiration
+\citep{okuda_effect2003, snyder_analyzing2004, kumar_effects2005, findell_modeled2007, davin_climatic2010, hardwick_relationship2015},
+and thereby increase temperature
+\citep{oke_boundary1987, foley_global2005}. Changes to canopy
+architecture and a reduction in the number of sub-canopy vegetation
+strata also cause warming by increasing the amount of solar radiation
+reaching the ground \citep{oke_boundary1987, murcia_edge1995}. Our land
+use categories encompass a spectrum of vegetation change, from
+relatively little change in degraded forests (where some trees and a
+closed canopy are maintained) to maximal change in pasture and cropland
+(where trees are replaced with herbaceous plants). Accordingly,
+degradation had the smallest average effect (+1.1°C), followed by
+plantation (+2.7°C), and then pasture (+6.2°C) and cropland (+7.6°C). We
+expected that the same mechanisms underlying the warming effect of
+land-use change would also result in increased day-time temperature
+extremes and decreased night-time temperatures in altered land-use
+types, relative to primary forest
+\citep{oke_boundary1987, chen_growing-season1995}. Unfortunately, the
+data available were very limited, including only three of the five
+land-use types (primary forest, degraded forest and plantation), and
+resulting in extremely large confidence intervals
+(\autoref{fig:fig-A-1-3} and S4). We urge caution when interpreting our
+results, which suggested either no effect or an extremely weak effect of
+land-use change on temperature extremes and night-time temperature;
+clearly more data are needed to reliably test these relationships.
+
+\subsection{Interaction with position relative to ground level and
+seasonality}\label{interaction-with-position-relative-to-ground-level-and-seasonality}
+
+We found that local warming effects of tropical land-use change are
+negated below-ground, despite the strength of the relationship
+above-ground (\autoref{tab:tab-2-3}; \autoref{fig:fig-2-3}A). This can
+largely be attributed to the higher specific heat capacity of soil
+compared to air \citep{oke_boundary1987}. Greater availability of water
+may also play a role, permitting thermal energy to be dissipated through
+the evaporation of water rather than increasing temperature
+\citep{oke_boundary1987, davin_climatic2010, christidis_role2013}. We
+expected the latter effect to result in increased buffering during the
+wet season \citep[cf.][]{findell_modeled2007, davin_climatic2010}, but
+instead we found that seasonality had a very limited influence on
+temperature relative to primary forest (\autoref{tab:tab-2-3};
+\autoref{fig:fig-2-3}B). The strongest influence was in pasture, where
+the effect of land-use change was greater in the wet season. Potentially
+longer grass in pasture in the wet season could decrease albedo compared
+to pale exposed soil in the dry season, while the same pattern could be
+avoided in cropland through dry season irrigation. That said, pasture
+and cropland had the least data of all land-use types, and we advise
+that these results be interpreted with caution.
+
+\subsection{Implications for
+biodiversity}\label{implications-for-biodiversity}
+
+For tropical biodiversity, there are several key implications of our
+findings. Firstly, forest species persisting through forest conversion
+have already experienced thermal change similar, if not greater, in
+magnitude to that predicted by global climate change \citep{ipcc_2013}.
+Historically the tropics have experienced relatively stable climatic
+conditions \citep{mora_projected2013} and tropical species possess
+narrow thermal niches, with many already occupying the upper bounds of
+that niche
+\citep{deutsch_impacts2008, tewksbury_putting2008, freeman_rapid2014, sunday_thermal-safety2014}.
+Dispersal towards more favourable climatic conditions is limited by low
+dispersal ability \citep{van_houtan_dispersal2007}, a scarcity of
+suitable destinations \citep{colwell_global2008}, and the necessity to
+pass through an increasingly hostile land-use matrix to reach target
+habitat
+\citep{thomas_extinction2004, brook_synergies2008, scriven_protected2015}.
+There is already some evidence that higher temperatures in the tropics
+are associated with lower species abundance \citep[e.g.~for
+arthropods:][]{foster_establishing2011}, and there are also fitness
+costs associated with long-term persistence in suboptimal climatic
+conditions \citep{du_plessis_costs2012, gunderson_conceptual2016}.
+Without any further temperature change some species persisting in
+converted environments may already be committed to extinction,
+particularly species that are unable to utilise microhabitats with
+favourable microclimates
+\citep{scheffers_microhabitats2014-1, gonzalez_del_pliego_thermally2016}.
+Under predicted climate change, increasing average temperature and the
+increasing frequency and intensity of droughts
+\citep{chou_changes2012, ipcc_2013} will likely push many species beyond
+their upper thermal limits, especially in heavily degraded or converted
+habitats.
+
+That said, we find several circumstances where warming through land-use
+change is mitigated. Degraded forests were not significantly hotter than
+primary forests (according to 95\% confidence intervals;
+\autoref{fig:fig-2-3}). This is encouraging because degraded forests are
+likely to become the most widespread land-use type in future
+\citep{hurtt_harmonization2011}, and many studies have demonstrated
+their capacity to retain species of conservation concern
+\citep{edwards_degraded2011, gibson_primary2011, putz_sustaining2012, edwards_maintaining2014}.
+For all altered land-use types, the warming effect was limited
+below-ground, highlighting a crucial thermal refuge for species that are
+able to occupy the soil, and suggesting that above-ground microhabitats,
+such as deadwood and epiphytes, might fulfil a similar role
+\citep{scheffers_microhabitats2014-1, gonzalez_del_pliego_thermally2016}.
+Thermal refugia may not be a permanent solution for avoiding climate
+change, and sensitive species may find that even relatively cold
+microhabitats are still too hot (e.g.~below-ground in pasture was 4°C
+warmer than primary forest; \autoref{tab:tab-2-3};
+\autoref{fig:fig-2-3}), but refugia could at least provide species with
+more time to respond to suboptimal climatic conditions
+\citep{hannah_fine-grain2014}.
+
+\subsection{Caveats and knowledge
+gaps}\label{caveats-and-knowledge-gaps}
+
+By collating site-level data reported from the literature, we were able
+to achieve high geographical coverage and fine spatial resolution that
+is lacking in previous studies, but this technique is biased by the
+availability of data towards particular regions and land-use types
+(\autoref{fig:fig-2-1}), and relies heavily on substituting space for
+time, which can misrepresent anthropogenic impacts
+\citep{franca_space-for-time2016}. In particular, there was only one
+study located in Africa, and Southeast Asian studies provided all of the
+plantation data and no cropland data. Future research should seek to
+explicitly consider how tropical land-use change affects: vegetation
+structure \citep[e.g.~using Leaf Area Index
+cf.][]{hardwick_relationship2015}, relative humidity
+\citep{luskin_microclimate2011, ewers_fragmentation2013}, nocturnal
+climatic conditions
+\citep{chen_growing-season1995, dubreuil_impact2011}, extremes of
+temperature \citep{christidis_role2013}, and rates of temperature change
+\citep{scheffers_microhabitats2014-1}; preferably at a range of
+spatiotemporal scales \citep{wiens_matching2010} and with a standardised
+methodology to simplify comparisons across studies.
+
+\subsection{Conclusions}\label{conclusions}
+
+Our study confirms that tropical land-use change leads to warming at a
+local scale (\textless{} 1 ha) across the tropics, of a magnitude
+comparable to that predicted from global climate change. We find
+pantropical evidence that the effects of land-use change on temperature
+are ameliorated below-ground, and absent in degraded forests. Many
+studies collect site-level climate data, and through sharing of these
+data and collaboration between scientific disciplines, there is much
+that can be done to integrate theoretical and empirical understanding of
+the processes that govern climate at different scales. This will greatly
+advance our knowledge of potential synergies between two of the greatest
+drivers of biodiversity loss -- land-use change and climate change --
+and highlight mitigating factors, such as thermal microrefugia, which
+could be a pragmatic focus for conservation management.
+
+\section{Data and R code}\label{data-and-r-code}
+
+The collated dataset can be found on Dryad
+(\url{doi:10.5061/dryad.g4000}). Note that in many cases these data were
+aggregated for analyses. For finer resolution data please refer to the
+original data sources. R functions used to estimate time of sunset and
+sunrise can be downloaded from GitHub
+(\url{https://github.com/rasenior/SolarCalc}).
+
+\clearpage
+\appendix
+\fancyhead[R]{Appendix \thechapter} \addappheadtotoc
+\setcounter{figure}{0} \makeatletter 
+\renewcommand{\thefigure}{A1.\@arabic\c@figure} \makeatother
+
+\chapter*{Appendix 1 -- Supporting information for Chapter
+2}\label{appendix-1-supporting-information-for-chapter-2}
+\addcontentsline{toc}{chapter}{Appendix 1 -- Supporting information for
+Chapter 2}
+
+\section*{Appendix 1A. Impact of unbalanced
+sampling}\label{appendix-1a.-impact-of-unbalanced-sampling}
+\addcontentsline{toc}{section}{Appendix 1A. Impact of unbalanced
+sampling}
+
+\subsection*{Methods}\label{methods-1}
+\addcontentsline{toc}{subsection}{Methods}
+
+Some studies contributed substantially more temperature observations
+than others. To test whether these studies were unduly influencing our
+results, we established a threshold over which a given land-use type, in
+a given study, was deemed to have a disproportionate number of
+associated temperature observations. The threshold used --- 2,071
+observations --- was the mean number of observations across all unique
+combinations of land-use type and study identity (55 in total). The same
+number of observations (2,071) was then randomly re-sampled from each of
+the land-use type and study combinations that exceeded the threshold.
+With this reduced and more balanced dataset we repeated the main
+analysis (see `Statistical analysis' in main text for more details),
+modelling local day-time temperature (`temp\_day') against land-use type
+(`LUT'), position relative to ground-level (`position') and season. The
+final model structure was unchanged, and included a random slope for
+land-use type and random intercept with respect to the identity of the
+study (`studyID') from which data originated:
+
+\texttt{lmer(temp\_day\ \ \textasciitilde{}\ LUT*position\ +\ LUT*season\ +\ (LUT\textbar{}studyID))}
+
+\subsection*{Results}\label{results-1}
+\addcontentsline{toc}{subsection}{Results}
+
+All results were qualitatively unchanged from those derived using the
+full dataset. Local day-time temperature was warmer in altered land-use
+types, compared to primary forest (LMM, Χ\textsuperscript{2} = 32.19, df
+= 4, P \textless{} 0.001; \autoref{fig:fig-A-1-3}). Averaged across
+above- and below-ground, and across seasons, the temperature
+differential was greatest in cropland (7.7°C), followed by pasture
+(6.4°C), plantation (3.2°C) and degraded forest (0.9°C). The
+relationship between land-use type and temperature interacted with both
+position relative to ground level (LMM, Χ\textsuperscript{2} = 681, df =
+4, P \textless{} 0.001; \autoref{fig:fig-A-1-3}A) and season (LMM,
+Χ\textsuperscript{2} = 105.63, df = 4, P \textless{} 0.001;
+\autoref{fig:fig-A-1-3}B). Specifically, the difference between altered
+land-use types and primary forest was greater above-ground than
+below-ground (\autoref{fig:fig-A-1-3}A), and variable between seasons
+according to the land-use type (\autoref{fig:fig-A-1-3}B).
+
+\pagebreak
+
+\section*{Appendix 1B. Supplementary
+figures}\label{appendix-1b.-supplementary-figures}
+\addcontentsline{toc}{section}{Appendix 1B. Supplementary figures}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{./figures/fig-A-1-1-1.pdf}
+\caption{\label{fig:fig-A-1-1}Day-time temperature against land-use type for
+each study contributing data to the analyses. Panel numbers refer to the
+study number in the reference list below. Land-use types are: primary
+forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and
+cropland (Cr). Panels are ordered by the combination of land-use types
+for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl;
+(16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr;
+and (24-25) DF + Cr. Shading of points indicates temperatures measured
+above-ground (orange) or below-ground (blue), and point symbol indicates
+temperatures measured during the dry season (circles) or wet season
+(triangles).}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{./figures/fig-A-1-2-1.pdf}
+\caption{\label{fig:fig-A-1-2}Site elevation against land-use type for each
+study contributing data to the analyses. Panel numbers refer to the
+study number in the reference list below. Land-use types are: primary
+forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and
+cropland (Cr). Panels are ordered by the combination of land-use types
+for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl;
+(16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr;
+and (24-25) DF + Cr. Dotted black lines connect the mean elevation of
+all the sites within each land-use type.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{figs/figA1.3.pdf}
+\caption{\label{fig:fig-A-1-3}Model estimates of the temperature difference between altered land-use types and primary forest, using a reduced dataset to balance sample sizes between the different studies that contributed data. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dashed line. Error bars are 95\% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081-2100 compared to the period 1986-2005, as a result of global climate change \citep{ipcc_2013}. Shaded bands indicate 5\%–95\% ranges from the distribution of the climate model ensemble. Colours represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{./figures/fig-A-1-4-1.pdf}
+\caption{\label{fig:fig-A-1-4}Model estimates of the nocturnal temperature
+difference between altered land-use types and primary forest. Note that
+cropland and pasture are missing from this analysis because nocturnal
+temperature data for these land-use types were not available. Parameter
+estimates are standardised against the estimate for primary forest,
+which is represented by the dotted line. Error bars are 95\% confidence
+intervals.}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{./figures/fig-A-1-5-1.pdf}
+\caption{\label{fig:fig-A-1-5}Model estimates of the difference between
+altered land-use types and primary forest in terms of temperature
+extremes. Day-time results are depicted in panels A and B, and
+night-time results in panels C and D. Panels A and C indicate the effect
+of land-use change on maximum temperature, and panels B and D indicate
+the same for minimum temperature. Note that data for cropland and
+pasture are absent from this analysis because data for these land-use
+types were not available. Parameter estimates are standardised against
+the estimate for primary forest, which is represented by the dotted
+line. Error bars are 95\% confidence intervals. The grey numbers next to
+points represent the number of studies providing the underlying data.}
+\end{figure}
+
+\clearpage
+\fancyhead[R]{Bibliography}
 
 \bibliography{Ch2,Ch1}
 

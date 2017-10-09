@@ -1,7 +1,16 @@
+\pagestyle{fancyplain}
+\fancyhf{}
+\fancyhead[R]{\chaptername \space \thechapter}
+\fancyfoot[R]{\thepage}
+\pagenumbering{arabic}
+
 ```{r setup, include=FALSE}
+rm(list=ls())
 knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALSE, 
-                      fig.width = 16.6/2.54, fig.height = 13/2.54, dpi = 800, 
+                      fig.width = 16.6/2.54, fig.height = 10/2.54, dpi = 800, 
                       fig.path = "./figures/")
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
+               "#0072B2", "#D55E00", "#CC79A7")
 ```
 
 # General introduction
@@ -32,6 +41,8 @@ Where extinctions have been attributed to climate change, this is through change
 
 Future changes in precipitation are more difficult to predict than changes in local temperature, but precipitation events also play a significant role in species' extinctions due to climate change. For example, extremely hot and dry years significantly contributed to the extinction of the golden toad [@pounds_biological1999]. It is likely that that heavy precipitation events will increase in frequency and/or intensity over many land areas, whilst the intensity and/or duration of droughts may also increase towards the late 21st Century [@ipcc2013].
 
+```{r fig-1-1}
+```
 \begin{figure}
 \centering
 \includegraphics{figs/Fig1.1.jpg}

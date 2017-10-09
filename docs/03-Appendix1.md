@@ -1,7 +1,13 @@
-
-
+\clearpage
 \appendix
-\section{Test 3}
+\fancyhead[R]{Appendix \thechapter}
+\addappheadtotoc
+\setcounter{figure}{0}
+\makeatletter 
+\renewcommand{\thefigure}{A1.\@arabic\c@figure}
+\makeatother
+
+
 
 # Appendix 1 -- Supporting information for Chapter 2 {-}
 
@@ -9,32 +15,38 @@
 
 ### Methods {-}
 
-Some studies contributed substantially more temperature observations than others. To test whether these studies were unduly influencing our results, we established a threshold over which a given land-use type, in a given study, was deemed to have a disproportionate number of associated temperature observations. The threshold used – 2,071 observations – was the mean number of observations across all unique combinations of land-use type and study identity (55 in total). The same number of observations (2,071) was then randomly re-sampled from each of the land-use type and study combinations that exceeded the threshold. With this reduced and more balanced dataset we repeated the main analysis (see 'Statistical analysis' in main text for more details), modelling local day-time temperature ('temp_day') against land-use type ('LUT'), position relative to ground-level ('position') and season. The final model structure was unchanged, and included a random slope for land-use type and random intercept with respect to the identity of the study ('studyID') from which data originated:
+Some studies contributed substantially more temperature observations than others. To test whether these studies were unduly influencing our results, we established a threshold over which a given land-use type, in a given study, was deemed to have a disproportionate number of associated temperature observations. The threshold used –- 2,071 observations –- was the mean number of observations across all unique combinations of land-use type and study identity (55 in total). The same number of observations (2,071) was then randomly re-sampled from each of the land-use type and study combinations that exceeded the threshold. With this reduced and more balanced dataset we repeated the main analysis (see 'Statistical analysis' in main text for more details), modelling local day-time temperature ('temp_day') against land-use type ('LUT'), position relative to ground-level ('position') and season. The final model structure was unchanged, and included a random slope for land-use type and random intercept with respect to the identity of the study ('studyID') from which data originated:
 
 `lmer(temp_day  ~ LUT*position + LUT*season + (LUT|studyID))`
 
 ### Results {-}
 
-All results were qualitatively unchanged from those derived using the full dataset. Local day-time temperature was warmer in altered land-use types, compared to primary forest (LMM, Χ^2^ = 32.19, df = 4, P < 0.001; Fig. S3). Averaged across above- and below-ground, and across seasons, the temperature differential was greatest in cropland (7.7&deg;C), followed by pasture (6.4&deg;C), plantation (3.2&deg;C) and degraded forest (0.9&deg;C).
-The relationship between land-use type and temperature interacted with both position relative to ground level (LMM, Χ^2^ = 681, df = 4, P < 0.001; Fig. S3A) and season (LMM, Χ^2^ = 105.63, df = 4, P < 0.001; Fig. S3B). Specifically, the difference between altered land-use types and primary forest was greater above-ground than below-ground (Fig. S3A), and variable between seasons according to the land-use type (Fig. S3B).
+All results were qualitatively unchanged from those derived using the full dataset. Local day-time temperature was warmer in altered land-use types, compared to primary forest (LMM, Χ^2^ = 32.19, df = 4, P < 0.001; \autoref{fig:fig-A-1-3}). Averaged across above- and below-ground, and across seasons, the temperature differential was greatest in cropland (7.7&deg;C), followed by pasture (6.4&deg;C), plantation (3.2&deg;C) and degraded forest (0.9&deg;C).
+The relationship between land-use type and temperature interacted with both position relative to ground level (LMM, Χ^2^ = 681, df = 4, P < 0.001; \autoref{fig:fig-A-1-3}A) and season (LMM, Χ^2^ = 105.63, df = 4, P < 0.001; \autoref{fig:fig-A-1-3}B). Specifically, the difference between altered land-use types and primary forest was greater above-ground than below-ground (\autoref{fig:fig-A-1-3}A), and variable between seasons according to the land-use type (\autoref{fig:fig-A-1-3}B).
 
 \pagebreak
 
 ## Appendix 1B. Supplementary figures {-}
+
+
+
 
 ![(\#fig:fig-A-1-1)Day-time temperature against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Shading of points indicates temperatures measured above-ground (orange) or below-ground (blue), and point symbol indicates temperatures measured during the dry season (circles) or wet season (triangles).](./figures/fig-A-1-1-1.pdf) 
 
 ![(\#fig:fig-A-1-2)Site elevation against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Dotted black lines connect the mean elevation of all the sites within each land-use type.](./figures/fig-A-1-2-1.pdf) 
 
 
-```
-## TableGrob (1 x 1) "arrange": 1 grobs
-##   z     cells    name            grob
-## 1 1 (1-1,1-1) arrange gtable[arrange]
-```
+
+\begin{figure}
+\centering
+\includegraphics{figs/figA1.3.pdf}
+\caption{(\#fig:fig-A-1-3)Model estimates of the temperature difference between altered land-use types and primary forest, using a reduced dataset to balance sample sizes between the different studies that contributed data. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dashed line. Error bars are 95\% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081-2100 compared to the period 1986-2005, as a result of global climate change \citep{ipcc_2013}. Shaded bands indicate 5\%–95\% ranges from the distribution of the climate model ensemble. Colours represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).}
+\end{figure}
 
 ![(\#fig:fig-A-1-4)Model estimates of the nocturnal temperature difference between altered land-use types and primary forest. Note that cropland and pasture are missing from this analysis because nocturnal temperature data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals.](./figures/fig-A-1-4-1.pdf) 
 
-
 ![(\#fig:fig-A-1-5)Model estimates of the difference between altered land-use types and primary forest in terms of temperature extremes. Day-time results are depicted in panels A and B, and night-time results in panels C and D. Panels A and C indicate the effect of land-use change on maximum temperature, and panels B and D indicate the same for minimum temperature. Note that data for cropland and pasture are absent from this analysis because data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals. The grey numbers next to points represent the number of studies providing the underlying data.](./figures/fig-A-1-5-1.pdf) 
+
+\clearpage
+\fancyhead[R]{Bibliography}
 

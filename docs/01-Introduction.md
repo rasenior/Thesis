@@ -1,3 +1,9 @@
+\pagestyle{fancyplain}
+\fancyhf{}
+\fancyhead[R]{\chaptername \space \thechapter}
+\fancyfoot[R]{\thepage}
+\pagenumbering{arabic}
+
 
 
 # General introduction
@@ -27,6 +33,7 @@ Evidently the increase in global average temperature occurs on a long timescale 
 Where extinctions have been attributed to climate change, this is through changes in local weather patterns. Weather is distinguished from climate as being "the state of the atmosphere at a given time and place", whereas climate comprises "the statistics of weather conditions over a decade or more" [@ipcc2013]. Concomitant with increasing global average temperature is the increase in the frequency and intensity of extreme weather events [@ipcc2013]. This can be explained statistically, because an 'extreme weather event' is an event in which the climatic conditions fall towards either extreme end of the probability distribution (the 10th or 90th percentile; @ipcc2013]. Provided the probability distribution of temperatures remains the same (or similar), an increase in average temperature corresponds to an upwards shift in the overall temperature distribution, and therefore we more commonly see temperatures that were originally very rare, and begin to see temperatures never before recorded (\autoref{fig:fig-1-1}). It is almost certain that there will be more extremes of heat (and fewer extremes of cold) towards the late 21st Century [@ipcc2013]. 
 
 Future changes in precipitation are more difficult to predict than changes in local temperature, but precipitation events also play a significant role in species' extinctions due to climate change. For example, extremely hot and dry years significantly contributed to the extinction of the golden toad [@pounds_biological1999]. It is likely that that heavy precipitation events will increase in frequency and/or intensity over many land areas, whilst the intensity and/or duration of droughts may also increase towards the late 21st Century [@ipcc2013].
+
 
 \begin{figure}
 \centering

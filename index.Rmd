@@ -1,5 +1,7 @@
 ---
-knit: "bookdown::render_book"
+output:
+  bookdown::pdf_book:
+    keep_tex: yes
 mainfont: Calibri
 papersize: a4
 geometry: left=4cm,right=2.5cm,top=2.5cm,bottom=2.5cm
