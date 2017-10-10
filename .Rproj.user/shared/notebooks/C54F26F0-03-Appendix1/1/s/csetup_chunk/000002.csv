@@ -1,5 +1,0 @@
-"0","knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALSE,"
-"0","                      fig.width = 16.6/2.54, fig.height = 8/2.54, dpi = 800, "
-"0","                      fig.path = ""./figures/"")"
-"0","cbPalette <- c(""#009E73"",""#F0E442"", ""#0072B2"", ""#D55E00"", ""#CC79A7"","
-"0","               ""#E69F00"", ""#56B4E9"")"
