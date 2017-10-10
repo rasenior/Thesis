@@ -9,24 +9,24 @@
 
 
 
-# Appendix 1 -- Supporting information for Chapter 2 {-}
+# Supporting information for Chapter 2
 
-## Appendix 1A. Impact of unbalanced sampling {-}
+## Impact of unbalanced sampling {#text-A-1-1}
 
-### Methods {-}
+### Methods
 
 Some studies contributed substantially more temperature observations than others. To test whether these studies were unduly influencing our results, we established a threshold over which a given land-use type, in a given study, was deemed to have a disproportionate number of associated temperature observations. The threshold used –- 2,071 observations –- was the mean number of observations across all unique combinations of land-use type and study identity (55 in total). The same number of observations (2,071) was then randomly re-sampled from each of the land-use type and study combinations that exceeded the threshold. With this reduced and more balanced dataset we repeated the main analysis (see 'Statistical analysis' in main text for more details), modelling local day-time temperature ('temp_day') against land-use type ('LUT'), position relative to ground-level ('position') and season. The final model structure was unchanged, and included a random slope for land-use type and random intercept with respect to the identity of the study ('studyID') from which data originated:
 
 `lmer(temp_day  ~ LUT*position + LUT*season + (LUT|studyID))`
 
-### Results {-}
+### Results
 
 All results were qualitatively unchanged from those derived using the full dataset. Local day-time temperature was warmer in altered land-use types, compared to primary forest (LMM, Χ^2^ = 32.19, df = 4, P < 0.001; \autoref{fig:fig-A-1-3}). Averaged across above- and below-ground, and across seasons, the temperature differential was greatest in cropland (7.7&deg;C), followed by pasture (6.4&deg;C), plantation (3.2&deg;C) and degraded forest (0.9&deg;C).
 The relationship between land-use type and temperature interacted with both position relative to ground level (LMM, Χ^2^ = 681, df = 4, P < 0.001; \autoref{fig:fig-A-1-3}A) and season (LMM, Χ^2^ = 105.63, df = 4, P < 0.001; \autoref{fig:fig-A-1-3}B). Specifically, the difference between altered land-use types and primary forest was greater above-ground than below-ground (\autoref{fig:fig-A-1-3}A), and variable between seasons according to the land-use type (\autoref{fig:fig-A-1-3}B).
 
 \pagebreak
 
-## Appendix 1B. Supplementary figures {-}
+## Supplementary figures
 
 
 
@@ -46,7 +46,4 @@ The relationship between land-use type and temperature interacted with both posi
 ![(\#fig:fig-A-1-4)Model estimates of the nocturnal temperature difference between altered land-use types and primary forest. Note that cropland and pasture are missing from this analysis because nocturnal temperature data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals.](./figures/fig-A-1-4-1.pdf) 
 
 ![(\#fig:fig-A-1-5)Model estimates of the difference between altered land-use types and primary forest in terms of temperature extremes. Day-time results are depicted in panels A and B, and night-time results in panels C and D. Panels A and C indicate the effect of land-use change on maximum temperature, and panels B and D indicate the same for minimum temperature. Note that data for cropland and pasture are absent from this analysis because data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals. The grey numbers next to points represent the number of studies providing the underlying data.](./figures/fig-A-1-5-1.pdf) 
-
-\clearpage
-\fancyhead[R]{Bibliography}
 

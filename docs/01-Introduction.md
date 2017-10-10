@@ -1,6 +1,6 @@
 \pagestyle{fancyplain}
 \fancyhf{}
-\fancyhead[R]{\chaptername \space \thechapter}
+\fancyhead[R]{\nouppercase\chaptername \space \thechapter}
 \fancyfoot[R]{\thepage}
 \pagenumbering{arabic}
 
