@@ -1,0 +1,139 @@
+dataset,microclimate,RV,EV,dropped_EV,random_struct,model_type,statistic,test_stat,test_df,p.value_cat,Q_no,Q_letter,Q,figure,figure_panel
+flir,Surface,Microclimate temp.,tree_stand_BA + forest_type *     ambient_log,interaction,1|transect/plot,LMM,L,NA,1,NA,Q1,a,Q1a_interaction,Fig. 3,a
+flir,Surface,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,interaction,1|transect/plot,LMM,L,1.196540558,1,0.274,Q1,a,Q1a_interaction,Fig. 3,a
+deadwood_rep,Deadwood,Microclimate temp.,tree_stand_BA + forest_type *     ambient_log,interaction,1|transect/plot,LMM,L,NA,1,NA,Q1,b,Q1b_interaction,Fig. 3,b
+deadwood_rep,Deadwood,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,interaction,1|transect/plot,LMM,L,7.267747618,1,< 0.01,Q1,b,Q1b_interaction,Fig. 3,b
+hole_rep,Tree hole,Microclimate temp.,tree_stand_BA + forest_type *     ambient_log,interaction,1|transect/plot,LMM,L,NA,1,NA,Q1,c,Q1c_interaction,Fig. 3,c
+hole_rep,Tree hole,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,interaction,1|transect/plot,LMM,L,13.65651917,1,< 0.001,Q1,c,Q1c_interaction,Fig. 3,c
+litter_rep,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type *     ambient_log,interaction,1|transect/plot,LMM,L,NA,1,NA,Q1,d,Q1d_interaction,Fig. 3,d
+litter_rep,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,interaction,1|transect/plot,LMM,L,28.9140858,1,< 0.001,Q1,d,Q1d_interaction,Fig. 3,d
+flir,Surface,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,Q1,a,Q1a_tree_stand_BA,Fig. 3,e
+flir,Surface,Microclimate temp.,forest_type + ambient_log,tree_stand_BA,1|transect/plot,LMM,L,0.66767421,1,0.414,Q1,a,Q1a_tree_stand_BA,Fig. 3,e
+flir,Surface,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,forest_type,1|transect/plot,LMM,L,NA,1,NA,Q1,a,Q1a_forest_type,Fig. 3,e
+flir,Surface,Microclimate temp.,tree_stand_BA + ambient_log,forest_type,1|transect/plot,LMM,L,0.447234043,1,0.504,Q1,a,Q1a_forest_type,Fig. 3,e
+deadwood_rep,Deadwood,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,Q1,b,Q1b_tree_stand_BA,Fig. 3,f
+deadwood_rep,Deadwood,Microclimate temp.,forest_type + ambient_log,tree_stand_BA,1|transect/plot,LMM,L,0.104866414,1,0.746,Q1,b,Q1b_tree_stand_BA,Fig. 3,f
+deadwood_rep,Deadwood,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,forest_type,1|transect/plot,LMM,L,NA,1,NA,Q1,b,Q1b_forest_type,Fig. 3,f
+deadwood_rep,Deadwood,Microclimate temp.,tree_stand_BA + ambient_log,forest_type,1|transect/plot,LMM,L,0.205988154,1,0.65,Q1,b,Q1b_forest_type,Fig. 3,f
+hole_rep,Tree hole,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,Q1,c,Q1c_tree_stand_BA,Fig. 3,g
+hole_rep,Tree hole,Microclimate temp.,forest_type + ambient_log,tree_stand_BA,1|transect/plot,LMM,L,4.66051361,1,< 0.05,Q1,c,Q1c_tree_stand_BA,Fig. 3,g
+hole_rep,Tree hole,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,forest_type,1|transect/plot,LMM,L,NA,1,NA,Q1,c,Q1c_forest_type,Fig. 3,g
+hole_rep,Tree hole,Microclimate temp.,tree_stand_BA + ambient_log,forest_type,1|transect/plot,LMM,L,2.758795129,1,0.097,Q1,c,Q1c_forest_type,Fig. 3,g
+litter_rep,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,Q1,d,Q1d_tree_stand_BA,Fig. 3,h
+litter_rep,Leaf litter,Microclimate temp.,forest_type + ambient_log,tree_stand_BA,1|transect/plot,LMM,L,0.060952311,1,0.805,Q1,d,Q1d_tree_stand_BA,Fig. 3,h
+litter_rep,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,forest_type,1|transect/plot,LMM,L,NA,1,NA,Q1,d,Q1d_forest_type,Fig. 3,h
+litter_rep,Leaf litter,Microclimate temp.,tree_stand_BA + ambient_log,forest_type,1|transect/plot,LMM,L,1.616062077,1,0.204,Q1,d,Q1d_forest_type,Fig. 3,h
+deadwood_rep_day,Deadwood,Microclimate temp.,tree_stand_BA + forest_type *     ambient_log,interaction,1|transect/plot,LMM,L,NA,1,NA,QS4,a_day,QS4a_day_interaction,Fig. S3,a
+deadwood_rep_day,Deadwood,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,interaction,1|transect/plot,LMM,L,0.254425206,1,0.614,QS4,a_day,QS4a_day_interaction,Fig. S3,a
+hole_rep_day,Tree hole,Microclimate temp.,tree_stand_BA + forest_type *     ambient_log,interaction,1|transect/plot,LMM,L,NA,1,NA,QS4,b_day,QS4b_day_interaction,Fig. S3,b
+hole_rep_day,Tree hole,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,interaction,1|transect/plot,LMM,L,18.21401214,1,< 0.001,QS4,b_day,QS4b_day_interaction,Fig. S3,b
+litter_rep_day,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type *     ambient_log,interaction,1|transect/plot,LMM,L,NA,1,NA,QS4,c_day,QS4c_day_interaction,Fig. S3,c
+litter_rep_day,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,interaction,1|transect/plot,LMM,L,40.95687568,1,< 0.001,QS4,c_day,QS4c_day_interaction,Fig. S3,c
+deadwood_rep_night,Deadwood,Microclimate temp.,tree_stand_BA + forest_type *     ambient_log,interaction,1|transect/plot,LMM,L,NA,1,NA,QS4,a_night,QS4a_night_interaction,Fig. S3,d
+deadwood_rep_night,Deadwood,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,interaction,1|transect/plot,LMM,L,8.589470326,1,< 0.01,QS4,a_night,QS4a_night_interaction,Fig. S3,d
+hole_rep_night,Tree hole,Microclimate temp.,tree_stand_BA + forest_type *     ambient_log,interaction,1|transect/plot,LMM,L,NA,1,NA,QS4,b_night,QS4b_night_interaction,Fig. S3,e
+hole_rep_night,Tree hole,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,interaction,1|transect/plot,LMM,L,1.359310644,1,0.244,QS4,b_night,QS4b_night_interaction,Fig. S3,e
+litter_rep_night,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type *     ambient_log,interaction,1|transect/plot,LMM,L,NA,1,NA,QS4,c_night,QS4c_night_interaction,Fig. S3,f
+litter_rep_night,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,interaction,1|transect/plot,LMM,L,861.6225269,1,< 0.001,QS4,c_night,QS4c_night_interaction,Fig. S3,f
+deadwood_rep_day,Deadwood,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,QS4,a_day,QS4a_day_tree_stand_BA,Fig. S3,a
+deadwood_rep_day,Deadwood,Microclimate temp.,forest_type + ambient_log,tree_stand_BA,1|transect/plot,LMM,L,0.501362401,1,0.479,QS4,a_day,QS4a_day_tree_stand_BA,Fig. S3,a
+deadwood_rep_day,Deadwood,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,forest_type,1|transect/plot,LMM,L,NA,1,NA,QS4,a_day,QS4a_day_forest_type,Fig. S3,a
+deadwood_rep_day,Deadwood,Microclimate temp.,tree_stand_BA + ambient_log,forest_type,1|transect/plot,LMM,L,0.591378254,1,0.442,QS4,a_day,QS4a_day_forest_type,Fig. S3,a
+hole_rep_day,Tree hole,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,QS4,b_day,QS4b_day_tree_stand_BA,Fig. S3,b
+hole_rep_day,Tree hole,Microclimate temp.,forest_type + ambient_log,tree_stand_BA,1|transect/plot,LMM,L,57.81405042,1,< 0.001,QS4,b_day,QS4b_day_tree_stand_BA,Fig. S3,b
+hole_rep_day,Tree hole,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,forest_type,1|transect/plot,LMM,L,NA,1,NA,QS4,b_day,QS4b_day_forest_type,Fig. S3,b
+hole_rep_day,Tree hole,Microclimate temp.,tree_stand_BA + ambient_log,forest_type,1|transect/plot,LMM,L,58.20188203,1,< 0.001,QS4,b_day,QS4b_day_forest_type,Fig. S3,b
+litter_rep_day,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,QS4,c_day,QS4c_day_tree_stand_BA,Fig. S3,c
+litter_rep_day,Leaf litter,Microclimate temp.,forest_type + ambient_log,tree_stand_BA,1|transect/plot,LMM,L,1.040745475,1,0.308,QS4,c_day,QS4c_day_tree_stand_BA,Fig. S3,c
+litter_rep_day,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,forest_type,1|transect/plot,LMM,L,NA,1,NA,QS4,c_day,QS4c_day_forest_type,Fig. S3,c
+litter_rep_day,Leaf litter,Microclimate temp.,tree_stand_BA + ambient_log,forest_type,1|transect/plot,LMM,L,0.380094952,1,0.538,QS4,c_day,QS4c_day_forest_type,Fig. S3,c
+deadwood_rep_night,Deadwood,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,QS4,a_night,QS4a_night_tree_stand_BA,Fig. S3,d
+deadwood_rep_night,Deadwood,Microclimate temp.,forest_type + ambient_log,tree_stand_BA,1|transect/plot,LMM,L,0.175901685,1,0.675,QS4,a_night,QS4a_night_tree_stand_BA,Fig. S3,d
+deadwood_rep_night,Deadwood,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,forest_type,1|transect/plot,LMM,L,NA,1,NA,QS4,a_night,QS4a_night_forest_type,Fig. S3,d
+deadwood_rep_night,Deadwood,Microclimate temp.,tree_stand_BA + ambient_log,forest_type,1|transect/plot,LMM,L,1.000995778,1,0.317,QS4,a_night,QS4a_night_forest_type,Fig. S3,d
+hole_rep_night,Tree hole,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,QS4,b_night,QS4b_night_tree_stand_BA,Fig. S3,e
+hole_rep_night,Tree hole,Microclimate temp.,forest_type + ambient_log,tree_stand_BA,1|transect/plot,LMM,L,0.095961117,1,0.757,QS4,b_night,QS4b_night_tree_stand_BA,Fig. S3,e
+hole_rep_night,Tree hole,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,forest_type,1|transect/plot,LMM,L,NA,1,NA,QS4,b_night,QS4b_night_forest_type,Fig. S3,e
+hole_rep_night,Tree hole,Microclimate temp.,tree_stand_BA + ambient_log,forest_type,1|transect/plot,LMM,L,1.217909518,1,0.27,QS4,b_night,QS4b_night_forest_type,Fig. S3,e
+litter_rep_night,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,QS4,c_night,QS4c_night_tree_stand_BA,Fig. S3,f
+litter_rep_night,Leaf litter,Microclimate temp.,forest_type + ambient_log,tree_stand_BA,1|transect/plot,LMM,L,0.000413593,1,0.984,QS4,c_night,QS4c_night_tree_stand_BA,Fig. S3,f
+litter_rep_night,Leaf litter,Microclimate temp.,tree_stand_BA + forest_type +     ambient_log,forest_type,1|transect/plot,LMM,L,NA,1,NA,QS4,c_night,QS4c_night_forest_type,Fig. S3,f
+litter_rep_night,Leaf litter,Microclimate temp.,tree_stand_BA + ambient_log,forest_type,1|transect/plot,LMM,L,3.211291222,1,0.073,QS4,c_night,QS4c_night_forest_type,Fig. S3,f
+flir,Surface,Microclimate daily temp. range,tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,Q2,a,Q2a_tree_stand_BA,Fig. 4,a
+flir,Surface,Microclimate daily temp. range,forest_type,tree_stand_BA,1|transect/plot,LMM,L,2.29924751,1,0.129,Q2,a,Q2a_tree_stand_BA,Fig. 4,a
+flir,Surface,Microclimate daily temp. range,tree_stand_BA + forest_type,forest_type,1|transect/plot,LMM,L,NA,1,NA,Q2,a,Q2a_forest_type,Fig. 4,a
+flir,Surface,Microclimate daily temp. range,tree_stand_BA,forest_type,1|transect/plot,LMM,L,0.437410196,1,0.508,Q2,a,Q2a_forest_type,Fig. 4,a
+deadwood_day,Deadwood,Microclimate daily temp. range,tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,Q2,b,Q2b_tree_stand_BA,Fig. 4,b
+deadwood_day,Deadwood,Microclimate daily temp. range,forest_type,tree_stand_BA,1|transect/plot,LMM,L,0.30318591,1,0.582,Q2,b,Q2b_tree_stand_BA,Fig. 4,b
+deadwood_day,Deadwood,Microclimate daily temp. range,tree_stand_BA + forest_type,forest_type,1|transect/plot,LMM,L,NA,1,NA,Q2,b,Q2b_forest_type,Fig. 4,b
+deadwood_day,Deadwood,Microclimate daily temp. range,tree_stand_BA,forest_type,1|transect/plot,LMM,L,0.019523495,1,0.889,Q2,b,Q2b_forest_type,Fig. 4,b
+hole_day,Tree hole,Microclimate daily temp. range,tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,Q2,c,Q2c_tree_stand_BA,Fig. 4,c
+hole_day,Tree hole,Microclimate daily temp. range,forest_type,tree_stand_BA,1|transect/plot,LMM,L,1.776098695,1,0.183,Q2,c,Q2c_tree_stand_BA,Fig. 4,c
+hole_day,Tree hole,Microclimate daily temp. range,tree_stand_BA + forest_type,forest_type,1|transect/plot,LMM,L,NA,1,NA,Q2,c,Q2c_forest_type,Fig. 4,c
+hole_day,Tree hole,Microclimate daily temp. range,tree_stand_BA,forest_type,1|transect/plot,LMM,L,3.242175172,1,0.072,Q2,c,Q2c_forest_type,Fig. 4,c
+litter_day,Leaf litter,Microclimate daily temp. range,tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,Q2,d,Q2d_tree_stand_BA,Fig. 4,d
+litter_day,Leaf litter,Microclimate daily temp. range,forest_type,tree_stand_BA,1|transect/plot,LMM,L,0.042857681,1,0.836,Q2,d,Q2d_tree_stand_BA,Fig. 4,d
+litter_day,Leaf litter,Microclimate daily temp. range,tree_stand_BA + forest_type,forest_type,1|transect/plot,LMM,L,NA,1,NA,Q2,d,Q2d_forest_type,Fig. 4,d
+litter_day,Leaf litter,Microclimate daily temp. range,tree_stand_BA,forest_type,1|transect/plot,LMM,L,2.449150193,1,0.118,Q2,d,Q2d_forest_type,Fig. 4,d
+flir_patchRange,Surface,Patch temp. range,tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,Q3,a,Q3a_tree_stand_BA,Fig. 5,a
+flir_patchRange,Surface,Patch temp. range,forest_type,tree_stand_BA,1|transect/plot,LMM,L,3.551796053,1,0.059,Q3,a,Q3a_tree_stand_BA,Fig. 5,a
+flir_patchRange,Surface,Patch temp. range,tree_stand_BA + forest_type,forest_type,1|transect/plot,LMM,L,NA,1,NA,Q3,a,Q3a_forest_type,Fig. 5,a
+flir_patchRange,Surface,Patch temp. range,tree_stand_BA,forest_type,1|transect/plot,LMM,L,0.276358131,1,0.599,Q3,a,Q3a_forest_type,Fig. 5,a
+flir_patchArea,Surface,Cold patch area,tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,Q3,b,Q3b_tree_stand_BA,Fig. 5,b
+flir_patchArea,Surface,Cold patch area,forest_type,tree_stand_BA,1|transect/plot,LMM,L,1.323504787,1,0.25,Q3,b,Q3b_tree_stand_BA,Fig. 5,b
+flir_patchArea,Surface,Cold patch area,tree_stand_BA + forest_type,forest_type,1|transect/plot,LMM,L,NA,1,NA,Q3,b,Q3b_forest_type,Fig. 5,b
+flir_patchArea,Surface,Cold patch area,tree_stand_BA,forest_type,1|transect/plot,LMM,L,0.872059851,1,0.35,Q3,b,Q3b_forest_type,Fig. 5,b
+deadwood_vol,Deadwood,Microhabitat volume (log),tree_stand_BA + forest_type,tree_stand_BA,1|transect,LMM,L,NA,1,NA,Q3,d,Q3d_tree_stand_BA,Fig. 5,d
+deadwood_vol,Deadwood,Microhabitat volume (log),forest_type,tree_stand_BA,1|transect,LMM,L,3.780284296,1,0.052,Q3,d,Q3d_tree_stand_BA,Fig. 5,d
+deadwood_vol,Deadwood,Microhabitat volume (log),tree_stand_BA + forest_type,forest_type,1|transect,LMM,L,NA,1,NA,Q3,d,Q3d_forest_type,Fig. 5,d
+deadwood_vol,Deadwood,Microhabitat volume (log),tree_stand_BA,forest_type,1|transect,LMM,L,0.262997243,1,0.608,Q3,d,Q3d_forest_type,Fig. 5,d
+hole_vol,Tree hole,Microhabitat volume (log),tree_stand_BA + forest_type,tree_stand_BA,1|transect,LMM,L,NA,1,NA,Q3,e,Q3e_tree_stand_BA,Fig. 5,e
+hole_vol,Tree hole,Microhabitat volume (log),forest_type,tree_stand_BA,1|transect,LMM,L,2.172162986,1,0.141,Q3,e,Q3e_tree_stand_BA,Fig. 5,e
+hole_vol,Tree hole,Microhabitat volume (log),tree_stand_BA + forest_type,forest_type,1|transect,LMM,L,NA,1,NA,Q3,e,Q3e_forest_type,Fig. 5,e
+hole_vol,Tree hole,Microhabitat volume (log),tree_stand_BA,forest_type,1|transect,LMM,L,3.052989654,1,0.081,Q3,e,Q3e_forest_type,Fig. 5,e
+litter_vol,Leaf litter,Microhabitat volume,tree_stand_BA + forest_type,tree_stand_BA,1|transect,LMM,L,NA,1,NA,Q3,f,Q3f_tree_stand_BA,Fig. 5,f
+litter_vol,Leaf litter,Microhabitat volume,forest_type,tree_stand_BA,1|transect,LMM,L,7.056292641,1,< 0.01,Q3,f,Q3f_tree_stand_BA,Fig. 5,f
+litter_vol,Leaf litter,Microhabitat volume,tree_stand_BA + forest_type,forest_type,1|transect,LMM,L,NA,1,NA,Q3,f,Q3f_forest_type,Fig. 5,f
+litter_vol,Leaf litter,Microhabitat volume,tree_stand_BA,forest_type,1|transect,LMM,L,0.162258253,1,0.687,Q3,f,Q3f_forest_type,Fig. 5,f
+tree_stand_BA,NA,Tree stand basal area,forest_type,forest_type,1|transect,LMM,L,NA,1,NA,QS2,c,QS2c_forest_type,Fig. S1,a
+tree_stand_BA,NA,Tree stand basal area,1,forest_type,1|transect,LMM,L,8.102235429,1,< 0.01,QS2,c,QS2c_forest_type,Fig. S1,a
+sapling_stand_BA,NA,Sapling stand basal area,forest_type,forest_type,1|transect,LMM,L,NA,1,NA,QS2,d,QS2d_forest_type,Fig. S1,b
+sapling_stand_BA,NA,Sapling stand basal area,1,forest_type,1|transect,LMM,L,4.238992929,1,< 0.05,QS2,d,QS2d_forest_type,Fig. S1,b
+treeBA_cv,NA,Tree basal area coefficient of variation,forest_type,forest_type,1|transect,LMM,L,NA,1,NA,QS2,e,QS2e_forest_type,Fig. S1,c
+treeBA_cv,NA,Tree basal area coefficient of variation,1,forest_type,1|transect,LMM,L,13.03797227,1,< 0.001,QS2,e,QS2e_forest_type,Fig. S1,c
+saplingBA_cv,NA,Sapling basal area coefficient of variation,forest_type,forest_type,1|transect,LMM,L,NA,1,NA,QS2,f,QS2f_forest_type,Fig. S1,d
+saplingBA_cv,NA,Sapling basal area coefficient of variation,1,forest_type,1|transect,LMM,L,0.113620066,1,0.736,QS2,f,QS2f_forest_type,Fig. S1,d
+canopy_cover_logit,NA,Percentage canopy cover (empirical logit),forest_type,forest_type,1|transect,LMM,L,NA,1,NA,QS2,h,QS2h_forest_type,Fig. S1,f
+canopy_cover_logit,NA,Percentage canopy cover (empirical logit),1,forest_type,1|transect,LMM,L,0.874242935,1,0.35,QS2,h,QS2h_forest_type,Fig. S1,f
+ground_veg_logit,NA,Percentage ground veg. cover (empirical logit),forest_type,forest_type,1|transect,LMM,L,NA,1,NA,QS2,i,QS2i_forest_type,Fig. S1,g
+ground_veg_logit,NA,Percentage ground veg. cover (empirical logit),1,forest_type,1|transect,LMM,L,2.758388586,1,0.097,QS2,i,QS2i_forest_type,Fig. S1,g
+under_veg_logit,NA,Percentage understorey veg. cover (empirical logit),forest_type,forest_type,1|transect,LMM,L,NA,1,NA,QS2,j,QS2j_forest_type,Fig. S1,h
+under_veg_logit,NA,Percentage understorey veg. cover (empirical logit),1,forest_type,1|transect,LMM,L,5.287893999,1,< 0.05,QS2,j,QS2j_forest_type,Fig. S1,h
+canopy_veg_logit,NA,Percentage canopy veg. cover (empirical logit),forest_type,forest_type,1|transect,LMM,L,NA,1,NA,QS2,k,QS2k_forest_type,Fig. S1,i
+canopy_veg_logit,NA,Percentage canopy veg. cover (empirical logit),1,forest_type,1|transect,LMM,L,9.17408165,1,< 0.01,QS2,k,QS2k_forest_type,Fig. S1,i
+PC1,NA,Principal Component 1,forest_type,forest_type,1|transect,LMM,L,NA,1,NA,QS2,a,QS2a_forest_type,NA,NA
+PC1,NA,Principal Component 1,1,forest_type,1|transect,LMM,L,8.076602468,1,< 0.01,QS2,a,QS2a_forest_type,NA,NA
+PC2,NA,Principal Component 2,forest_type,forest_type,1|transect,LMM,L,NA,1,NA,QS2,b,QS2b_forest_type,NA,NA
+PC2,NA,Principal Component 2,1,forest_type,1|transect,LMM,L,4.101584377,1,< 0.05,QS2,b,QS2b_forest_type,NA,NA
+flir,Surface,Macroclimate temp. (log),tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,QS3,a,QS3a_tree_stand_BA,Fig. S2,a
+flir,Surface,Macroclimate temp. (log),forest_type,tree_stand_BA,1|transect/plot,LMM,L,0.02159422,1,0.883,QS3,a,QS3a_tree_stand_BA,Fig. S2,a
+flir,Surface,Macroclimate temp. (log),tree_stand_BA + forest_type,forest_type,1|transect/plot,LMM,L,NA,1,NA,QS3,a,QS3a_forest_type,Fig. S2,a
+flir,Surface,Macroclimate temp. (log),tree_stand_BA,forest_type,1|transect/plot,LMM,L,0.080963938,1,0.776,QS3,a,QS3a_forest_type,Fig. S2,a
+ambient_rep,NA,Macroclimate temp. (log),tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,QS3,b,QS3b_tree_stand_BA,Fig. S2,b
+ambient_rep,NA,Macroclimate temp. (log),forest_type,tree_stand_BA,1|transect/plot,LMM,L,0.527174566,1,0.468,QS3,b,QS3b_tree_stand_BA,Fig. S2,b
+ambient_rep,NA,Macroclimate temp. (log),tree_stand_BA + forest_type,forest_type,1|transect/plot,LMM,L,NA,1,NA,QS3,b,QS3b_forest_type,Fig. S2,b
+ambient_rep,NA,Macroclimate temp. (log),tree_stand_BA,forest_type,1|transect/plot,LMM,L,0.000434224,1,0.983,QS3,b,QS3b_forest_type,Fig. S2,b
+flir,Surface,Macroclimate VPD (log + 1),tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,QS3,c,QS3c_tree_stand_BA,Fig. S2,c
+flir,Surface,Macroclimate VPD (log + 1),forest_type,tree_stand_BA,1|transect/plot,LMM,L,0.219755944,1,0.639,QS3,c,QS3c_tree_stand_BA,Fig. S2,c
+flir,Surface,Macroclimate VPD (log + 1),tree_stand_BA + forest_type,forest_type,1|transect/plot,LMM,L,NA,1,NA,QS3,c,QS3c_forest_type,Fig. S2,c
+flir,Surface,Macroclimate VPD (log + 1),tree_stand_BA,forest_type,1|transect/plot,LMM,L,1.344463715,1,0.246,QS3,c,QS3c_forest_type,Fig. S2,c
+ambient_rep,NA,Macroclimate VPD (log + 1),tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,LMM,L,NA,1,NA,QS3,d,QS3d_tree_stand_BA,Fig. S2,d
+ambient_rep,NA,Macroclimate VPD (log + 1),forest_type,tree_stand_BA,1|transect/plot,LMM,L,0.051491032,1,0.82,QS3,d,QS3d_tree_stand_BA,Fig. S2,d
+ambient_rep,NA,Macroclimate VPD (log + 1),tree_stand_BA + forest_type,forest_type,1|transect/plot,LMM,L,NA,1,NA,QS3,d,QS3d_forest_type,Fig. S2,d
+ambient_rep,NA,Macroclimate VPD (log + 1),tree_stand_BA,forest_type,1|transect/plot,LMM,L,3.489482487,1,0.062,QS3,d,QS3d_forest_type,Fig. S2,d
+flir_patchAI,Surface,"cbind(cold.obs.edges, cold.non.edges)",tree_stand_BA + forest_type,forest_type,1|transect/plot,GLMM,Chi-squared,0.312305509,1,0.576,Q3,c,Q3c_forest_type,Fig. 5,c
+flir_patchAI,Surface,"cbind(cold.obs.edges, cold.non.edges)",tree_stand_BA,forest_type,1|transect/plot,GLMM,Chi-squared,NA,1,NA,Q3,c,Q3c_forest_type,Fig. 5,c
+flir_patchAI,Surface,"cbind(cold.obs.edges, cold.non.edges)",tree_stand_BA + forest_type,tree_stand_BA,1|transect/plot,GLMM,Chi-squared,0.183260208,1,0.669,Q3,c,Q3c_tree_stand_BA,Fig. 5,c
+flir_patchAI,Surface,"cbind(cold.obs.edges, cold.non.edges)",forest_type,tree_stand_BA,1|transect/plot,GLMM,Chi-squared,NA,1,NA,Q3,c,Q3c_tree_stand_BA,Fig. 5,c
+dipt_prop,NA,"cbind(dipt_total, non_dipt)",forest_type,forest_type,1|transect,GLMM,Chi-squared,2.419968507,1,0.12,QS2,g,QS2g_forest_type,Fig. S1,e
+dipt_prop,NA,"cbind(dipt_total, non_dipt)",1,forest_type,1|transect,GLMM,Chi-squared,NA,1,NA,QS2,g,QS2g_forest_type,Fig. S1,e
