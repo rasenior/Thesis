@@ -2,7 +2,7 @@
 rm(list=ls())
 knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALSE, 
                       fig.width = 16.6/2.54, fig.height = 9/2.54, dpi = 800, 
-                      fig.path = "./figures/")
+                      fig.path = "./output/")
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
                "#0072B2", "#D55E00", "#CC79A7")
 ```
@@ -62,3 +62,6 @@ readRDS("figs/figA1.4.Rds")
 readRDS("figs/figA1.5.Rds")
 
 ```
+
+\clearpage
+\fancyhead[R]{Bibliography}
