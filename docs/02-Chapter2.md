@@ -2,6 +2,15 @@
 
 # A pantropical analysis of the impacts of forest degradation and conversion on local temperature
 
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=15cm]{pics/Bornean_horned_frog.jpg}
+\caption*{Bornean horned frog (\textit{Megophrys nasuta}).}
+\end{figure}
+
+
+\pagebreak
+
 ## Abstract
 
 Temperature is a core component of a species' fundamental niche. At the fine scale over which most organisms experience climate (mm to ha), temperature depends upon the amount of radiation reaching the Earth's surface, which is principally governed by vegetation. Tropical regions have undergone widespread and extreme changes to vegetation, particularly through the degradation and conversion of rainforests. Since most terrestrial biodiversity is in the tropics, and many of these species possess narrow thermal limits, it is important to identify local thermal impacts of rainforest degradation and conversion. We collected pantropical, site-level (< 1 ha) temperature data from the literature to quantify impacts of land-use change on local temperatures, and to examine whether this relationship differed above-ground relative to below-ground and between wet and dry seasons. We found that local temperature in our sample sites was higher than primary forest in all human-impacted land-use types (N = 113,894 day-time temperature measurements from 25 studies). Warming was pronounced following conversion of forest to agricultural land (minimum +1.6&deg;C, maximum +13.6&deg;C), but minimal and non-significant when compared to forest degradation (e.g. by selective logging; minimum +1&deg;C, maximum +1.1&deg;C). The effect was buffered below-ground (minimum buffering 0&deg;C, maximum buffering 11.4&deg;C), whereas seasonality had minimal impact (maximum buffering 1.9&deg;C). We conclude that forest-dependent species that persist following conversion of rainforest have experienced substantial local warming. Deforestation pushes these species closer to their thermal limits, making it more likely that compounding effects of future perturbations, such as severe droughts and global warming, will exceed species' tolerances. By contrast, degraded forests and below-ground habitats may provide important refugia for thermally-restricted species in landscapes dominated by agricultural land.
@@ -76,7 +85,7 @@ Model estimates of local temperature are presented relative to the model estimat
 
 
 \begin{figure}
-\includegraphics{./figures/fig-2-1-1} \caption{Locations of the 25 studies contributing data to the analyses. Point labels correspond to the study number in  Table 1. The shading and size of concentric points corresponds to different land-use types, to indicate the data provided by each study.}(\#fig:fig-2-1)
+\includegraphics{./output/fig-2-1-1} \caption{Locations of the 25 studies contributing data to the analyses. Point labels correspond to the study number in  Table 1. The shading and size of concentric points corresponds to different land-use types, to indicate the data provided by each study.}(\#fig:fig-2-1)
 \end{figure}
 
 

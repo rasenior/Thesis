@@ -8,6 +8,14 @@
 
 # General introduction
 
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=15cm]{pics/Rainforest1.jpg}
+\caption*{Sunshine through rainforest canopy in Danum Valley.}
+\end{figure}
+
+\pagebreak
+
 ## Threats to biodiversity
 
 Throughout the Anthropocene, humans have faced crises. In 2000 the United Nations developed eight goals for 2015, known as the Millennium Development Goals, one of which was to 'ensure environmental sustainability' [@united_nations_united2014]. Amongst other things, this goal is in recognition of the current extinction crisis. Recent extinction rates far exceed their pre-human levels [@pimm_future1995], and are close to constituting the 6th mass extinction event [@barnosky_has2011].

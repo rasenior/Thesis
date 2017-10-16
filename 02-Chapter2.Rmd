@@ -9,8 +9,12 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 # A pantropical analysis of the impacts of forest degradation and conversion on local temperature
 
-\includegraphics[width=10cm]{pics/Bornean_horned_frog.jpg}}
-Bornean horned frog (\textit{Megophrys nasuta}). Amphibians are particularly vulnerable to changes in local temperature.
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=15cm]{pics/Bornean_horned_frog.jpg}
+\caption*{Bornean horned frog (\textit{Megophrys nasuta}).}
+\end{figure}
+
 
 \pagebreak
 
