@@ -30,9 +30,9 @@ g_legend<-function(a.gplot){
       return(legend)}
 
 mapDir<-"C:/Users/Rebecca/Google Drive/Spatial-data/Country outlines"
-tropics<-readOGR(mapDir,"tropics") 
-tropicsExtent<-readOGR(mapDir,"tropics_extent") 
-tropicsCountries<-readOGR(mapDir,"tropics_byCountry") 
+tropics<-readOGR(file.path(mapDir,"Tropics"),"tropics") 
+tropicsExtent<-readOGR(file.path(mapDir,"Tropics"),"tropics_extent") 
+tropicsCountries<-readOGR(file.path(mapDir,"Tropics"),"tropics_byCountry") 
 world<-readOGR(file.path(mapDir,"World"),"world_wo_Antarctica") 
 
 # Want to display combinations of LUT
