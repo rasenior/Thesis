@@ -1,13 +1,11 @@
 \clearpage
-\appendix
 \fancyhead[R]{Appendix \thechapter}
-\addappheadtotoc
-\setcounter{figure}{0}
-\makeatletter 
-\renewcommand{\thefigure}{A1.\@arabic\c@figure}
-\makeatother
 
 
+
+# (APPENDIX) Appendix {-} 
+
+<!-- # Appendix A -->
 
 # Supporting information for Chapter 2
 

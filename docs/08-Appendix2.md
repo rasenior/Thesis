@@ -1,5 +1,7 @@
 
 
+<!-- # Appendix B -->
+
 # Supporting information for Chapter 4
 
 ## Impact of unbalanced sampling
@@ -22,9 +24,9 @@ The relationship between land-use type and temperature interacted with both posi
 
 
 
-![(\#fig:fig-A-1-1)Day-time temperature against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Shading of points indicates temperatures measured above-ground (orange) or below-ground (blue), and point symbol indicates temperatures measured during the dry season (circles) or wet season (triangles).](./output/fig-A-1-1-1.pdf) 
+![(\#fig:fig-B-1-1)Day-time temperature against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Shading of points indicates temperatures measured above-ground (orange) or below-ground (blue), and point symbol indicates temperatures measured during the dry season (circles) or wet season (triangles).](./output/fig-B-1-1-1.pdf) 
 
-![(\#fig:fig-A-1-2)Site elevation against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Dotted black lines connect the mean elevation of all the sites within each land-use type.](./output/fig-A-1-2-1.pdf) 
+![(\#fig:fig-B-1-2)Site elevation against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Dotted black lines connect the mean elevation of all the sites within each land-use type.](./output/fig-B-1-2-1.pdf) 
 
 
 
@@ -34,9 +36,9 @@ The relationship between land-use type and temperature interacted with both posi
 \caption{(\#fig:fig-A-1-3)Model estimates of the temperature difference between altered land-use types and primary forest, using a reduced dataset to balance sample sizes between the different studies that contributed data. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dashed line. Error bars are 95\% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081-2100 compared to the period 1986-2005, as a result of global climate change \citep{ipcc_2013}. Shaded bands indicate 5\%–95\% ranges from the distribution of the climate model ensemble. Colours represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).}
 \end{figure}
 
-![(\#fig:fig-A-1-4)Model estimates of the nocturnal temperature difference between altered land-use types and primary forest. Note that cropland and pasture are missing from this analysis because nocturnal temperature data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals.](./output/fig-A-1-4-1.pdf) 
+![(\#fig:fig-B-1-4)Model estimates of the nocturnal temperature difference between altered land-use types and primary forest. Note that cropland and pasture are missing from this analysis because nocturnal temperature data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals.](./output/fig-B-1-4-1.pdf) 
 
-![(\#fig:fig-A-1-5)Model estimates of the difference between altered land-use types and primary forest in terms of temperature extremes. Day-time results are depicted in panels A and B, and night-time results in panels C and D. Panels A and C indicate the effect of land-use change on maximum temperature, and panels B and D indicate the same for minimum temperature. Note that data for cropland and pasture are absent from this analysis because data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals. The grey numbers next to points represent the number of studies providing the underlying data.](./output/fig-A-1-5-1.pdf) 
+![(\#fig:fig-B-1-5)Model estimates of the difference between altered land-use types and primary forest in terms of temperature extremes. Day-time results are depicted in panels A and B, and night-time results in panels C and D. Panels A and C indicate the effect of land-use change on maximum temperature, and panels B and D indicate the same for minimum temperature. Note that data for cropland and pasture are absent from this analysis because data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals. The grey numbers next to points represent the number of studies providing the underlying data.](./output/fig-B-1-5-1.pdf) 
 
 \clearpage
 \fancyhead[R]{Bibliography}

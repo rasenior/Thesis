@@ -1,11 +1,5 @@
 \clearpage
-\appendix
 \fancyhead[R]{Appendix \thechapter}
-\addappheadtotoc
-\setcounter{figure}{0}
-\makeatletter 
-\renewcommand{\thefigure}{A1.\@arabic\c@figure}
-\makeatother
 
 ```{r setup, include=FALSE}
 rm(list=ls())
@@ -15,6 +9,8 @@ knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALS
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
                "#0072B2", "#D55E00", "#CC79A7")
 ```
+
+# (APPENDIX) Appendix {-} 
 
 # Supporting information for Chapter 2
 
