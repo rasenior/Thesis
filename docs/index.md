@@ -40,3 +40,16 @@ I did all this shit yo.
 
 \pagebreak
 
+
+<!-- Warning--empty journal in barnosky_has2011 -->
+<!-- Warning--empty journal in brodie_climate2012 -->
+<!-- Warning--empty journal in du_plessis_costs2012 -->
+<!-- Warning--empty journal in edwards_degraded2011 -->
+<!-- Warning--empty journal in fayle_effect2009 -->
+<!-- Warning--can't use both author and editor fields in ipcc_climate2007 -->
+<!-- Warning--can't use both author and editor fields in ipcc2013 -->
+<!-- Warning--empty journal in melin_moose2014 -->
+<!-- Warning--empty journal in opdam_climate2004 -->
+<!-- Warning--empty journal in sturm_climate2001 -->
+<!-- Warning--empty journal in wickham_comparison2012 -->
+
