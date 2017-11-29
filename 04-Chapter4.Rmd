@@ -43,6 +43,8 @@ results$autoref <-
            ifelse(results$figure == "Fig. 2", "\\autoref{fig:fig-4-2}",
                   ifelse(results$figure == "Fig. 3", "\\autoref{fig:fig-4-3}", NA)))
 
+results$autoref <- paste(results$autoref, results$figure_panel, sep="")
+
 ### What were the significant MAIN results?
 
 # Q1a - Does logging affect the relationship between micro- and macroclimate temperature?
@@ -223,7 +225,7 @@ The final facet of microclimate temperature that we considered was daily tempera
 
 In summary, selective logging had little observed impact on absolute microclimate temperature or its daily variation. There was some evidence that thermal buffering potential was slightly enhanced for deadwood, tree holes and leaf litter inside logged forest, but the effects were extremely small and not evident for microclimates at the surface.
 
-```{r fig-4-3}
+```{r fig-4-3, fig.cap= "Comparison between primary forest (blue) and logged forest (orange) in terms of: (a-d) the relationship between microclimate temperature and macroclimate temperature; and (e-h) absolute microclimate temperature across varying levels of forest quality (measured as tree stand basal area). Microclimates were measured at the surface (a, e), and inside deadwood (b, f), tree holes (c, g)  and leaf litter (d, h). The grey dashed lines in panels a-d indicate zero temperature buffering, where the microclimate temperature is equal to the macroclimate temperature. In all panels, shaded bands are 95% confidence intervals."}
 fig3
 
 ```
