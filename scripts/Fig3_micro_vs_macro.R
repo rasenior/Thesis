@@ -1,0 +1,219 @@
+  # Setup -------------------------------------------------------------------
+
+rm(list=ls())
+
+# Get the current user (Rebecca or Becc, if work or home)
+user<-Sys.info()[7]
+
+# Set working directory
+base_dir <-
+  file.path("C:/Users",user,
+            "Google Drive/PhD/Ch4/Resubmission")
+dat_dir <- file.path(base_dir,"Data/FINAL")
+mod_dir <- file.path(dat_dir, "models")
+fig_dir <- file.path(base_dir,"Figures/results")
+setwd(dat_dir)
+
+# Load libraries
+library(ggplot2)
+library(cowplot)
+
+# Load raw data
+flir <- readRDS("flir_rep_2017-07-27.Rds")
+load("deadwood_2017-07-27.Rds")
+load("hole_2017-07-27.Rds")
+load("litter_2017-07-27.Rds")
+treeBA_median <- readRDS("treeBA_median.rds")
+
+# Load models
+q1_results <- readRDS(file.path(mod_dir, "q1_main_results.Rds"))
+
+all_dat <- c("flir",
+             "deadwood_rep", "hole_rep","litter_rep")
+
+# Remove any data we don't need
+rm(list = ls()[!(ls() %in% c(all_dat, "all_dat","q1_results","treeBA_median",
+                             "base_dir","dat_dir","fig_dir","mod_dir","user"))])
+
+q1_results <- 
+  q1_results[which(gsub(".results","",names(q1_results)) %in% all_dat)]
+
+# Source local functions
+source(file.path("C:/Users",user,
+                 "Google Drive/R/functions/mround.R"))
+source(file.path(base_dir, "Code/Plotting/plotting_fn.R"))
+
+# Prepare data ------------------------------------------------------------
+
+# Check dimensions
+correct_dim <- data.frame(dat = all_dat,
+                          rows = c(600,
+                                   1680, 1649, 1710))
+dim_test <- sapply(all_dat, function(x){
+  dat <- eval(parse(text = x))
+  results <- nrow(dat) == correct_dim$rows[correct_dim$dat == x]
+  return(results)
+})
+dim_test
+
+flir$micro_temp <- flir$percentile_5
+deadwood_rep$micro_temp <- deadwood_rep$rep_temp
+hole_rep$micro_temp <- hole_rep$rep_temp
+litter_rep$micro_temp <- litter_rep$rep_temp
+
+key_vars <- c("forest_type", 
+              "primary_BA","logged_BA",
+              "tree_stand_BA","ambient",
+              "microhabitat", "micro_temp")
+micro <- rbind(flir[,key_vars],
+               deadwood_rep[,key_vars],
+               hole_rep[,key_vars],
+               litter_rep[,key_vars])
+nrow(micro) == sum(correct_dim$rows)
+
+micro$microhabitat <-
+  factor(micro$microhabitat,
+         levels = unique(micro$microhabitat))
+
+# Add panel labels
+micro$top_labs <- 
+  ifelse(micro$microhabitat == "Surface","(a)",
+         ifelse(micro$microhabitat == "Deadwood", "(b)",
+                ifelse(micro$microhabitat == "Tree hole","(c)","(d)")))
+micro$bottom_labs <- 
+  ifelse(micro$microhabitat == "Surface","(e)",
+         ifelse(micro$microhabitat == "Deadwood", "(f)",
+                ifelse(micro$microhabitat == "Tree hole","(g)","(h)")))
+
+# Plot against ambient ----------------------------------------------------
+
+# primary_BA <- unique(micro$primary_BA)
+# logged_BA <- unique(micro$logged_BA)
+
+fig3_top <-
+  sapply(all_dat, function(x){
+    
+    if(x == "flir"){
+      RV <- "percentile_5"
+    }else{
+      RV <- "rep_temp"
+    }
+    
+    result <- pred(dat = x,
+                   df_name = x,
+                   results_df = q1_results,
+                   RV = RV,
+                   vary_EV = "ambient_log",
+                   constant_EV = "tree_stand_BA",
+                   constant_val = treeBA_median)
+  })
+
+fig3_top <- do.call("rbind", fig3_top)
+
+# Change response variable name
+colnames(fig3_top)[names(fig3_top)=="RV"] <- "micro_temp"
+
+# Add microhabitat variable
+fig3_top$microhabitat <- gsub("_rep","",fig3_top$dat)
+fig3_top$microhabitat <-
+  factor(fig3_top$microhabitat,
+         levels = unique(fig3_top$microhabitat),
+         labels = c("Surface", "Deadwood", "Tree hole", "Leaf litter"))
+
+# Re-level forest type
+fig3_top$forest_type <- factor(fig3_top$forest_type,
+                               levels <- c("Primary", "Logged"))
+
+# Get ambient
+fig3_top$ambient <- exp(fig3_top$ambient_log)
+
+# Plot!
+p1 <- plot_continuous(pred_df = fig3_top,
+                      raw_df = micro,
+                      RV = "micro_temp",
+                      vary_EV = "ambient",
+                      constant_EV = "tree_stand_BA",
+                      x_lab = paste("Macroclimate temperature (", "\U00B0","C)",sep=""),
+                      y_lab = "", 
+                      panel_labs = "",
+                      scale.y = "fixed",
+                      point_alpha = 0.2,
+                      leg_pos = "return",
+                      lab_size = 2,
+                      lab_hjust = 1.02,
+                      lab_vjust = 1.45)
+
+
+# Plot against tree BA ----------------------------------------------------
+
+fig3_bottom <-
+  sapply(all_dat, function(x){
+    
+    if(x == "flir"){
+      RV <- "percentile_5"
+    }else{
+      RV <- "rep_temp"
+    }
+    
+    result <- pred(dat = x,
+                   df_name = x,
+                   results_df = q1_results,
+                   RV = RV,
+                   vary_EV = "tree_stand_BA",
+                   constant_EV = "ambient_log",
+                   constant_val = "median")
+  })
+
+fig3_bottom <- do.call("rbind", fig3_bottom)
+
+# Change response variable name
+colnames(fig3_bottom)[names(fig3_bottom)=="RV"] <- "micro_temp"
+
+# Add microhabitat variable
+fig3_bottom$microhabitat <- gsub("_rep","",fig3_bottom$dat)
+fig3_bottom$microhabitat <-
+  factor(fig3_bottom$microhabitat,
+         levels = unique(fig3_bottom$microhabitat),
+         labels = c("Surface", "Deadwood", "Tree hole", "Leaf litter"))
+
+# Add ambient
+fig3_bottom$ambient <- exp(fig3_bottom$ambient_log)
+
+# Plot!
+p2 <- plot_continuous(pred_df = fig3_bottom, 
+                      raw_df = micro, 
+                      RV = "micro_temp", 
+                      vary_EV = "tree_stand_BA",
+                      constant_EV = "ambient",
+                      x_lab = paste("Tree stand basal area (m","\U00B2","/ha)",sep=""),
+                      panel_labs = "",
+                      scale.y = "fixed",
+                      y_lab = "", 
+                      point_alpha = 0.2,
+                      leg_pos = "none", 
+                      lab_size = 2,
+                      lab_hjust = 1.67,
+                      lab_vjust = 1.45)
+
+
+# Combine and save --------------------------------------------------------
+
+combi_colour <-
+  ggdraw() +
+  draw_plot(ggplot(), x = 0, y = 0.95, width = 0.05, height = 0.05) +
+  draw_plot(p1$p$p_leg, x = 0.05, y = 0.95, width = 0.95, height = 0.05) +
+  draw_plot(p1$p$p, x = 0, y = 0.475, width = 1, height = 0.475) +
+  draw_plot(p2$p, x = 0, y = 0, width = 1, height = 0.475) +
+  draw_text(paste("Microclimate temperature (", "\U00B0","C)",sep=""),
+            x = 0.01, y= 0.5,size = title_size,angle=90) +
+    draw_plot_label(label = c("(a)", "(b)", "(c)", "(d)",
+                              "(e)","(f)", "(g)", "(h)"),
+                    x = c(0.25, 0.485, 0.72, 0.95,
+                          0.25, 0.49, 0.72, 0.95),
+                    y = rep(c(0.87, 0.395), each = 4),
+                    size = 7)
+
+ggsave(combi_colour, file = "~./../Google Drive/PhD/Thesis/figs/fig4.3.png",
+       width = 16.6/2.54, height = 10/2.54, dpi = 400)
+saveRDS(combi_colour, file = "~./../Google Drive/PhD/Thesis/figs/fig4.3.Rds")
+

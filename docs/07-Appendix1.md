@@ -5,8 +5,6 @@
 
 # (APPENDIX) Appendix {-} 
 
-<!-- # Appendix A -->
-
 # Supporting information for Chapter 2
 
 ## Impact of unbalanced sampling {#text-A-1-1}
