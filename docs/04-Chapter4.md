@@ -126,15 +126,20 @@ In summary, selective logging had little observed impact on absolute microclimat
 
 }
 
-\caption{Comparison between primary forest (blue) and logged forest (orange) in terms of: (a-d) the relationship between microclimate temperature and macroclimate temperature; and (e-h) absolute microclimate temperature across varying levels of forest quality (measured as tree stand basal area). Microclimates were measured at the surface (a, e), and inside deadwood (b, f), tree holes (c, g)  and leaf litter (d, h). The grey dashed lines in panels a-d indicate zero temperature buffering, where the microclimate temperature is equal to the macroclimate temperature. In all panels, shaded bands are 95% confidence intervals.}(\#fig:fig-4-3)
+\caption{Comparison between primary forest (blue) and logged forest (orange) in terms of: (a-d) the relationship between microclimate temperature and macroclimate temperature; and (e-h) absolute microclimate temperature across varying levels of forest quality (measured as tree stand basal area). Microclimates were measured at the surface (a, e), and inside deadwood (b, f), tree holes (c, g)  and leaf litter (d, h). The grey dashed lines in panels a-d indicate zero temperature buffering, where the microclimate temperature is equal to the macroclimate temperature. In all panels, shaded bands are 95\% confidence intervals.}(\#fig:fig-4-3)
 \end{figure}
 
-"Comparison between primary forest (blue) and logged forest (orange) in terms of: (a-d) the relationship between microclimate temperature and macroclimate temperature; and (e-h) absolute microclimate temperature across varying levels of forest quality (measured as tree stand basal area). Microclimates were measured at the surface (a, e), and inside deadwood (b, f), tree holes (c, g)  and leaf litter (d, h). The grey dashed lines in panels a-d indicate zero temperature buffering, where the microclimate temperature is equal to the macroclimate temperature. In all panels, shaded bands are 95% confidence intervals."
+(ref:cap-4-4) The influence of forest type (primary or logged) and forest quality (measured as tree stand basal area) on microclimate temperature range. Daily range for surface microclimates (a) was calculated as the difference between the maximum and the minimum microclimate temperature (itself calculated as the 5^th^ percentile temperature across four photos taken at each visit to each plot). For microclimates inside deadwood (b), tree holes (c) and leaf litter (d), the daily range was the difference between the 95^th^ percentile and 5^th^ percentile of raw temperature measurements. Primary forest data points are depicted as blue circles and logged forest as orange triangles. Shaded bands represent 95% confidence intervals. 
 
+\begin{figure}
 
-\begin{center}\includegraphics{./output/fig-4-4-1} \end{center}
+{\centering \includegraphics{./output/fig-4-4-1} 
 
-"The influence of forest type (primary or logged) and forest quality (measured as tree stand basal area) on microclimate temperature range. Daily range for surface microclimates (a) was calculated as the difference between the maximum and the minimum microclimate temperature (itself calculated as the 5^th^ percentile temperature across four photos taken at each visit to each plot). For microclimates inside deadwood (b), tree holes (c) and leaf litter (d), the daily range was the difference between the 95^th^ percentile and 5^th^ percentile of raw temperature measurements. Primary forest data points are depicted as blue circles and logged forest as orange triangles. Shaded bands represent 95% confidence intervals."
+}
+
+\caption{(ref:cap-4-4)}(\#fig:fig-4-4)
+\end{figure}
+
 
 ### Microclimate availability in logged and primary forest
 
@@ -184,7 +189,7 @@ Thanks to staff at Danum Valley Field Centre for logistical support; and Azlin B
 
 ## Data availability
 
-Data available from the University of Sheffield Online Research Data repository (DOI: 10.15131/shef.data.5414629).
+Data available from the University of Sheffield Online Research Data repository (https://doi.org/10.15131/shef.data.5414629).
 
 
 
