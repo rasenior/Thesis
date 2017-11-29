@@ -228,7 +228,7 @@ Our study confirms that tropical land-use change leads to warming at a local sca
 
 ## Data and R code
 
-The collated dataset can be found on Dryad (doi:10.5061/dryad.g4000). Note that in many cases these data were aggregated for analyses. For finer resolution data please refer to the original data sources. R functions used to estimate time of sunset and sunrise can be downloaded from GitHub (https://github.com/rasenior/SolarCalc).
+The collated dataset can be found on Dryad (https://doi.org/10.5061/dryad.g4000). Note that in many cases these data were aggregated for analyses. For finer resolution data please refer to the original data sources. R functions used to estimate time of sunset and sunrise can be downloaded from GitHub (https://github.com/rasenior/SolarCalc).
 
 
 
