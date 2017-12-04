@@ -41,7 +41,8 @@ colnames(results)[names(results)=="p.value_cat"]<-"pval"
 results$autoref <-
     ifelse(results$figure == "Fig. 1", "\\autoref{fig:fig-4-1}",
            ifelse(results$figure == "Fig. 2", "\\autoref{fig:fig-4-2}",
-                  ifelse(results$figure == "Fig. 3", "\\autoref{fig:fig-4-3}", NA)))
+                  ifelse(results$figure == "Fig. 3", "\\autoref{fig:fig-4-3}", 
+                         ifelse(results$figure == "Fig. 4", "\\autoref{fig:fig-4-4}", NA))))
 
 results$autoref <- paste(results$autoref, results$figure_panel, sep="")
 
@@ -147,7 +148,7 @@ A key novel question that we address in this paper is whether vegetation changes
 
 Sampling took place in in an extensive area of contiguous forest in Sabah (Malaysian Borneo; Fig. 1a). This area represents over 10,000 km^2^ of lowland dipterocarp forest, comprising production forest and areas of undisturbed protected forest [@reynolds_changes2011]. In this study, we sampled sites in forest that had been commercially selectively logged twice (Ulu Segama-Malua Forest Reserve, 4&deg;57&rsquo;42.8&rdquo;N, 117&deg;56&rsquo;51.7&rdquo;E). The area was first logged from 1987-1991, using tractors and high-lead extraction techniques to harvest commercial trees (those in the family Dipterocarpaceae) with stems > 0.6 m diameter at breast height (D.B.H.), and yielding ~113 m^3^ of timber per hectare [@fisher_cost-effective2011; @edwards_selective-logging2014]. Between 2001 and 2007, the area was re-logged and the minimum harvested tree diameter reduced to > 0.4 m D.B.H., yielding an additional 31 m^3^/ha of timber [@fisher_cost-effective2011]. Thus, we sampled sites that had been heavily disturbed about 10 years prior to the study, at which point 67% of the forest had an average density of < 10 trees per hectare with a D.B.H. greater than 40 cm [@reynolds_changes2011]. The area has been recovering naturally since logging operations ceased. Control sites were located in undisturbed, protected primary forest (Danum Valley Conservation Area; 4&deg;57&rsquo;45.2&rdquo;N, 117&deg;48&rsquo;10.4&rdquo;E).
 
-```{r fig-4-1, fig.cap= "Study location in Malaysian Borneo (a), and distribution of sites (b): six sites in primary forest (blue) and six sites in logged forest (orange). Each site comprised five plots along an existing transect, with plot centres separated by 125 m (c). Tree and sapling stand basal area was calculated from the distance to and circumference of the nearest two trees and saplings in each of four quadrants centred on the plot centre (d; see Supplementary Text S1 for more details). Curved arrows indicate the direction of magnification, from panels a-d.", fig.height = 9/2.54}
+```{r fig-4-1, fig.cap= "Study location in Malaysian Borneo (a), and distribution of sites (b): six sites in primary forest (blue) and six sites in logged forest (orange). Each site comprised five plots along an existing transect, with plot centres separated by 125 m (c). Tree and sapling stand basal area was calculated from the distance to and circumference of the nearest two trees and saplings in each of four quadrants centred on the plot centre (d; see \\autoref{text-B-1-1} for more details). Curved arrows indicate the direction of magnification, from panels a-d.", fig.height = 9/2.54}
 fig1
 
 ```
