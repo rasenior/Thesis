@@ -2,68 +2,307 @@
 rm(list=ls())
 knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALSE, 
                       fig.width = 16.6/2.54, fig.height = 9/2.54, dpi = 800, 
-                      fig.path = "./output/")
+                      fig.path = "./output/", fig.align='center')
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
                "#0072B2", "#D55E00", "#CC79A7")
 ```
 
-<!-- # Appendix B -->
+```{r}
+
+options(scipen = 999)
+
+# Define base directories
+user <- Sys.info()[7]
+
+mod_dir <- file.path("C:/Users/",user,"Google Drive/PhD/Ch4/Resubmission/Data/FINAL/models")
+pred_dir <- file.path("C:/Users/",user,"Google Drive/PhD/Ch4/Resubmission/Data/FINAL/predictions")
+fig_dir <- file.path("C:/Users/",user,"Google Drive/PhD/Ch4/Resubmission/Figures/results")
+
+# Read in plots
+
+# Plot layout -------------------------------------------------------------
+
+draw_circle <- function(center = c(0,0),diameter = 1, npoints = 100){
+  r = diameter / 2
+  tt <- seq(0,2*pi,length.out = npoints)
+  xx <- center[1] + r * cos(tt)
+  yy <- center[2] + r * sin(tt)
+  return(data.frame(x = xx, y = yy))
+}
+circle <- draw_circle(center = c(0,0),diameter = 20,npoints = 100)
+# Define segment 1
+seg1<-draw_circle(center = c(0,0),diameter = 17,npoints = 100)
+seg1<-seg1[1:25,]
+seg1$x[25]<-0
+seg1<-rbind(seg1,cbind(x=0,y=0))
+# Define segment 2
+seg2<-draw_circle(center = c(0,0),diameter = 10,npoints = 100)
+seg2<-seg2[26:50,]
+seg2$x[1]<-0
+seg2$y[25]<-0
+seg2<-rbind(seg2,cbind(x=0,y=0))
+# Define segment 3
+seg3<-draw_circle(center = c(0,0),diameter = 14,npoints = 100)
+seg3<-seg3[51:75,]
+seg3$y[1]<-0
+seg3$x[25]<-0
+seg3<-rbind(seg3,cbind(x=0,y=0))
+# Define segment 4
+seg4<-draw_circle(center = c(0,0),diameter = 13,npoints = 100)
+seg4<-seg4[76:100,]
+seg4$x[1]<-0
+seg4<-rbind(seg4,cbind(x=0,y=0))
+
+# Define points to symbolise furthest trees
+pts<-rbind(seg1[8,],cbind(x=1,y=4),
+           seg2[20,],cbind(x=-3,y=2),
+           seg3[3,],cbind(x=-2,y=-1),
+           seg4[15,],cbind(x=4,y=-4),
+           cbind(x=0,y=0))
+
+pts$distance<-c(rep(c("Furthest","Nearest"),4),"Plot centre")
+
+lineGrad<-pts[1,2]/pts[1,1]
+schematic <- readRDS(file.path(fig_dir,"figS1_sample_design.Rds"))
+
+# Other plots
+# figS1 <- readRDS(file.path(fig_dir,"figS1_PCA_biplot.Rds"))
+figS1 <- readRDS(file.path(fig_dir,"figS2_forest_structure.Rds"))
+figS2 <- readRDS(file.path(fig_dir,"figS3_macroclimate.Rds"))
+figS3 <- readRDS(file.path(fig_dir,"figS4_micro_vs_macro.Rds"))
+
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+               "#0072B2", "#D55E00", "#CC79A7")
+
+# Read in model summaries
+pca_results <- read.csv(file.path(mod_dir,"pca_summary.csv"))
+results <- read.csv(file.path(pred_dir,"results_summary.csv"))
+colnames(results)[names(results)=="p.value_cat"]<-"pval"
+
+### What were the significant MAIN results?
+
+# Q1a - Does logging affect the relationship between micro- and macroclimate temperature?
+# Yes: primary forest associated with steeper slope in deadwood, tree hole and leaf litter microclimates
+q1_interaction <- read.csv(file.path(pred_dir,"fig3_sig_interactions.csv"))
+q1_deadwood_interaction <- q1_interaction[q1_interaction$microhabitat == "Deadwood",]
+q1_hole_interaction <- q1_interaction[q1_interaction$microhabitat == "Tree hole",]
+q1_litter_interaction <- q1_interaction[q1_interaction$microhabitat == "Leaf litter",]
+
+# Q1b - Does tree stand basal area affect microclimate temperature?
+# Yes: increased tree BA associated with slightly higher micro temp.
+q1_hole <- read.csv(file.path(pred_dir,"fig3_sig_effects.csv"))
+
+# Q2 - Does tree stand basal area affect microclimate temperature stability/variation?
+# No.
+
+# Q3a - Does tree stand basal area affect thermal niche diversity?
+# No.
+
+# Q3b - Does tree stand basal area affect the area of surface microclimates?
+# No.
+
+# Q3b - Does tree stand basal area affect the AI of surface microclimates?
+# No.
+
+# Q3c - Does tree stand basal area affect the volume of microhabitats?
+# Yes: more leaf litter in forests with higher BA.
+q3_litter_vol_sig <- read.csv(file.path(pred_dir,"fig5_sig_effects.csv"))
+q3_patch_range <- read.csv(file.path(pred_dir,"fig5a.csv"))
+q3_patch_area <- read.csv(file.path(pred_dir,"fig5b.csv"))
+q3_patch_AI <- read.csv(file.path(pred_dir,"fig5c.csv"))
+q3_deadwood_vol <- read.csv(file.path(pred_dir,"fig5d.csv"))
+q3_hole_vol <- read.csv(file.path(pred_dir,"fig5e.csv"))
+q3_litter_vol <- read.csv(file.path(pred_dir,"fig5f.csv"))
+
+### What were the significant SOM results?
+
+# QS2 - Does logging affect forest structure variables: PC1, PC2, tree stand basal area, sapling stand basal area, proportion of trees that are dipterocarps, percentage canopy cover and percentage vegetation cover at ground, understorey and canopy strata?
+# Yes: 
+# PC1, tree stand basal area, % understorey veg. and % canopy veg. are all higher in primary forest. 
+# PC2 and sapling stand basal area are higher in logged forest.
+qs2_pc1 <- read.csv(file.path(pred_dir,"figS2a.csv"))
+qs2_pc2 <- read.csv(file.path(pred_dir,"figS2b.csv"))
+qs2_tree_stand_BA <- read.csv(file.path(pred_dir,"figS2d.csv"))
+qs2_saplingBA <- read.csv(file.path(pred_dir,"figS2e.csv"))
+qs2_tree_stand_BA_cv <- read.csv(file.path(pred_dir,"figS2f.csv"))
+qs2_underVeg <- read.csv(file.path(pred_dir,"figS2_bottom.csv"))
+qs2_underVeg <- qs2_underVeg[qs2_underVeg$stratum == "Understorey",]
+qs2_canopyVeg <- read.csv(file.path(pred_dir,"figS2_bottom.csv"))
+qs2_canopyVeg <- qs2_canopyVeg[qs2_canopyVeg$stratum == "Canopy",]
+
+# QS3 - Does tree stand basal area affect macroclimate temperature and Vapour Pressure Deficit?
+# No.
+
+# QS4 - Does logging affect the relationship between micro- and macroclimate temperature during day vs. night?
+
+# Yes: primary forest associated with steeper slope during day in tree holes and leaf litter... 
+qs4 <- read.csv(file.path(pred_dir,"figS4_sig_interactions.csv"))
+qs4_hole_interaction_day <- qs4[qs4$microhabitat == "Tree hole" & qs4$day_night=="day",]
+qs4_litter_interaction_day <- qs4[qs4$microhabitat == "Leaf litter" & qs4$day_night=="day",]
+
+# Yes: primary forest associated with steeper slope during night in deadwood and leaf litter... 
+qs4_deadwood_interaction_night <- qs4[qs4$microhabitat == "Deadwood" & qs4$day_night=="night",]
+qs4_litter_interaction_night <- qs4[qs4$microhabitat == "Leaf litter" & qs4$day_night=="night",]
+
+# QS4 - Does tree stand basal area affect the microclimate temperature, both during the day and the night?
+# Yes. During the day microclimate temperature inside tree holes is higher in logged forest but also slightly increases with
+# increasing basal area :/
+qs4_hole <- read.csv(file.path(pred_dir,"figS4_sig_effects.csv"))
+```
 
 # Supporting information for Chapter 4
 
-## Impact of unbalanced sampling
+## Sampling methods for forest structure {#text-B-1-1}
+
+```{r schematic, fig.width=8/2.54, fig.height=8/2.54, fig.align='center'}
+schematic
+
+```
+
+\begin{center}
+\textit{Sampling design schematic}
+\end{center}
+
+Several different variables have been previously identified as efficiently capturing overall forest structure [@hamer_ecology_2003; @lucey_spillover_2012]. Each plot (background circle in the schematic) was divided into quadrants (Q1-Q4). Within each quadrant we measured the distance to and circumference at breast height of the two nearest mature trees (circumference > 0.6 m) and saplings (circumference 0.1-0.6 m). Stand basal area (m^2^/ha) was calculated separately for trees and for saplings. In the above schematic, tree/sapling individuals are depicted as points: there can be zero, one or two individuals in each quadrant; the nearest individual is represented by a cross, and the furthest individual as a star. To estimate stand basal area, we calculated the basal area of each individual from its circumference at breast height, summed this across all observed individuals, divided by the true area of forest that was surveyed and multiplied by 10000 to convert units into the standard m^2^/ha. The true area surveyed is depicted by coloured quadrants; this was calculated for each quadrant individually and then summed together. Each true quadrant area was calculated using the equation:
+
+\begin{center}
+$A = \frac{1}{4} \pi r^2$
+\end{center}
+
+Where A is the area (m^2^) and r is the distance to the furthest individual (tree or sapling; m). 
+
+To capture plot-level variation in basal area we calculated the coefficient of variation for trees and for saplings, and we also noted the proportion of observed tree individuals that were in the family Dipterocarpaceae, given the association of these species with mature, complex forest.  
+
+Finally, to capture the overall density of vegetation at the plot centre we measured percentage canopy cover using a spherical densiometer [@lemmon_spherical_1956], and the same observer estimated percentage vegetation cover at three distinct forest strata: ground (1.5 m above ground), understorey (15 m above ground) and canopy (the main mat of leaf cover > 15 m above ground). Visual estimates of vegetation cover were made by imagining a horizontal gridded plane intersecting vegetation at the three different heights, and then estimating the percentage of grid cells occupied by vegetation. 
+
+\pagebreak
+
+## Extracting and processing data from thermal images {#text-B-1-2}
+
+Using infrared cameras to sample microclimates in the terrestrial realm is a relatively novel methodology [@scheffers_extreme_2017; but see: @caillon_warming_2014; @faye_toolbox_2016]. There is, as yet, no standardised protocol, and there are numerous different choices of hardware. In this study, we used a FLIR Systems, model E40 camera. A single thermal image comprised 19200 distinct measurements from the infrared sensor (one per pixel). These raw data can be extracted and converted to temperature in &deg;C using the freely available software [FLIR Tools](http://www.flir.com/instruments/display/?id=54865) [cf. @scheffers_extreme_2017]. However, it is easier, faster and more thorough to use the R package `Thermimage` [@tattersall_thermimage:_2017].
+
+Raw data were first extracted from thermal images using the function `readflirJPG`, which produces a numeric matrix of the same dimensions as the original jpeg (160 x 120). The function `raw2temp` was then used to convert raw data into temperature using standard equations from infrared thermography (see `?Thermimage::raw2temp` for more details). At this point it is possible to specify various parameters that likely differ from the default settings. For emissivity we used a value of 0.986, which represents the mean of the range (0.982 to 0.990) for bare soil, leaf litter, live tree leaves and the bark of tree trunks in green broadleaf forests [@snyder_classification-based_1998]. For atmospheric temperature and relative humidity, we used measurements taken using a whirling hygrometer  immediately prior to each sampling event at each plot. We defined the distance between the camera and the surface as the hypotenuse of an isosceles right triangle with its vertical length equal to breast height: $1.3\times\sqrt{2} =$ `r signif(1.3*sqrt(2),3)` m. Finally, there are five different calibration constants (PlanckR1, PlanckB, PlanckF, PlanckO and PlanckR2) that are specific to each camera, and we retrieved these from thermal images using the function `flirsettings`.
+
+\pagebreak
+
+## Sampling methods for microhabitat volume {#text-B-1-3}
+
+We measured the volume of leaf litter in five 1 x 1 m quadrats, centred 2 m to the left of the transect edge, at 0, 10 and 20 m from the plot centre. Leaf litter was compressed inside a purpose-built compression cylinder with a plunger, and the volume read directly from a graduated scale on the cylinder [@parsons_volume_2009]. 
+
+Within the subplot we measured the length and circumference at both ends of all intact deadwood (> 10 cm diameter). If only a portion of the deadwood was contained within the subplot, we measured that portion only. We calculated volume using Smalian’s volume formula [@waddell_sampling_2002]:
+
+\begin{center}
+$V = \frac{l \cdot (\frac{\pi}{8}) \cdot (D_S^2 + D_L^2)}{10000}$
+\end{center}
+
+Where V is volume (m^3^), l is the length (m), D~S~ is the small-end diameter (cm), D~L~ the large-end diameter (cm). We also measured the maximum and minimum diameter of entrances to all tree holes (maximum entrance diameter > 2 cm and < 2 m high), and their internal volume. Approximating the entrance to an ellipse shape, we calculated entrance area using the standard equation for area of an ellipse:
+
+\begin{center}
+$A = \pi \times a \times b$
+\end{center}
+
+Where A is entrance area (cm^2^), a is the maximum diameter of the entrance (cm) and b is the minimum diameter (cm). Internal volume could not be adequately measured for one very large tree hole, hence the plot in which it was located was excluded from analyses.
+
+\pagebreak
+
+## Impact of logging on macroclimate {#text-B-1-4}
 
 ### Methods
 
-Some studies contributed substantially more temperature observations than others. To test whether these studies were unduly influencing our results, we established a threshold over which a given land-use type, in a given study, was deemed to have a disproportionate number of associated temperature observations. The threshold used –- 2,071 observations –- was the mean number of observations across all unique combinations of land-use type and study identity (55 in total). The same number of observations (2,071) was then randomly re-sampled from each of the land-use type and study combinations that exceeded the threshold. With this reduced and more balanced dataset we repeated the main analysis (see 'Statistical analysis' in main text for more details), modelling local day-time temperature ('temp_day') against land-use type ('LUT'), position relative to ground-level ('position') and season. The final model structure was unchanged, and included a random slope for land-use type and random intercept with respect to the identity of the study ('studyID') from which data originated:
+To interpret the impact of selective logging on thermal buffering by microclimates in a meaningful way it is also necessary to know whether macroclimate conditions are affected by selective logging. As discussed in the Materials and Methods, macroclimate temperature was measured prior to thermal image collection using a whirling hygrometer, and also by a temperature datalogger suspended at the centre of each plot (HOBO pendant datalogger, Onset, model UA-001-64K or model UA-002-64K). 
 
-`lmer(temp_day  ~ LUT*position + LUT*season + (LUT|studyID))`
+The necessity for thermoregulation, however, is dependent not only on temperature, but also on water availability. Vapour pressure deficit (VPD) encompasses both temperature and relative humidity. We measured VPD in two ways. First, using dry-bulb (i.e. macroclimate temperature) and wet-bulb temperature from the whirling hygrometer. We also suspended one hygrochron iButton datalogger (Maxim, model DS1923) 1.5 m above the ground in the plot centre of a subset of plots, alongside the HOBO dataloggers measuring macroclimate temperature. We attempted to distribute our limited number of hygrochrons as evenly as possible; ultimately we collected data from 15 plots across all six sites in primary forest, and from 13 plots across five sites in logged forest. As there were five plots in each site (Fig. 1), we placed dataloggers either in plots one, three and five, or plots one and five, depending on the number of hygrochrons available. Uneven sample sizes resulted because several hygrochrons were lost or broken. Hygrochrons measured relative humidity every 20 minutes for six days and, as in the main text (see Materials and Methods), a unique datapoint was the median value across each two-hourly increment from 04:40-14:40 hrs, on each day of recording for each of the 60 total plots.
+
+Macroclimate VPD was calculated from saturated vapour pressure and relative humidity using the formula:
+
+\begin{center}
+$VPD = \frac{100 - RH}{100} \times SVP$
+\end{center}
+
+Where VPD is vapour pressure deficit (Pa), RH is relative humidity (%) and SVP is saturated vapour pressure (Pa). SVP was calculated from temperature:
+
+\begin{center}
+$SVP = 610.7 \times 10^ \frac{7.5 \times T_d}{237.3 + T_d}$ 
+\end{center}
+
+Where T~d~ is macroclimate (dry-bulb) temperature (&deg;C). Relative humidity can be estimated directly from a whirling hygrometer, but to reduce human error we calculated relative humidity using the equation:
+
+\begin{center}
+$RH = \frac{p}{SVP}$
+\end{center}
+
+Where p is partial vapour pressure (Pa), estimated assuming ambient pressure of 1 atm:
+
+\begin{center}
+$p = SVR_w - 66.86 \cdot (1+0.00115 \cdot(T_w)) \cdot (T_d - T_w)$
+\end{center}
+
+Where T~d~ is dry-bulb temperature (&deg;C), T~w~ is wet-bulb temperature and SVP~w~ is saturated vapour pressure at the wet-bulb temperature, calculated in the same way as SVP, but substituting in T~w~ for T~d~.   
+
+### Statistical analysis
+
+All supplementary analyses were carried out in an analogous way to the main analyses of microclimate temperature (see Statistical analyses). The response variables (macroclimate temperature or VPD, from either the hygrometer or dataloggers) were modelled against the fixed effects forest quality (measured as tree stand basal area; m^2^/ha) and forest type (categorical: primary forest or logged forest), using linear mixed effects models implemented in the `nlme` package [@pinheiro_nlme:_2017] in R [@r_core_team_r:_2017]. Plot nested in site was included as a random intercept term, to account for spatial pseudoreplication. Temporal autocorrelation of residuals was evident (function `acf`), and we therefore included date and time in a correlation structure, with the best structure determined using AIC [@zuur_mixed_2009]. Statistical significance was inspected using likelihood ratio tests [see Materials and Methods; @zuur_mixed_2009], and diagnostic plots were assessed to confirm model fit.
 
 ### Results
 
-All results were qualitatively unchanged from those derived using the full dataset. Local day-time temperature was warmer in altered land-use types, compared to primary forest (LMM, `r "\U03A7"`^2^ = 32.19, df = 4, P < 0.001; \autoref{fig:fig-A-1-3}). Averaged across above- and below-ground, and across seasons, the temperature differential was greatest in cropland (7.7&deg;C), followed by pasture (6.4&deg;C), plantation (3.2&deg;C) and degraded forest (0.9&deg;C).
-The relationship between land-use type and temperature interacted with both position relative to ground level (LMM, `r "\U03A7"`^2^ = 681, df = 4, P < 0.001; \autoref{fig:fig-A-1-3}A) and season (LMM, `r "\U03A7"`^2^ = 105.63, df = 4, P < 0.001; \autoref{fig:fig-A-1-3}B). Specifically, the difference between altered land-use types and primary forest was greater above-ground than below-ground (\autoref{fig:fig-A-1-3}A), and variable between seasons according to the land-use type (\autoref{fig:fig-A-1-3}B).
+Macroclimate temperature was comparable between primary and logged forest whether measured using a whirling hygrometer (LR = `r round(results$test_stat[results$Q == "QS3a_forest_type"][2],3)`, *P* `r results$pval[results$Q == "QS3a_forest_type"][2]`; `r results$fig_ref[results$Q == "QS3a_forest_type"][2]`) or suspended datalogger (LR = `r round(results$test_stat[results$Q == "QS3b_forest_type"][2],3)`, *P* `r results$pval[results$Q == "QS3b_forest_type"][2]`; `r results$fig_ref[results$Q == "QS3b_forest_type"][2]`), and was also unaffected by forest quality for both the hygrometer (LR = `r round(results$test_stat[results$Q == "QS3a_tree_stand_BA"][2],3)`, *P* `r results$pval[results$Q == "QS3a_tree_stand_BA"][2]`; `r results$fig_ref[results$Q == "QS3a_tree_stand_BA"][2]`) and datalogger measurements (LR = `r round(results$test_stat[results$Q == "QS3b_tree_stand_BA"][2],3)`, *P* `r results$pval[results$Q == "QS3b_tree_stand_BA"][2]`; `r results$fig_ref[results$Q == "QS3b_tree_stand_BA"][2]`). Similarly, macroclimate VPD did not differ according to forest type for either method of VPD measurement: hygrometer (LR = `r round(results$test_stat[results$Q == "QS3c_forest_type"][2],3)`, *P* `r results$pval[results$Q == "QS3c_forest_type"][2]`; `r results$fig_ref[results$Q == "QS3c_forest_type"][2]`) and suspended datalogger (LR = `r round(results$test_stat[results$Q == "QS3d_forest_type"][2],3)`, *P* `r results$pval[results$Q == "QS3d_forest_type"][2]`; `r results$fig_ref[results$Q == "QS3d_forest_type"][2]`). Neither did the two measures of macroclimate VPD vary with forest quality (*P* > 0.05; Fig. S2c-d).Thus, we found no evidence that selective logging impacted macroclimate temperature or macroclimate VPD.
+
+\pagebreak
+
+## Impact of logging on microclimate over 24 hours {#text-B-1-5}
+
+### Introduction
+
+We were primarily interested in the impact of selective logging on thermal buffering at times when buffering from extremes of heat is most necessary. In the main analyses, therefore, we limited our study to temperatures recorded between the coolest part of the day (around sunrise) and the hottest part of the day [around noon; cf. @scheffers_extreme_2017]. However, the wealth of data recorded by dataloggers also enables us to investigate how thermal buffering varies over the full 24-hour period, and particularly during the day versus during the night. In the same way that we would expect logged forests to receive more incoming solar radiation during the day -- because of reduced structural complexity and canopy cover [@okuda_effect_2003; @kumar_effects_2005] -- we would also expect these forests to radiate heat more freely at night [@chen_growing-season_1995]. Night-time conditions, although less thermally challenging, are still important biologically because nocturnal species can be inactive inside refugia during the heat of the day, but they must forage and seek mates at night if they are to survive and reproduce in the long-term.
+
+### Statistical anlaysis
+
+We assessed the impact of selective logging on microclimate temperature in the same way as in the main text (see Materials and Methods), but using the full datalogger dataset. Each unique datapoint was the median of six repeated measures taken every 20 minutes for each two-hourly interval, for each of six sequential days and in each of the 60 total plots (5 plots x 12 sites). As these analyses were not compared alongside results from thermal images, the two-hourly intervals began from 00:00 hrs (rather than 04:40 hrs). For simplicity, data recorded between 06:00-18:00 hrs were defined as being during the day, and 18:00-06:00 as during the night. Analyses were carried out separately for day and night and for each microhabitat: deadwood, tree holes and leaf litter. Thus, for each analysis (out of six), there was a maximum of 4320 unique datapoints: 12 time intervals x 6 days x 5 plots x 12 sites.
+
+As in the main text, we used mixed effects models to analyse microclimate temperature as a function of forest quality (measured as tree stand basal area; m^2^/ha), forest type (primary or logged forest) and macroclimate temperature, with an interaction between the latter two variables. Models were implemented in the `nlme` package [@pinheiro_nlme:_2017] in R [@r_core_team_r:_2017]. We included plot nested within site as a random intercept to account for spatial pseudoreplication, and both date and time in a correlation structure to account for temporal autocorrelation [the best structure was determined using AIC; @zuur_mixed_2009]. Statistical significance was inspected using likelihood ratio tests, first dropping the interaction and comparing to the full model, and then dropping main effects in turn and comparing to a model without the interaction term [@zuur_mixed_2009].
+
+### Results
+
+We found no effect of either forest quality or forest type on microclimates at the surface or inside deadwood and leaf litter (*P* > 0.05; Fig. S3). We found a very small effect of both variables on the absolute temperature of microclimates inside tree holes, during the day. At the median value of tree basal area, tree hole temperature in primary forest was `r signif(qs4_hole$micro_temp[1],3)`&deg;C compared to `r signif(qs4_hole$micro_temp[3],3)`&deg;C in logged forest (LR = `r round(results$test_stat[results$Q == "QS4b_day_forest_type"][2],3)`, *P* `r results$pval[results$Q == "QS4b_day_forest_type"][2]`; `r results$fig_ref[results$Q == "QS4b_day_forest_type"][2]`), and with an increase in forest quality (i.e. tree stand basal area) of 1 m^2^/ha, tree hole temperature increased by `r signif(qs4_hole$micro_diff[1],3)`&deg;C (LR = `r round(results$test_stat[results$Q == "QS4b_day_tree_stand_BA"][2],3)`, *P* `r results$pval[results$Q == "QS4b_day_tree_stand_BA"][2]`). Evidently, these effects were extremely small, and therefore unlikely to be relevant to the majority of organisms.
+
+Similarly, any effects of forest type on the relationship between microclimate and macroclimate temperature, while statistically significant, were small in real terms. During the day, 1&deg;C of warming in the macroclimate (from its median temperature) corresponded to more warming in primary forest than in logged forest for tree holes (LR = `r round(results$test_stat[results$Q == "QS4b_day_interaction"][2],3)`, *P* `r results$pval[results$Q == "QS4b_day_interaction"][2]`; `r results$fig_ref[results$Q == "QS4b_day_interaction"][2]`) and leaf litter (LR = `r round(results$test_stat[results$Q == "QS4c_day_interaction"][2],3)`, *P* `r results$pval[results$Q == "QS4c_day_interaction"][2]`; `r results$fig_ref[results$Q == "QS4c_day_interaction"][2]`), but there was no difference for microclimates inside deadwood (LR = `r round(results$test_stat[results$Q == "QS4a_day_interaction"][2],3)`, *P* `r results$pval[results$Q == "QS4a_day_interaction"][2]`; `r results$fig_ref[results$Q == "QS4a_day_interaction"][2]`). At night, 1&deg;C of cooling in the macroclimate corresponded to more cooling in primary forest than in logged forest for microclimates inside deadwood (LR = `r round(results$test_stat[results$Q == "QS4a_night_interaction"][2],3)`, *P* `r results$pval[results$Q == "QS4a_night_interaction"][2]`; `r results$fig_ref[results$Q == "QS4a_night_interaction"][2]`) and leaf litter (LR = `r round(results$test_stat[results$Q == "QS4c_night_interaction"][2],3)`, *P* `r results$pval[results$Q == "QS4c_night_interaction"][2]`; `r results$fig_ref[results$Q == "QS4c_night_interaction"][2]`), but there was no longer any observed difference for microclimates inside tree holes (LR = `r round(results$test_stat[results$Q == "QS4b_night_interaction"][2],3)`, *P* `r results$pval[results$Q == "QS4b_night_interaction"][2]`; `r results$fig_ref[results$Q == "QS4b_night_interaction"][2]`).
+
+Overall, there is some evidence that thermal buffering from warming and cooling is slightly enhanced for microclimates in logged forest compared to primary forest, but in reality the size of these effects was so small that they are unlikely to have much biological relevance. This is also evident from the large confidence intervals of Fig. S4, which demonstrate that for most values of macroclimate temperature, primary and logged forests did not differ in microclimate temperature.
 
 \pagebreak
 
 ## Supplementary figures
 
-```{r, include = FALSE}
-source("figs/figA1.1.R")
-```
+# Fig. S1
 
-
-```{r fig-B-1-1, fig.cap= "Day-time temperature against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Shading of points indicates temperatures measured above-ground (orange) or below-ground (blue), and point symbol indicates temperatures measured during the dry season (circles) or wet season (triangles).",fig.height=22/2.54}
-p1
+```{r figS1, fig.height = 20/2.54, fig.align='center'}
+figS1
 
 ```
 
-```{r fig-B-1-2, fig.cap= "Site elevation against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Dotted black lines connect the mean elevation of all the sites within each land-use type.",fig.height=22/2.54}
+__Figure S1.__ Comparison between primary forest (blue) and logged forest (orange) for the nine forest structure measures: the stand basal area of trees (a) and saplings (b); the coefficient of variation for tree basal area (c) and sapling basal area (d); the proportion of trees that were in the family Dipterocarpaceae (e); the percentage canopy cover (f); and visual estimates of percentage vegetation at 1.5 m above ground (g), 15 m above ground (h) and > 15 m above ground (i). Statistically significant differences are indicated by asterisks, differentiating between: 0.01 < *P* < 0.05 (\*); 0.001 < *P* < 0.01 (\*\*) and *P* < 0.0001 (\*\*\*). Error bars are 95% confidence intervals.
 
-readRDS("figs/figA1.2.Rds")
+\pagebreak
+ 
+# Fig. S2
 
-```
-
-```{r fig-B-1-3}
-```
-
-\begin{figure}
-\centering
-\includegraphics{figs/figA1.3.pdf}
-\caption{(\#fig:fig-A-1-3)Model estimates of the temperature difference between altered land-use types and primary forest, using a reduced dataset to balance sample sizes between the different studies that contributed data. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dashed line. Error bars are 95\% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081-2100 compared to the period 1986-2005, as a result of global climate change \citep{ipcc_2013}. Shaded bands indicate 5\%–95\% ranges from the distribution of the climate model ensemble. Colours represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).}
-\end{figure}
-
-```{r fig-B-1-4, fig.cap= "Model estimates of the nocturnal temperature difference between altered land-use types and primary forest. Note that cropland and pasture are missing from this analysis because nocturnal temperature data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals."}
-
-readRDS("figs/figA1.4.Rds")
+```{r figS2, fig.align='center'}
+figS2
 
 ```
 
-```{r fig-B-1-5, fig.cap= "Model estimates of the difference between altered land-use types and primary forest in terms of temperature extremes. Day-time results are depicted in panels A and B, and night-time results in panels C and D. Panels A and C indicate the effect of land-use change on maximum temperature, and panels B and D indicate the same for minimum temperature. Note that data for cropland and pasture are absent from this analysis because data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals. The grey numbers next to points represent the number of studies providing the underlying data."}
+__Figure S2.__ The influence of forest type (primary or logged forest) and forest quality (measured as tree stand basal area; m^2^/ha) on macroclimate temperature (top row) and macroclimate vapour pressure deficit (VPD; bottom row). Macroclimate measurements collected using a whirling hygrometer are shown in the left column, and from dataloggers in the right column. Datapoints from primary forest points are depicted as blue circles, and from logged forest as orange triangles. Shaded bands are 95% confidence intervals.
 
-readRDS("figs/figA1.5.Rds")
+\pagebreak
+
+# Fig. S3
+
+```{r figS3, fig.align='center'}
+figS3
 
 ```
+
+__Figure S3.__ Comparison of the relationship between microclimate temperature and macroclimate temperature within primary forest (blue circles) and logged forest (orange triangles), during the day (top row) and night (bottom row), and for three microhabitats: deadwood (left column), tree holes (centre column) and leaf litter (right column). The grey dashed line indicates zero temperature buffering, where the microclimate temperature is equal to the macroclimate temperature. Shaded bands are 95% confidence intervals.
 
 \clearpage
 \fancyhead[R]{Bibliography}
