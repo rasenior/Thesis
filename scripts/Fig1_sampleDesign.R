@@ -24,8 +24,8 @@ library(grid)
 library(cowplot)
 library(RColorBrewer)
 
-source(file.path("C:/Users",user,"Google Drive/R/functions/geom_holygon.R"))
-source(file.path("C:/Users",user,"Google Drive/R/functions/map_scalebar.R"))
+source(file.path("C:/Users",user,"Google Drive/Programming/R/functions/geom_holygon.R"))
+source(file.path("C:/Users",user,"Google Drive/Programming/R/functions/map_scalebar.R"))
 
 draw_circle <- function(center = c(0,0),diameter = 1, npoints = 100){
   r = diameter / 2

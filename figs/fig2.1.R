@@ -62,7 +62,7 @@ sources$labLon<-sources$longitude_site
 
 
 # Source geom_holygo function
-source(file.path("C:/Users",user,"Google Drive/R/functions/geom_holygon.R"))
+source(file.path("C:/Users",user,"Google Drive/Programming/R/functions/geom_holygon.R"))
 
 p1<-ggplot() +
       geom_holygon(data=world, aes(x=long, y=lat, group=group),
