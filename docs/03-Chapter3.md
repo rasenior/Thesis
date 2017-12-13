@@ -1,9 +1,0 @@
-# A framework for quantifying fine-scale thermal heterogeneity in the field
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=15cm]{pics/Themal-image1.png}
-\caption*{Thermal image of rainforest floor.}
-\end{figure}
-
-\pagebreak
