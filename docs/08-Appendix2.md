@@ -4,7 +4,7 @@
 
 # Supporting information for Chapter 4
 
-## Impact of unbalanced sampling
+## Impact of unbalanced sampling {#text-B-1-1}
 
 ### Methods
 

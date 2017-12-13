@@ -29,6 +29,8 @@ There are several conditions under which local warming due to land-use change mi
 
 In the present study, we carry out analyses of published data to test the effect of land-use change on local temperature across the tropics. We collected local, in situ temperature data from the literature for paired sites (< 1ha) that differed in land-use type. Categories of land use we studied were primary forest, degraded forest, plantation, pasture and cropland [\autoref{tab:tab-2-1}; modified from Extended Data Table 1 in @newbold_global2015]. We examine how land-use change affects day-time temperature at fine-scale spatial resolution, and we quantify the effects of: (1) forest conversion compared with forest degradation; (2) below-ground compared to above-ground; and (3) wet season conditions compared to the dry season. We focus on day-time temperatures because few studies collected night-time temperature, although we also separately test how the latter is impacted by land-use change for the subset of studies able to provide these data. Recent studies also highlight the importance of climatic extremes for species' survival [e.g. @deutsch_impacts2008; @christidis_role2013], hence we conduct additional analyses for those studies that provide these data.
 
+
+
 \begin{table}
 \begin{center}
 \renewcommand{\arraystretch}{1} % reduce space between rows
@@ -85,7 +87,7 @@ Model estimates of local temperature are presented relative to the model estimat
 
 
 \begin{figure}
-\includegraphics{./output/fig-2-1-1} \caption{Locations of the 25 studies contributing data to the analyses. Point labels correspond to the study number in  Table 1. The shading and size of concentric points corresponds to different land-use types, to indicate the data provided by each study.}(\#fig:fig-2-1)
+\includegraphics{./output/fig-2-1-1} \caption{Locations of the 25 studies contributing data to the analyses. Point labels correspond to the study number in \autoref{tab:tab-2-1}. The shading and size of concentric points corresponds to different land-use types, to indicate the data provided by each study.}(\#fig:fig-2-1)
 \end{figure}
 
 
@@ -107,6 +109,8 @@ In all cases, the final model included a random slope for land-use type ('LUT') 
 The final models of (1) night-time temperature, and temperature extremes (minimum and maximum) (2) during the day and (3) during the night, all had the same model structure, with land-use type as the only fixed effect:
 
 `lmer(temp ~ LUT + (LUT|studyID))`
+
+
 
 \begin{sidewaystable}
 \renewcommand{\arraystretch}{0.85} % reduce space between rows
@@ -169,6 +173,8 @@ The warming effect of land-use change was much stronger above-ground than below-
 ### Dry versus wet season 
 
 Seasonality had some influence on the relationship between land-use change and temperature (LMM, Χ^2^ = 14.91, df = 4, P < 0.01; \autoref{tab:tab-2-3}; \autoref{fig:fig-2-3}B), but the direction of the interaction varied by land-use type, and in all cases the effect size was very small. In degraded forest and plantation, seasonality had no appreciable effect on temperature relative to primary forest (dry vs. wet season: +0.1&deg;C in both degraded forest and plantation). In contrast, the temperature difference between pasture and primary forest was 1.9&deg;C greater in the wet versus dry season, while in cropland the differential was 0.6&deg;C greater in the dry versus wet season.
+
+
 
 \begin{sidewaystable}
 \renewcommand{\arraystretch}{1.1} % reduce space between rows

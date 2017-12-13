@@ -40,7 +40,7 @@ Sampling took place in in an extensive area of contiguous forest in Sabah (Malay
 
 }
 
-\caption{Study location in Malaysian Borneo (a), and distribution of sites (b): six sites in primary forest (blue) and six sites in logged forest (orange). Each site comprised five plots along an existing transect, with plot centres separated by 125 m (c). Tree and sapling stand basal area was calculated from the distance to and circumference of the nearest two trees and saplings in each of four quadrants centred on the plot centre (d; see Supplementary Text S1 for more details). Curved arrows indicate the direction of magnification, from panels a-d.}(\#fig:fig-4-1)
+\caption{Study location in Malaysian Borneo (a), and distribution of sites (b): six sites in primary forest (blue) and six sites in logged forest (orange). Each site comprised five plots along an existing transect, with plot centres separated by 125 m (c). Tree and sapling stand basal area was calculated from the distance to and circumference of the nearest two trees and saplings in each of four quadrants centred on the plot centre (d; see \autoref{text-B-1-1} for more details). Curved arrows indicate the direction of magnification, from panels a-d.}(\#fig:fig-4-1)
 \end{figure}
 
 ### Sampling design

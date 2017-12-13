@@ -62,9 +62,9 @@ plotInfo$forest_type<-factor(plotInfo$forest_type,
 
 p1<-ggplot()+
   geom_polygon(data=borneo_crop,aes(x=long, y=lat, group=group),
-               fill="grey85")+
+               fill="grey80")+
   geom_polygon(data=sabah,aes(x=long, y=lat, group=group),
-               fill="grey70")+
+               fill="grey60")+
   geom_holygon(data=usmfr,aes(x=long, y=lat, group=group),
                fill=cbPalette[7],alpha=0.7)+
   geom_polygon(data=danum,aes(x=long, y=lat, group=group),
@@ -84,12 +84,11 @@ p1<-ggplot()+
   scale_y_continuous(breaks=NULL,expand = c(0, 0))+
   coord_equal(ratio=1)
 
-
 # Danum map ---------------------------------------------------------------
 
 p2<-ggplot()+
   geom_rect(data = pol, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
-            fill="grey70", size = 0.5)+
+            fill="grey60", size = 0.5)+
   geom_holygon(data=usmfr_crop,aes(x=long, y=lat, group=group),
                fill=cbPalette[7],alpha=0.7)+
   geom_polygon(data=danum_crop,aes(x=long, y=lat, group=group),
