@@ -13,7 +13,7 @@ lof: True
 lot: True
 site: bookdown::bookdown_site
 documentclass: report
-bibliography: [refs.bib]
+bibliography: [thesis-refs.bib, funky-refs.bib]
 csl: C:/Users/Rebecca/Google Drive/Referencing/Citation styles/elsevier-harvard.csl
 biblio-style: apalike
 link-citations: yes
