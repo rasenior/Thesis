@@ -271,22 +271,19 @@ Overall, there is some evidence that thermal buffering from warming and cooling 
 ## Supplementary figures
 
 ```{r fig-B-1, fig.height = 20/2.54, fig.cap= "(ref:cap-B-1)"}
-figB.1
-
+readRDS(file.path(fig_dir,"figB.3.Rds"))
 ```
 
 \pagebreak
  
 ```{r fig-B-2, fig.cap= "(ref:cap-B-2)"}
-figB.2
-
+readRDS(file.path(fig_dir,"figB.4.Rds"))
 ```
 
 \pagebreak
 
 ```{r fig-B-3, fig.cap= "(ref:cap-B-3)"}
-figB.3
-
+readRDS(file.path(fig_dir,"figB.5.Rds"))
 ```
 
 (ref:cap-B-1) Comparison between primary forest (blue) and logged forest (orange) for the nine forest structure measures: the stand basal area of trees (a) and saplings (b); the coefficient of variation for tree basal area (c) and sapling basal area (d); the proportion of trees that were in the family Dipterocarpaceae (e); the percentage canopy cover (f); and visual estimates of percentage vegetation at 1.5 m above ground (g), 15 m above ground (h) and > 15 m above ground (i). Statistically significant differences are indicated by asterisks, differentiating between: 0.01 < *P* < 0.05 (\*); 0.001 < *P* < 0.01 (\*\*) and *P* < 0.0001 (\*\*\*). Error bars are 95% confidence intervals.

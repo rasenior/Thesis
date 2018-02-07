@@ -25,7 +25,7 @@ Some studies contributed substantially more temperature observations than others
 ### Results
 
 All results were qualitatively unchanged from those derived using the full dataset. Local day-time temperature was warmer in altered land-use types, compared to primary forest (LMM, `r "\U03A7"`^2^ = 32.19, df = 4, P < 0.001; \autoref{fig:fig-A-3}). Averaged across above- and below-ground, and across seasons, the temperature differential was greatest in cropland (7.7&deg;C), followed by pasture (6.4&deg;C), plantation (3.2&deg;C) and degraded forest (0.9&deg;C).
-The relationship between land-use type and temperature interacted with both position relative to ground level (LMM, `r "\U03A7"`^2^ = 681, df = 4, P < 0.001; \autoref{fig:fig-A-3}A) and season (LMM, `r "\U03A7"`^2^ = 105.63, df = 4, P < 0.001; \autoref{fig:fig-A-3}B). Specifically, the difference between altered land-use types and primary forest was greater above-ground than below-ground (\autoref{fig:fig-A-3}A), and variable between seasons according to the land-use type (\autoref{fig:fig-A-3}B).
+The relationship between land-use type and temperature interacted with both position relative to ground level (LMM, `r "\U03A7"`^2^ = 681, df = 4, P < 0.001; \autoref{fig:fig-A-3}a) and season (LMM, `r "\U03A7"`^2^ = 105.63, df = 4, P < 0.001; \autoref{fig:fig-A-3}b). Specifically, the difference between altered land-use types and primary forest was greater above-ground than below-ground (\autoref{fig:fig-A-3}a), and variable between seasons according to the land-use type (\autoref{fig:fig-A-3}b).
 
 \pagebreak
 
@@ -63,7 +63,6 @@ readRDS("figs/figA.4.Rds")
 ```
 
 ```{r fig-A-5, fig.cap= "(ref:cap-A-5)", fig.align='center'}
-
 readRDS("figs/figA.5.Rds")
 
 ```
