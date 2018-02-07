@@ -5,27 +5,18 @@ rm(list=ls())
 # Get the current user (Rebecca or Becc, if work or home)
 user<-Sys.info()[7]
 
-# Set working directory
-base_dir <-
-  file.path("C:/Users",user,
-            "Google Drive/PhD/Ch4/Resubmission")
-dat_dir <- file.path(base_dir,"Data/FINAL")
-mod_dir <- file.path(dat_dir, "models")
-fig_dir <- file.path(base_dir,"Figures/results")
-setwd(dat_dir)
-
 # Load libraries
 library(ggplot2)
 library(cowplot)
 
 # Load raw data
-flir <- readRDS("flir_day_2017-07-27.Rds")
-load("deadwood_2017-07-27.Rds")
-load("hole_2017-07-27.Rds")
-load("litter_2017-07-27.Rds")
+flir <- readRDS("data/flir_day_2017-07-27.Rds")
+load("data/deadwood_2017-07-27.Rds")
+load("data/hole_2017-07-27.Rds")
+load("data/litter_2017-07-27.Rds")
 
 # Load models
-q2_results <- readRDS(file.path(mod_dir, "q2_main_results.Rds"))
+q2_results <- readRDS("data/models/q2_main_results.Rds")
 
 all_dat <- c("flir",
              "deadwood_day", "hole_day","litter_day")
@@ -36,7 +27,7 @@ rm(list = ls()[!(ls() %in% c(all_dat, "all_dat","q2_results","base_dir",
 
 # Source local functions
 source(file.path("C:/Users",user,
-                 "Google Drive/R/functions/mround.R"))
+                 "Google Drive/Programming/R/functions/mround.R"))
 source(file.path(base_dir, "Code/Plotting/plotting_fn.R"))
 
 # Prepare data ------------------------------------------------------------

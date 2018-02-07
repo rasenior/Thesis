@@ -5,24 +5,15 @@ rm(list=ls())
 # Get the current user (Rebecca or Becc, if work or home)
 user<-Sys.info()[7]
 
-# Set working directory
-base_dir <-
-  file.path("C:/Users",user,
-            "Google Drive/PhD/Chapter 2/Resubmission")
-dat_dir <- file.path(base_dir,"Data/FINAL")
-mod_dir <- file.path(dat_dir, "models")
-fig_dir <- file.path(base_dir,"Figures/results")
-setwd(dat_dir)
-
 # Load libraries
 library(ggplot2)
 library(cowplot)
 
 # Load raw data
-load("deadwood_all_2017-07-27.Rds")
-load("hole_all_2017-07-27.Rds")
-load("litter_all_2017-07-27.Rds")
-treeBA_median <- readRDS("treeBA_median.rds")
+load("data/ch4/deadwood_all_2017-07-27.Rds")
+load("data/ch4/hole_all_2017-07-27.Rds")
+load("data/ch4/litter_all_2017-07-27.Rds")
+treeBA_median <- readRDS("data/ch4/treeBA_median.rds")
 
 # Split into day and night
 deadwood_rep_day <- deadwood_rep_all[deadwood_rep_all$day_night=="day",]
@@ -36,7 +27,7 @@ day_df <- c("deadwood_rep_day", "hole_rep_day", "litter_rep_day")
 night_df <- c("deadwood_rep_night", "hole_rep_night", "litter_rep_night")
 
 # Load models
-q1_results <- readRDS(file.path(mod_dir, "q1_som_results.Rds"))
+q1_results <- readRDS("data/ch4/models/q1_som_results.Rds")
 
 q1_day_results <- 
   q1_results[which(grepl("_day.results",names(q1_results)))]
@@ -51,8 +42,8 @@ rm(list = ls()[!(ls() %in% c(day_df,night_df,"day_df","night_df",
                              "dat_dir","fig_dir","mod_dir","user"))])
 # Source local functions
 source(file.path("C:/Users",user,
-                 "Google Drive/R/functions/mround.R"))
-source(file.path(base_dir, "Code/Plotting/plotting_fn.R"))
+                 "Google Drive/Programming/R/functions/mround.R"))
+source("scripts/plotting_fn.R")
 
 # Prepare data ------------------------------------------------------------
 
@@ -185,7 +176,7 @@ p <- plot_continuous(pred_df = figS4,
                      x_lab = paste("Macroclimate temperature (", "\U00B0","C)",sep=""),
                      y_lab = paste("Microclimate temperature (", "\U00B0","C)",sep=""), 
                      facetting = "day_night ~ microhabitat",
-                     panel_labs = "top_labs",
+                     panel_labs = "",
                      panel.spacing = 0.1,
                      scale.y = "free",
                      point_alpha = 0.2,
@@ -197,181 +188,23 @@ p <- plot_continuous(pred_df = figS4,
                      lab_vjust = 1.45,
                      bw = FALSE)
 
-saveRDS(p,file = file.path(fig_dir,"figS4_micro_vs_macro.Rds"))
+combi <-
+    ggdraw() +
+    draw_plot(p, x = 0, y = 0, width = 1, height = 1) +
+    draw_plot_label(label = c("(a)", "(b)", "(c)", 
+                              "(d)", "(e)", "(f)"),
+                    x = c(0.335, 0.625, 0.92,
+                          0.335, 0.625, 0.925),
+                    y = c(rep(0.85, 3), rep(0.46, 3)),
+                    size = 7)
+ggsave(plot = combi, filename = "figs/test.png",
+       dpi=100,width=16.6,height=13,units="cm")
 
-ggsave(plot = p, filename = file.path(fig_dir,"figS4_micro_vs_macro.png"),
-       dpi=800,width=16.6,height=13,units="cm")
-
-# Summary stats - interaction (day) ---------------------------------------------
-
-# What is the interaction effect in each microhabitat?
-# I.e. what is the difference between forest types in microclimate temp. increase 
-#      for 1 degree macroclimate temp. increase
-
-# Define datasets with sig. interaction
-day_sig_dat <- c("hole_rep_day", "litter_rep_day")
-
-day_inter_sum<-
-  sapply(day_sig_dat, function(x){
-    
-    dat_eval <- eval(parse(text = x))
-    vary_seq = c(log(median(dat_eval[,"ambient"])),
-                 log(median(dat_eval[,"ambient"])+1))
-    
-    result<- 
-      pred(dat = x,
-           df_name = x,
-           results_df = q1_day_results,
-           RV = "rep_temp",
-           vary_EV = "ambient_log",
-           vary_seq = vary_seq,
-           constant_EV = "tree_stand_BA",
-           constant_val = treeBA_median)$newdat
-    
-    # Calculate difference for each forest type
-    result$RV_diff <- NA
-    result$RV_diff[result$forest_type == "Primary"] <-
-      max(result$RV[result$forest_type == "Primary"]) - min(result$RV[result$forest_type == "Primary"])
-    result$RV_diff[result$forest_type == "Logged"] <-
-      max(result$RV[result$forest_type == "Logged"]) - min(result$RV[result$forest_type == "Logged"])
-    
-    result$forest_effect <-
-      unique(result$RV_diff[result$forest_type == "Primary"]) -
-      unique(result$RV_diff[result$forest_type == "Logged"])
-    
-    return(list(result = result))
-    
-  })
-
-day_inter_sum <- do.call("rbind", day_inter_sum)
-
-# Change response variable name
-colnames(day_inter_sum)[names(day_inter_sum)=="RV"] <- "micro_temp"
-colnames(day_inter_sum)[names(day_inter_sum)=="RV_diff"] <- "micro_diff"
-
-# Add microhabitat variable
-day_inter_sum$microhabitat <- gsub("_rep_day","",day_inter_sum$dat)
-day_inter_sum$microhabitat <-
-  factor(day_inter_sum$microhabitat,
-         levels = c("deadwood", "hole", "litter"),
-         labels = c("Deadwood", "Tree hole", "Leaf litter"))
-
-# Re-level forest type
-day_inter_sum$forest_type <- factor(day_inter_sum$forest_type,
-                                levels <- c("Primary", "Logged"))
-
-# Get ambient
-day_inter_sum$ambient <- exp(day_inter_sum$ambient_log)
-
-# Add day/night variable
-day_inter_sum$day_night <- "day"
-
-# Summary stats - interaction (night) ---------------------------------------------
-
-# What is the interaction effect in each microhabitat?
-# I.e. what is the difference between forest types in microclimate temp. increase 
-#      for 1 degree macroclimate temp. increase
-
-# Define datasets with sig. interaction
-night_sig_dat <- c("deadwood_rep_night", "litter_rep_night")
-
-night_inter_sum<-
-  sapply(night_sig_dat, function(x){
-    
-    dat_eval <- eval(parse(text = x))
-    vary_seq = c(log(median(dat_eval[,"ambient"])),
-                 log(median(dat_eval[,"ambient"])+1))
-    
-    result<- 
-      pred(dat = x,
-           df_name = x,
-           results_df = q1_night_results,
-           RV = "rep_temp",
-           vary_EV = "ambient_log",
-           vary_seq = vary_seq,
-           constant_EV = "tree_stand_BA",
-           constant_val = treeBA_median)$newdat
-    
-    # Calculate difference for each forest type
-    result$RV_diff <- NA
-    result$RV_diff[result$forest_type == "Primary"] <-
-      max(result$RV[result$forest_type == "Primary"]) - min(result$RV[result$forest_type == "Primary"])
-    result$RV_diff[result$forest_type == "Logged"] <-
-      max(result$RV[result$forest_type == "Logged"]) - min(result$RV[result$forest_type == "Logged"])
-    
-    result$forest_effect <-
-      unique(result$RV_diff[result$forest_type == "Primary"]) -
-      unique(result$RV_diff[result$forest_type == "Logged"])
-    
-    return(list(result = result))
-    
-  })
-
-night_inter_sum <- do.call("rbind", night_inter_sum)
-
-# Change response variable name
-colnames(night_inter_sum)[names(night_inter_sum)=="RV"] <- "micro_temp"
-colnames(night_inter_sum)[names(night_inter_sum)=="RV_diff"] <- "micro_diff"
-
-# Add microhabitat variable
-night_inter_sum$microhabitat <- gsub("_rep_night","",night_inter_sum$dat)
-night_inter_sum$microhabitat <-
-  factor(night_inter_sum$microhabitat,
-         levels = c("deadwood", "hole", "litter"),
-         labels = c("Deadwood", "Tree hole", "Leaf litter"))
-
-# Re-level forest type
-night_inter_sum$forest_type <- factor(night_inter_sum$forest_type,
-                                    levels <- c("Primary", "Logged"))
-
-# Get ambient
-night_inter_sum$ambient <- exp(night_inter_sum$ambient_log)
-
-# Add night/night variable
-night_inter_sum$day_night <- "night"
+saveRDS(combi,file = "figs/figB.4.Rds")
 
 
-# Summary stats - bind interaction summaries ------------------------------
-
-inter_sum <- rbind(day_inter_sum, night_inter_sum)
 
 
-# Summary stats - tree BA -------------------------------------------------
-
-# What is the effect of tree BA on tree hole temp.?
-# I.e. what is the difference in tree hole temp. for one unit increase in tree BA?
-hole_sum <- pred(dat = "litter_rep_day",
-                        df_name = "litter_rep_day",
-                        results_df = q1_day_results,
-                        RV = "rep_temp",
-                        vary_EV = "tree_stand_BA",
-                        vary_seq = c(treeBA_median, treeBA_median + 1),
-                        constant_EV = "ambient_log",
-                        constant_val = "median")$newdat
-
-# Calculate difference for each forest type
-hole_sum$RV_diff <- NA
-
-hole_sum$RV_diff[hole_sum$forest_type == "Primary"] <-
-  max(hole_sum$RV[hole_sum$forest_type == "Primary"]) - 
-  min(hole_sum$RV[hole_sum$forest_type == "Primary"])
-
-hole_sum$RV_diff[hole_sum$forest_type == "Logged"] <-
-  max(hole_sum$RV[hole_sum$forest_type == "Logged"]) - 
-  min(hole_sum$RV[hole_sum$forest_type == "Logged"])
-
-hole_sum$forest_effect <-
-  hole_sum$RV[hole_sum$forest_type == "Primary" & hole_sum$tree_stand_BA == treeBA_median]-
-  hole_sum$RV[hole_sum$forest_type == "Logged" & hole_sum$tree_stand_BA == treeBA_median]
-
-colnames(hole_sum)[names(hole_sum)=="RV"] <- "micro_temp"
-colnames(hole_sum)[names(hole_sum)=="RV_diff"] <- "micro_diff"
-
-
-# Write -------------------------------------------------------------------
-
-write.csv(inter_sum, "predictions/figS4_sig_interactions.csv")
-write.csv(hole_sum, "predictions/figS4_sig_effects.csv")
 
 
 
