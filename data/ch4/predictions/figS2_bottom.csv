@@ -1,0 +1,7 @@
+"","forest_type","plo","phi","dat","veg_cover","stratum"
+"ground_veg.newdat.1","Primary",70.1870036979767,84.4768467325948,"ground_veg_logit",77.9204582048114,"Ground"
+"ground_veg.newdat.2","Logged",60.1279693856947,76.7579215838748,"ground_veg_logit",68.8570223593006,"Ground"
+"under_veg.newdat.1","Primary",60.1869741421728,75.473430369473,"under_veg_logit",68.159992810091,"Understorey"
+"under_veg.newdat.2","Logged",46.2526478977129,62.6442511807949,"under_veg_logit",54.4332191015939,"Understorey"
+"canopy_veg.newdat.1","Primary",16.2312110686764,31.2194595510635,"canopy_veg_logit",23.1213933421436,"Canopy"
+"canopy_veg.newdat.2","Logged",4.77997737848162,13.5923158981403,"canopy_veg_logit",8.59530204077718,"Canopy"
