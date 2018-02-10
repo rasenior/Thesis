@@ -10,13 +10,13 @@ library(ggplot2)
 library(cowplot)
 
 # Load raw data
-flir <- readRDS("data/flir_day_2017-07-27.Rds")
-load("data/deadwood_2017-07-27.Rds")
-load("data/hole_2017-07-27.Rds")
-load("data/litter_2017-07-27.Rds")
+flir <- readRDS("data/ch4/flir_day_2017-07-27.Rds")
+load("data/ch4/deadwood_2017-07-27.Rds")
+load("data/ch4/hole_2017-07-27.Rds")
+load("data/ch4/litter_2017-07-27.Rds")
 
 # Load models
-q2_results <- readRDS("data/models/q2_main_results.Rds")
+q2_results <- readRDS("data/ch4/models/q2_main_results.Rds")
 
 all_dat <- c("flir",
              "deadwood_day", "hole_day","litter_day")
@@ -28,7 +28,9 @@ rm(list = ls()[!(ls() %in% c(all_dat, "all_dat","q2_results","base_dir",
 # Source local functions
 source(file.path("C:/Users",user,
                  "Google Drive/Programming/R/functions/mround.R"))
-source(file.path(base_dir, "Code/Plotting/plotting_fn.R"))
+source("scripts/plotting_fn.R")
+# Define font sizes
+lab_size <- 7
 
 # Prepare data ------------------------------------------------------------
 
@@ -106,7 +108,8 @@ p1 <- plot_continuous(pred_df = fig4,
                       x_lab = paste("Tree stand basal area (m","\U00B2","/ha)",sep=""),
                       y_lab = paste("Microclimate temp. range (", "\U00B0","C)",sep=""), 
                       panel_labs = "",
-                      scale.y = "fixed",
+                      text_size = 8,
+                      facet_scale = "fixed",
                       point_alpha = 0.5,
                       leg_pos = "top", 
                       lab_hjust = 1.67,
@@ -119,12 +122,10 @@ combi <-
     draw_plot(p1$p, x = 0, y = 0, width = 1, height = 1) +
     draw_plot_label(label = c("(a)", "(b)", "(c)", "(d)"),
                     x = c(0.25, 0.485, 0.72, 0.95),
-                    y = rep(0.7, each = 4),
-                    size = 7)
+                    y = rep(0.69, each = 4),
+                    size = lab_size)
 
-ggsave(combi, file = "~./../Google Drive/PhD/Thesis/figs/fig4.4.png",
-       width = 16.6/2.54, height = 6.5/2.54, dpi = 400)
-saveRDS(combi, file = "~./../Google Drive/PhD/Thesis/figs/fig4.4.Rds")
+saveRDS(combi, file = "figs/fig4.4.Rds")
 
 
 

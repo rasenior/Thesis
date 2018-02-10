@@ -12,7 +12,6 @@ base_dir <-
 dat_dir <- file.path(base_dir,"Data/FINAL")
 mod_dir <- file.path(dat_dir, "models")
 fig_dir <- file.path(base_dir,"Figures/results")
-setwd(dat_dir)
 
 # Load libraries
 library(tidyr)
@@ -20,8 +19,8 @@ library(ggplot2)
 library(cowplot)
 
 # Load raw data
-flir <- readRDS("flir_rep_2017-07-27.Rds")
-load("ambient_2017-07-27.Rds")
+flir <- readRDS(file.path(dat_dir,"flir_rep_2017-07-27.Rds"))
+load(file.path(dat_dir,"ambient_2017-07-27.Rds"))
 
 # Load models
 qs2_ambient <- readRDS(file.path(mod_dir, "som_q2_ambient_results.Rds"))
@@ -36,7 +35,7 @@ rm(list = ls()[!(ls() %in% c(all_dat, "all_dat","qs2_ambient","qs2_vpd",
 # Source local functions
 source(file.path("C:/Users",user,
                  "Google Drive/Programming/R/functions/mround.R"))
-source(file.path(base_dir, "Code/Plotting/plotting_fn.R"))
+source("scripts/plotting_fn.R")
 
 # Prepare data ------------------------------------------------------------
 
@@ -111,7 +110,7 @@ p_top <- plot_continuous(pred_df = figS3_top,
                          x_lab = "",
                          y_lab = paste("Macroclimate temperature (", "\U00B0","C)",sep=""),
                          facetting = "~ instrument",
-                         scale.y = "fixed",
+                         facet_scale = "fixed",
                          panel_labs = "",
                          panel.spacing = 0.2,
                          point_alpha = 0.3,
@@ -159,7 +158,7 @@ p_bottom <- plot_continuous(pred_df = figS3_bottom,
                             x_lab = paste("Tree stand basal area (m","\U00B2","/ha)",sep=""),
                             y_lab = ("VPD (Pa)"),
                             facetting = "~ instrument",
-                            scale.y = "fixed",
+                            facet_scale = "fixed",
                             panel_labs = "",
                             panel.spacing = 0.2,
                             point_alpha = 0.3,
@@ -184,16 +183,4 @@ combi <-
                     y = rep(0.7, each = 4),
                     size = 7)
 
-saveRDS(combi,file = file.path(fig_dir,"figS3_macroclimate.Rds"))
-
-ggsave(plot = combi, filename = file.path(fig_dir,"figS3_macroclimate.png"),
-       dpi=800,width=16.6,height=13,units="cm")
-
-
-
-# Write -------------------------------------------------------------------
-
-# write.csv(figS3_top,"predictions/figS3_top.csv")
-# write.csv(figS3_bottom,"predictions/figS3_bottom.csv")
-
-
+saveRDS(combi,file = "figs/figB.3.Rds")

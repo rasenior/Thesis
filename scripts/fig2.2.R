@@ -4,8 +4,6 @@ user<-Sys.info()[7]
 
 #Define working directory
 baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
-# Set working directory
-setwd(baseDir)
 
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
@@ -23,9 +21,12 @@ date<-Sys.Date()
 cbPalette <- c("#009E73","#F0E442", "#0072B2", "#D55E00", "#CC79A7",
                "#E69F00", "#56B4E9")
 
+text_size <- 8
+title_size <- 10
+
 # Read in data
-load("sampleSizes_day_2016-05-27.Rds")
-load("dayDat_2016-06-08.Rds")
+load(file.path(baseDir,"sampleSizes_day_2016-05-27.Rds"))
+load(file.path(baseDir,"dayDat_2016-06-08.Rds"))
 
 ###############################################################################
 ###### Look at some exploratory figures
@@ -55,16 +56,18 @@ p1<-ggplot(dayDat,aes(x=LUT,y=mean_temp))+
   theme_classic(base_size = 10)+
   ylab(expression(paste("Temperature (",degree*C,")",sep="")))+
   theme(axis.title.x = element_blank(),
-        axis.text.x=element_text(size=8,margin=margin(t = 5,unit = "pt"),
+        axis.text.x=element_text(size= title_size,
+                                 margin=margin(t = 5,unit = "pt"),
                                  colour="black"),
-        axis.text.y=element_text(size=8,margin=margin(r = 5,unit = "pt"),
+        axis.text.y=element_text(size= text_size,
+                                 margin=margin(r = 5,unit = "pt"),
                                  colour="black"),
-        axis.title.y = element_text(size=8,margin=margin(r = 5,unit = "pt")),
+        axis.title.y = element_text(size= title_size,margin=margin(r = 5,unit = "pt")),
         axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
         axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'),
         legend.position=c(0.2,0.95),
         # legend.text.align	= 0,
-        legend.text=element_text(size=8),
+        legend.text=element_text(size= text_size),
         legend.title=element_blank(),
         legend.key=element_blank(),
         legend.spacing=unit(0,"cm"),
@@ -76,9 +79,4 @@ p1<-ggplot(dayDat,aes(x=LUT,y=mean_temp))+
   scale_colour_manual(values=c("#D55E00","#0072B2"),
                       guide=guide_legend(order=1))
 
-saveRDS(p1, file = "../../Thesis/figs/Fig2.2.RdS")
-ggsave(filename = "~./../Google Drive/PhD/Thesis/figs/fig2.2.pdf",
-       plot=p1,dpi=800, width = 16.6/2.54, height = 10/2.54,units="in")
-# saveRDS(p1,"../Thesis version/Figs/Fig2.Rds")
-# ggsave(filename = "../Ecology and Evolution/Revisions/Figures/Fig2.png",
-#        plot=p1,dpi=800,width = 16.6,height = 6.8,units="cm")
+saveRDS(p1, file = "figs/fig2.2.RdS")

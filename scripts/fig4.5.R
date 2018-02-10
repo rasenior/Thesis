@@ -12,7 +12,6 @@ base_dir <-
 dat_dir <- file.path(base_dir,"Data/FINAL")
 mod_dir <- file.path(dat_dir, "models")
 fig_dir <- file.path(base_dir,"Figures/results")
-setwd(dat_dir)
 
 # Load libraries
 library(tidyr)
@@ -21,18 +20,21 @@ library(ggplot2)
 library(cowplot)
 
 # Load raw data
-flir <- readRDS("flir_rep_2017-07-27.Rds")
-plot_info <- readRDS("plot_info_2017-07-27.Rds")
-load("logger_vol_2017-07-27.Rdata")
-treeBA_median <- readRDS("treeBA_median.rds")
+flir <- readRDS(file.path(dat_dir,"flir_rep_2017-07-27.Rds"))
+plot_info <- readRDS(file.path(dat_dir,"plot_info_2017-07-27.Rds"))
+load(file.path(dat_dir,"logger_vol_2017-07-27.Rdata"))
+treeBA_median <- readRDS(file.path(dat_dir,"treeBA_median.rds"))
 
 # Load models
 load(file.path(mod_dir, "q3_main_results.Rdata"))
 
 # Source local functions
 source(file.path("C:/Users",user,
-                 "Google Drive/R/functions/mround.R"))
-source(file.path(base_dir, "Code/Plotting/plotting_fn.R"))
+                 "Google Drive/Programming/R/functions/mround.R"))
+source("scripts/plotting_fn.R")
+# Define font sizes
+lab_size <- 7
+# options(scipen = 999)
 
 # Prepare data ------------------------------------------------------------
 
@@ -68,8 +70,9 @@ p5a <- plot_continuous(pred_df = fig5_a,
                        vary_EV = "tree_stand_BA",
                        constant_EV = "none",
                        x_lab = "",
-                       y_lab = paste("Patch temperature range (", "\U00B0","C)",sep=""), 
-                       scale.y =  "free",
+                       y_lab = paste("Patch temperature range (", "\U00B0","C)\n",sep=""), 
+                       facet_scale =  "free",
+                       text_size = 6,
                        panel_labs = "",
                        point_alpha = 0.5,
                        leg_pos = "return", 
@@ -96,9 +99,10 @@ p5b <- plot_continuous(pred_df = fig5_b,
                        RV = "cold.patch.area", 
                        vary_EV = "tree_stand_BA",
                        constant_EV = "none",
+                       text_size = 6,
                        x_lab = "",
                        y_lab = paste("Cool patch area (cm", "\U00B2",")",sep=""),
-                       scale.y =  "free",
+                       facet_scale =  "free",
                        panel_labs = "",
                        point_alpha = 0.5,
                        leg_pos = "none", 
@@ -133,7 +137,8 @@ p5c <- plot_continuous(pred_df = fig5_c,
                        constant_EV = "none",
                        x_lab = "",
                        y_lab = "Cool patch AI (%)",
-                       scale.y = "free", 
+                       text_size = 6,
+                       facet_scale = "free", 
                        panel_labs = "",
                        point_alpha = 0.5,
                        leg_pos = "none", 
@@ -203,8 +208,9 @@ p5_bottom <- plot_continuous(pred_df = fig5_bottom,
                              y_lab = paste("Microhabitat volume (cm", "\U00B3",")",sep=""), 
                              panel.spacing = 0.5,
                              panel_labs = "",
+                             text_size = 6,
                              point_alpha = 0.8,
-                             scale.y = "free_y",
+                             facet_scale = "free_y",
                              leg_pos = "none", 
                              lab_hjust = 1.7,
                              lab_vjust = 1.44)
@@ -216,21 +222,22 @@ combi_colour <-
     ggdraw() +
     draw_plot(ggplot(), x = 0, y = 0.95, width = 0.05, height = 0.05) +
     draw_plot(p5a$p$p_leg, x = 0.05, y = 0.95, width = 0.95, height = 0.05) +
-    draw_plot(p5a$p$p, x = 0.022, y = 0.475, width = 1/3 - 0.014, height = 0.475) +
-    draw_plot(p5b$p, x = 1/3 - 0.002, y = 0.475, width = 1/3 - 0.014, height = 0.475) +
-    draw_plot(p5c$p, x = 2/3 - 0.025, y = 0.475, width = 1/3 - 0.014, height = 0.475) +
+    draw_plot(p5a$p$p, x = 0.004, y = 0.475, width = 1/3 + 0.004, height = 0.475) +
+    draw_plot(p5b$p, x = 1/3 + 0.000, y = 0.475, width = 1/3 - 0.016, height = 0.475) +
+    draw_plot(p5c$p, x = 2/3 - 0.026, y = 0.475, width = 1/3 - 0.015, height = 0.475) +
     draw_plot(p5_bottom$p, x = 0, y = 0, width = 0.96, height = 0.475) +
-    draw_plot_label(label = "**", x = 0.81, y = 0.405, size = 10)+
+    draw_plot_label(label = "**", x = 0.81, y = 0.40, size = 10)+
     draw_plot_label(label = c("(a)", "(b)", "(c)", 
                               "(d)", "(e)","(f)"),
-                    x = c(0.296, 0.606, 0.92,
-                          0.296, 0.606, 0.92),
-                    y = rep(c(0.87, 0.395), each = 3),
-                    size = 7)
+                    x = c(0.298, 0.607, 0.917,
+                          0.298, 0.607, 0.923),
+                    y = rep(c(0.87, 0.394), each = 3),
+                    size = lab_size)
 
-ggsave(combi_colour, file = "~./../Google Drive/PhD/Thesis/figs/fig4.5.png",
-       width = 16.6/2.54, height = 10/2.54, dpi = 400)
-saveRDS(combi_colour, file = "~./../Google Drive/PhD/Thesis/figs/fig4.5.Rds")
+# ggsave(combi_colour, filename = "figs/test.png", dpi = 200,
+#        width = 16.6/2.54, height = 10/2.54, units = "in")
+
+saveRDS(combi_colour, file = "figs/fig4.5.Rds")
 
 
 

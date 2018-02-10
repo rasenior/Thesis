@@ -1,3 +1,5 @@
-"","forest_type","canopy_cover_logit","plo","phi","dat","canopy_cover"
-"newdat.1","Primary",2.88238361114356,94.1827119338537,96.8895589230399,"canopy_cover_logit",95.6968693748761
-"newdat.2","Logged",3.05003761020617,95.1736761974007,97.5018258220071,"canopy_cover_logit",96.4784150228864
+"","forest_type","forest_type.1","canopy_cover_logit","plo","phi","dat","canopy_cover"
+"newdat.1","Primary","Primary",2.88238361114356,94.1827119338537,96.8895589230399,"canopy_cover_logit",95.6968693748761
+"newdat.3","Primary","Logged",2.88238361114356,94.1827119338537,96.8895589230399,"canopy_cover_logit",95.6968693748761
+"newdat.2","Logged","Primary",3.05003761020617,95.1736761974007,97.5018258220071,"canopy_cover_logit",96.4784150228864
+"newdat.4","Logged","Logged",3.05003761020617,95.1736761974007,97.5018258220071,"canopy_cover_logit",96.4784150228864

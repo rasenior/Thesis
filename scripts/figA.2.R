@@ -4,12 +4,14 @@ user<-Sys.info()[7]
 
 #Define working directory
 baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
-# Set working directory
-setwd(baseDir)
 
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
                "#0072B2", "#D55E00", "#CC79A7")
+# Define font sizes
+lab_size <- 7
+text_size <- 8
+title_size <- 10
 
 # Load libraries
 library(ggplot2)
@@ -24,8 +26,8 @@ cbPalette <- c("#009E73","#F0E442", "#0072B2", "#D55E00", "#CC79A7",
                "#E69F00", "#56B4E9")
 
 # Read in data
-load("sampleSizes_day_2016-05-27.Rds")
-load("dayDat_2016-06-08.Rds")
+load(file.path(baseDir,"sampleSizes_day_2016-05-27.Rds"))
+load(file.path(baseDir,"dayDat_2016-06-08.Rds"))
 
 # Reduce to unique sites
 dayDat<-dayDat[which(!(duplicated(dayDat$SS))),]
@@ -96,14 +98,16 @@ p1<-ggplot()+
       ylab("Elevation (m)")+
       theme(axis.title.x = element_blank(),
             axis.text.x=element_blank(),
-            axis.text.y=element_text(size=8,margin=margin(r = 5,unit = "pt")),
-            axis.title.y = element_text(size=12,margin=margin(r = 5,unit = "pt")),
+            axis.text.y=element_text(size= text_size,
+                                     margin=margin(r = 5,unit = "pt")),
+            axis.title.y = element_text(size= title_size,
+                                        margin=margin(r = 5,unit = "pt")),
             axis.ticks.x = element_blank(),
             axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'),
-            strip.text=element_text(size=8),
+            strip.text=element_text(size= text_size),
             strip.background=element_rect(fill="white"),
             legend.position="top",
-            legend.text=element_text(size=8),
+            legend.text=element_text(size= text_size),
             legend.title=element_blank(),
             legend.key=element_blank(),
             legend.spacing=unit(0.1,"cm"),
@@ -116,10 +120,4 @@ p1<-ggplot()+
       facet_wrap(~studyID)
 p1
 
-saveRDS(p1, file = "../../Thesis/figs/figA1.2.Rds")
-
-# saveRDS(p1,"../Thesis version/Figs/FigS2.Rds")
-# ggsave(filename = "../Ecology and Evolution/Revisions/Figures/FigS2.png",
-#        dpi=800,width=16.6,height=23,units = "cm",plot=p1)
-# ggsave(filename = "../Ecology and Evolution/Revisions/Figures/FigS2.pdf",
-#        dpi=800,width=16.6,height=23,units = "cm",plot=p1)
+saveRDS(p1, file = "figs/figA.2.Rds")

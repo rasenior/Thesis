@@ -4,16 +4,16 @@ user<-Sys.info()[7]
 
 #Define working directory
 baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
-# Set working directory
-setwd(baseDir)
 
 # Read in data
-sources<-read.csv("sourceInfo_day_2016-06-08.csv")
+sources<-read.csv(file.path(baseDir,"sourceInfo_day_2016-06-08.csv"))
 
 # Define colourblind-friendly palette
 cbPalette_light <- c("#009E73","#F0E442", "#0072B2", "#D55E00", "#CC79A7",
                      "#E69F00", "#56B4E9")
 cbPalette_dark<-c("#66A61E","#1B9E77","#7570B3","#D95F02","#E6AB02")
+text_size <- 8
+title_size <- 10
 
 sizeList<-seq(5.5,0.5,length.out = 5)
 
@@ -34,9 +34,9 @@ g_legend<-function(a.gplot){
       return(legend)}
 
 mapDir<-"C:/Users/Rebecca/Google Drive/Spatial-data/Country outlines"
-tropics<-readOGR(mapDir,"tropics") 
-tropicsExtent<-readOGR(mapDir,"tropics_extent") 
-tropicsCountries<-readOGR(mapDir,"tropics_byCountry") 
+tropics<-readOGR(file.path(mapDir, "Tropics"),"tropics") 
+tropicsExtent<-readOGR(file.path(mapDir, "Tropics"),"tropics_extent") 
+tropicsCountries<-readOGR(file.path(mapDir, "Tropics"),"tropics_byCountry") 
 world<-readOGR(file.path(mapDir,"World"),"world_wo_Antarctica") 
 
 # Want to display combinations of LUT
@@ -66,7 +66,7 @@ sources$labLon<-sources$longitude_site
 
 
 # Source geom_holygo function
-source(file.path("C:/Users",user,"Google Drive/R/functions/geom_holygon.R"))
+source(file.path("C:/Users",user,"Google Drive/Programming/R/functions/geom_holygon.R"))
 
 p1<-ggplot() +
       geom_holygon(data=world, aes(x=long, y=lat, group=group),
@@ -116,8 +116,8 @@ df$LUT<-factor(df$LUT,
 
 dummy<-ggplot(df,aes(x=LUT,y=2,colour=LUT,size=LUT))+
       geom_point()+
-      theme(legend.text=element_text(size=8),
-            legend.key.size=unit(8,"pt"),
+      theme(legend.text=element_text(size= text_size),
+            legend.key.size=unit(text_size,"pt"),
             legend.position="bottom",
             legend.key=element_blank(),
             legend.title=element_blank())+
@@ -137,39 +137,5 @@ p2<-plot_grid(p1,legend, ncol = 1, rel_heights = c(1,0.08))
 p2
 
 # saveRDS(p2,"../Thesis version/Figs/Fig1.Rds")
-saveRDS(p2,file = "../../Thesis/figs/fig2.1.Rds")
-
-save(p1, legend, file = "../../Thesis/figs/fig2.1.Rdata")
-# ggsave(filename = "../Ecology and Evolution/Revisions/Figures/Fig1.png",
-#        plot=p2,dpi=1000,
-#        width = 16.6,height = 7.2,units="cm")
-# ggsave(filename = "../Ecology and Evolution//Revisions/Figures/Fig1.pdf",
-#        plot=p2,dpi=1000,
-#        width = 16.6,height = 6.8,units="cm")
-
-
-
-# p3<-ggplot() +
-#   geom_polygon(data=world, aes(x=long, y=lat, group=group),
-#                fill="grey86")+
-#   geom_polygon(data=tropics, aes(x=long, y=lat, group=group),
-#                fill="forestgreen",alpha=0.8)+
-#   # geom_point(data=sources, aes(x=longitude_site, y=latitude_site),
-#   #            colour="black",size=3,alpha=0.6,shape=16)+
-#   geom_point(data=sources,
-#              aes(x=longitude_site, y=latitude_site,colour=factor(combo)),
-#              size=3,alpha=0.6,shape=16)+  theme_classic()+
-#   theme(axis.title.x = element_blank(),
-#         axis.title.y = element_blank(),
-#         plot.margin = (unit(c(0,0,0,0), "cm")))+
-#   scale_x_continuous(breaks=NULL,expand = c(0, 0))+
-#   scale_y_continuous(breaks=NULL,expand = c(0, 0))+
-#   coord_equal(ratio=1)
-# p3
-# 
-# ggsave(filename = file.path("../Figures/Fig1_v2.png"),plot=p3,dpi=1000,
-#        width = 16.6,height = 6.8,units="cm")
-# ggsave(filename = file.path("../Figures/Fig1_v2.pdf"),plot=p3,dpi=1000,
-#        width = 16.6,height = 6.8,units="cm")
-
-
+# saveRDS(p2,file = "figs/fig2.1.Rds")
+save(p1, legend, file = "figs/fig2.1.Rdata")

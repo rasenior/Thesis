@@ -178,7 +178,7 @@ p <- plot_continuous(pred_df = figS4,
                      facetting = "day_night ~ microhabitat",
                      panel_labs = "",
                      panel.spacing = 0.1,
-                     scale.y = "free",
+                     facet_scale = "free",
                      point_alpha = 0.2,
                      override_alpha = FALSE,
                      leg_pos = "top", 
@@ -193,12 +193,13 @@ combi <-
     draw_plot(p, x = 0, y = 0, width = 1, height = 1) +
     draw_plot_label(label = c("(a)", "(b)", "(c)", 
                               "(d)", "(e)", "(f)"),
-                    x = c(0.335, 0.625, 0.92,
-                          0.335, 0.625, 0.925),
-                    y = c(rep(0.85, 3), rep(0.46, 3)),
+                    x = c(0.075, 0.368, 0.66,
+                          0.075, 0.368, 0.663),
+                    y = c(rep(0.79, 3), rep(0.445, 3)),
                     size = 7)
-ggsave(plot = combi, filename = "figs/test.png",
-       dpi=100,width=16.6,height=13,units="cm")
+
+ggsave(plot = combi, filename = "figs/test.png", 
+       dpi = 200, width = 16.6/2.54, height = 9/2.54, units = "in")
 
 saveRDS(combi,file = "figs/figB.4.Rds")
 

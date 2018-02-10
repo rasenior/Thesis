@@ -12,18 +12,17 @@ base_dir <-
 dat_dir <- file.path(base_dir,"Data/FINAL")
 mod_dir <- file.path(dat_dir, "models")
 fig_dir <- file.path(base_dir,"Figures/results")
-setwd(dat_dir)
 
 # Load libraries
 library(ggplot2)
 library(cowplot)
 
 # Load raw data
-flir <- readRDS("flir_rep_2017-07-27.Rds")
-load("deadwood_2017-07-27.Rds")
-load("hole_2017-07-27.Rds")
-load("litter_2017-07-27.Rds")
-treeBA_median <- readRDS("treeBA_median.rds")
+flir <- readRDS(file.path(dat_dir,"flir_rep_2017-07-27.Rds"))
+load(file.path(dat_dir,"deadwood_2017-07-27.Rds"))
+load(file.path(dat_dir,"hole_2017-07-27.Rds"))
+load(file.path(dat_dir,"litter_2017-07-27.Rds"))
+treeBA_median <- readRDS(file.path(dat_dir,"treeBA_median.rds"))
 
 # Load models
 q1_results <- readRDS(file.path(mod_dir, "q1_main_results.Rds"))
@@ -40,8 +39,11 @@ q1_results <-
 
 # Source local functions
 source(file.path("C:/Users",user,
-                 "Google Drive/R/functions/mround.R"))
+                 "Google Drive/Programming/R/functions/mround.R"))
 source(file.path(base_dir, "Code/Plotting/plotting_fn.R"))
+
+# Define font sizes
+lab_size <- 7
 
 # Prepare data ------------------------------------------------------------
 
@@ -139,7 +141,6 @@ p1 <- plot_continuous(pred_df = fig3_top,
                       scale.y = "fixed",
                       point_alpha = 0.2,
                       leg_pos = "return",
-                      lab_size = 2,
                       lab_hjust = 1.02,
                       lab_vjust = 1.45)
 
@@ -190,8 +191,7 @@ p2 <- plot_continuous(pred_df = fig3_bottom,
                       scale.y = "fixed",
                       y_lab = "", 
                       point_alpha = 0.2,
-                      leg_pos = "none", 
-                      lab_size = 2,
+                      leg_pos = "none",
                       lab_hjust = 1.67,
                       lab_vjust = 1.45)
 
@@ -211,9 +211,7 @@ combi_colour <-
                     x = c(0.25, 0.485, 0.72, 0.95,
                           0.25, 0.49, 0.72, 0.95),
                     y = rep(c(0.87, 0.395), each = 4),
-                    size = 7)
+                    size = lab_size)
 
-ggsave(combi_colour, file = "~./../Google Drive/PhD/Thesis/figs/fig4.3.png",
-       width = 16.6/2.54, height = 10/2.54, dpi = 400)
-saveRDS(combi_colour, file = "~./../Google Drive/PhD/Thesis/figs/fig4.3.Rds")
+saveRDS(combi_colour, file = "figs/fig4.3.Rds")
 

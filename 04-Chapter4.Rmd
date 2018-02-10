@@ -8,13 +8,11 @@ knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALS
 
 ```{r, include = FALSE}
 
-options(scipen = 999)
-
 # Define base directories
 user <- Sys.info()[7]
 
-mod_dir <- file.path("data/models")
-pred_dir <- file.path("data/predictions")
+mod_dir <- file.path("data/ch4/models")
+pred_dir <- file.path("data/ch4/predictions")
 fig_dir <- file.path("figs")
 
 # Read in model summaries

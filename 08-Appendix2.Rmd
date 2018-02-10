@@ -12,15 +12,6 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 options(scipen = 999)
 
-# Define base directories
-user <- Sys.info()[7]
-
-mod_dir <- "data/models"
-pred_dir <- "data/predictions"
-fig_dir <- "figs"
-
-# Read in plots
-
 # Plot layout -------------------------------------------------------------
 
 draw_circle <- function(center = c(0,0),diameter = 1, npoints = 100){
@@ -64,34 +55,27 @@ pts<-rbind(seg1[8,],cbind(x=1,y=4),
 pts$distance<-c(rep(c("Furthest","Nearest"),4),"Plot centre")
 
 lineGrad<-pts[1,2]/pts[1,1]
-schematic <- readRDS(file.path(fig_dir,"figB-sample-design.Rds"))
-
-# Other plots
-# figS1 <- readRDS(file.path(fig_dir,"figS1_PCA_biplot.Rds"))
-figB.1 <- readRDS(file.path(fig_dir,"figB.3.Rds"))
-figB.2 <- readRDS(file.path(fig_dir,"figB.4.Rds"))
-figB.3 <- readRDS(file.path(fig_dir,"figB.5.Rds"))
 
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
                "#0072B2", "#D55E00", "#CC79A7")
 
 # Read in model summaries
-pca_results <- read.csv(file.path(mod_dir,"pca_summary.csv"))
-results <- read.csv(file.path(pred_dir,"results_summary.csv"))
+pca_results <- read.csv("data/ch4/models/pca_summary.csv")
+results <- read.csv("data/ch4/predictions/results_summary.csv")
 colnames(results)[names(results)=="p.value_cat"]<-"pval"
 
 ### What were the significant MAIN results?
 
 # Q1a - Does logging affect the relationship between micro- and macroclimate temperature?
 # Yes: primary forest associated with steeper slope in deadwood, tree hole and leaf litter microclimates
-q1_interaction <- read.csv(file.path(pred_dir,"fig3_sig_interactions.csv"))
+q1_interaction <- read.csv("data/ch4/predictions/fig3_sig_interactions.csv")
 q1_deadwood_interaction <- q1_interaction[q1_interaction$microhabitat == "Deadwood",]
 q1_hole_interaction <- q1_interaction[q1_interaction$microhabitat == "Tree hole",]
 q1_litter_interaction <- q1_interaction[q1_interaction$microhabitat == "Leaf litter",]
 
 # Q1b - Does tree stand basal area affect microclimate temperature?
 # Yes: increased tree BA associated with slightly higher micro temp.
-q1_hole <- read.csv(file.path(pred_dir,"fig3_sig_effects.csv"))
+q1_hole <- read.csv("data/ch4/predictions/fig3_sig_effects.csv")
 
 # Q2 - Does tree stand basal area affect microclimate temperature stability/variation?
 # No.
@@ -107,13 +91,13 @@ q1_hole <- read.csv(file.path(pred_dir,"fig3_sig_effects.csv"))
 
 # Q3c - Does tree stand basal area affect the volume of microhabitats?
 # Yes: more leaf litter in forests with higher BA.
-q3_litter_vol_sig <- read.csv(file.path(pred_dir,"fig5_sig_effects.csv"))
-q3_patch_range <- read.csv(file.path(pred_dir,"fig5a.csv"))
-q3_patch_area <- read.csv(file.path(pred_dir,"fig5b.csv"))
-q3_patch_AI <- read.csv(file.path(pred_dir,"fig5c.csv"))
-q3_deadwood_vol <- read.csv(file.path(pred_dir,"fig5d.csv"))
-q3_hole_vol <- read.csv(file.path(pred_dir,"fig5e.csv"))
-q3_litter_vol <- read.csv(file.path(pred_dir,"fig5f.csv"))
+q3_litter_vol_sig <- read.csv("data/ch4/predictions/fig5_sig_effects.csv")
+q3_patch_range <- read.csv("data/ch4/predictions/fig5a.csv")
+q3_patch_area <- read.csv("data/ch4/predictions/fig5b.csv")
+q3_patch_AI <- read.csv("data/ch4/predictions/fig5c.csv")
+q3_deadwood_vol <- read.csv("data/ch4/predictions/fig5d.csv")
+q3_hole_vol <- read.csv("data/ch4/predictions/fig5e.csv")
+q3_litter_vol <- read.csv("data/ch4/predictions/fig5f.csv")
 
 ### What were the significant SOM results?
 
@@ -121,14 +105,14 @@ q3_litter_vol <- read.csv(file.path(pred_dir,"fig5f.csv"))
 # Yes: 
 # PC1, tree stand basal area, % understorey veg. and % canopy veg. are all higher in primary forest. 
 # PC2 and sapling stand basal area are higher in logged forest.
-qs2_pc1 <- read.csv(file.path(pred_dir,"figS2a.csv"))
-qs2_pc2 <- read.csv(file.path(pred_dir,"figS2b.csv"))
-qs2_tree_stand_BA <- read.csv(file.path(pred_dir,"figS2d.csv"))
-qs2_saplingBA <- read.csv(file.path(pred_dir,"figS2e.csv"))
-qs2_tree_stand_BA_cv <- read.csv(file.path(pred_dir,"figS2f.csv"))
-qs2_underVeg <- read.csv(file.path(pred_dir,"figS2_bottom.csv"))
+qs2_pc1 <- read.csv("data/ch4/predictions/figS2a.csv")
+qs2_pc2 <- read.csv("data/ch4/predictions/figS2b.csv")
+qs2_tree_stand_BA <- read.csv("data/ch4/predictions/figS2d.csv")
+qs2_saplingBA <- read.csv("data/ch4/predictions/figS2e.csv")
+qs2_tree_stand_BA_cv <- read.csv("data/ch4/predictions/figS2f.csv")
+qs2_underVeg <- read.csv("data/ch4/predictions/figS2_bottom.csv")
 qs2_underVeg <- qs2_underVeg[qs2_underVeg$stratum == "Understorey",]
-qs2_canopyVeg <- read.csv(file.path(pred_dir,"figS2_bottom.csv"))
+qs2_canopyVeg <- read.csv("data/ch4/predictions/figS2_bottom.csv")
 qs2_canopyVeg <- qs2_canopyVeg[qs2_canopyVeg$stratum == "Canopy",]
 
 # QS3 - Does tree stand basal area affect macroclimate temperature and Vapour Pressure Deficit?
@@ -137,7 +121,7 @@ qs2_canopyVeg <- qs2_canopyVeg[qs2_canopyVeg$stratum == "Canopy",]
 # QS4 - Does logging affect the relationship between micro- and macroclimate temperature during day vs. night?
 
 # Yes: primary forest associated with steeper slope during day in tree holes and leaf litter... 
-qs4 <- read.csv(file.path(pred_dir,"figS4_sig_interactions.csv"))
+qs4 <- read.csv("data/ch4/predictions/figS4_sig_interactions.csv")
 qs4_hole_interaction_day <- qs4[qs4$microhabitat == "Tree hole" & qs4$day_night=="day",]
 qs4_litter_interaction_day <- qs4[qs4$microhabitat == "Leaf litter" & qs4$day_night=="day",]
 
@@ -148,16 +132,15 @@ qs4_litter_interaction_night <- qs4[qs4$microhabitat == "Leaf litter" & qs4$day_
 # QS4 - Does tree stand basal area affect the microclimate temperature, both during the day and the night?
 # Yes. During the day microclimate temperature inside tree holes is higher in logged forest but also slightly increases with
 # increasing basal area :/
-qs4_hole <- read.csv(file.path(pred_dir,"figS4_sig_effects.csv"))
+qs4_hole <- read.csv("data/ch4/predictions/figS4_sig_effects.csv")
 ```
 
 # Supporting information for Chapter 4
 
 ## Sampling methods for forest structure {#text-B-1}
 
-```{r schematic, fig.width=8/2.54, fig.height=8/2.54, fig.cap= "Sampling design schematic."}
-schematic
-
+```{r fig-B-1, fig.width=8/2.54, fig.height=8/2.54, fig.cap= "Sampling design schematic."}
+readRDS("figs/figB.1.Rds")
 ```
 
 Several different variables have been previously identified as efficiently capturing overall forest structure [@hamer_ecology_2003; @lucey_spillover_2012]. Each plot (background circle in the schematic) was divided into quadrants (Q1-Q4). Within each quadrant we measured the distance to and circumference at breast height of the two nearest mature trees (circumference > 0.6 m) and saplings (circumference 0.1-0.6 m). Stand basal area (m^2^/ha) was calculated separately for trees and for saplings. In the above schematic, tree/sapling individuals are depicted as points: there can be zero, one or two individuals in each quadrant; the nearest individual is represented by a cross, and the furthest individual as a star. To estimate stand basal area, we calculated the basal area of each individual from its circumference at breast height, summed this across all observed individuals, divided by the true area of forest that was surveyed and multiplied by 10000 to convert units into the standard m^2^/ha. The true area surveyed is depicted by coloured quadrants; this was calculated for each quadrant individually and then summed together. Each true quadrant area was calculated using the equation:
@@ -270,27 +253,27 @@ Overall, there is some evidence that thermal buffering from warming and cooling 
 
 ## Supplementary figures
 
-```{r fig-B-1, fig.height = 20/2.54, fig.cap= "(ref:cap-B-1)"}
-readRDS(file.path(fig_dir,"figB.3.Rds"))
+```{r fig-B-2, fig.height = 20/2.54, fig.cap= "(ref:cap-B-2)"}
+readRDS("figs/figB.2.Rds")
 ```
 
 \pagebreak
  
-```{r fig-B-2, fig.cap= "(ref:cap-B-2)"}
-readRDS(file.path(fig_dir,"figB.4.Rds"))
+```{r fig-B-3, fig.cap= "(ref:cap-B-3)"}
+readRDS("figs/figB.3.Rds")
 ```
 
 \pagebreak
 
-```{r fig-B-3, fig.cap= "(ref:cap-B-3)"}
-readRDS(file.path(fig_dir,"figB.5.Rds"))
+```{r fig-B-4, fig.cap= "(ref:cap-B-4)"}
+readRDS("figs/figB.4.Rds")
 ```
 
-(ref:cap-B-1) Comparison between primary forest (blue) and logged forest (orange) for the nine forest structure measures: the stand basal area of trees (a) and saplings (b); the coefficient of variation for tree basal area (c) and sapling basal area (d); the proportion of trees that were in the family Dipterocarpaceae (e); the percentage canopy cover (f); and visual estimates of percentage vegetation at 1.5 m above ground (g), 15 m above ground (h) and > 15 m above ground (i). Statistically significant differences are indicated by asterisks, differentiating between: 0.01 < *P* < 0.05 (\*); 0.001 < *P* < 0.01 (\*\*) and *P* < 0.0001 (\*\*\*). Error bars are 95% confidence intervals.
+(ref:cap-B-2) Comparison between primary forest (blue) and logged forest (orange) for the nine forest structure measures: the stand basal area of trees (a) and saplings (b); the coefficient of variation for tree basal area (c) and sapling basal area (d); the proportion of trees that were in the family Dipterocarpaceae (e); the percentage canopy cover (f); and visual estimates of percentage vegetation at 1.5 m above ground (g), 15 m above ground (h) and > 15 m above ground (i). Statistically significant differences are indicated by asterisks, differentiating between: 0.01 < *P* < 0.05 (\*); 0.001 < *P* < 0.01 (\*\*) and *P* < 0.0001 (\*\*\*). Error bars are 95% confidence intervals.
 
-(ref:cap-B-2) The influence of forest type (primary or logged forest) and forest quality (measured as tree stand basal area; m^2^/ha) on macroclimate temperature (top row) and macroclimate vapour pressure deficit (VPD; bottom row). Macroclimate measurements collected using a whirling hygrometer are shown in the left column, and from dataloggers in the right column. Datapoints from primary forest points are depicted as blue circles, and from logged forest as orange triangles. Shaded bands are 95% confidence intervals.
+(ref:cap-B-3) The influence of forest type (primary or logged forest) and forest quality (measured as tree stand basal area; m^2^/ha) on macroclimate temperature (top row) and macroclimate vapour pressure deficit (VPD; bottom row). Macroclimate measurements collected using a whirling hygrometer are shown in the left column, and from dataloggers in the right column. Datapoints from primary forest points are depicted as blue circles, and from logged forest as orange triangles. Shaded bands are 95% confidence intervals.
 
-(ref:cap-B-3) Comparison of the relationship between microclimate temperature and macroclimate temperature within primary forest (blue circles) and logged forest (orange triangles), during the day (top row) and night (bottom row), and for three microhabitats: deadwood (left column), tree holes (centre column) and leaf litter (right column). The grey dashed line indicates zero temperature buffering, where the microclimate temperature is equal to the macroclimate temperature. Shaded bands are 95% confidence intervals.
+(ref:cap-B-4) Comparison of the relationship between microclimate temperature and macroclimate temperature within primary forest (blue circles) and logged forest (orange triangles), during the day (top row) and night (bottom row), and for three microhabitats: deadwood (left column), tree holes (centre column) and leaf litter (right column). The grey dashed line indicates zero temperature buffering, where the microclimate temperature is equal to the macroclimate temperature. Shaded bands are 95% confidence intervals.
 
 
 \clearpage

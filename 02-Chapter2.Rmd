@@ -92,7 +92,9 @@ Each data point in our main analysis comprised an observation of day-time temper
 Model estimates of local temperature are presented relative to the model estimate for primary forest (above-ground and in the dry season). Both the position relative to ground level and seasonality interacted with land-use change to influence local temperature, but for clarity we discuss each explanatory variable separately. As such, temperature differences between primary forest and altered land-use types are averages across all combinations of position and season. The influence of position on these thermal differences is presented as an average across seasons, and the influence of seasonality is an average across positions.
 
 ```{r, include = FALSE}
-source("figs/fig2.1.R")
+load("figs/fig2.1.Rdata")
+library(cowplot)
+library(grid)
 ```
 
 (ref:cap-2-1) Locations of the 25 studies contributing data to the analyses. Point labels correspond to the study number in \autoref{tab:tab-2-1}. The shading and size of concentric points corresponds to different land-use types, to indicate the data provided by each study.

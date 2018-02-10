@@ -4,12 +4,14 @@ user<-Sys.info()[7]
 
 #Define working directory
 baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
-# Set working directory
-setwd(baseDir)
 
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
                "#0072B2", "#D55E00", "#CC79A7")
+# Define font sizes
+lab_size <- 7
+text_size <- 8
+title_size <- 10
 
 # Load libraries
 library(ggplot2)
@@ -22,10 +24,12 @@ date<-Sys.Date()
 
 cbPalette <- c("#009E73","#F0E442", "#0072B2", "#D55E00", "#CC79A7",
                "#E69F00", "#56B4E9")
+text_size <- 8
+title_size <- 10
 
 # Read in data
-load("sampleSizes_day_2016-05-27.Rds")
-load("dayDat_2016-06-08.Rds")
+load(file.path(baseDir,"sampleSizes_day_2016-05-27.Rds"))
+load(file.path(baseDir,"dayDat_2016-06-08.Rds"))
 
 ###############################################################################
 ###### Look at some exploratory figures
@@ -90,14 +94,16 @@ p1<-ggplot()+
   ylab(expression(paste("Temperature (",degree*C,")",sep="")))+
   theme(axis.title.x = element_blank(),
         axis.text.x=element_blank(),
-        axis.text.y=element_text(size=8,margin=margin(r = 5,unit = "pt")),
-        axis.title.y = element_text(size=12,margin=margin(r = 5,unit = "pt")),
+        axis.text.y=element_text(size= text_size,
+                                 margin=margin(r = 5,unit = "pt")),
+        axis.title.y = element_text(size= title_size,
+                                    margin=margin(r = 5,unit = "pt")),
         axis.ticks.x = element_blank(),
         axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'),
-        strip.text=element_text(size=8),
+        strip.text=element_text(size= text_size),
         strip.background=element_rect(fill="white"),
         legend.position="top",
-        legend.text=element_text(size=8),
+        legend.text=element_text(size= text_size),
         legend.title=element_blank(),
         legend.key=element_blank(),
         legend.spacing=unit(0.2,"cm"),
@@ -110,9 +116,4 @@ p1<-ggplot()+
                       guide=guide_legend(order=1))+
   facet_wrap(~studyID)
 
-# save(shading, p1, file = "../Thesis version/Figs/FigS1.Rdata")
-# save(shading, p1, file = "../../Thesis/figs/figA1.1.Rdata")
-# ggsave(filename = "../Ecology and Evolution/Revisions/Figures/ESM_1.png",
-#        dpi=800,width=16.6,height=23,units = "cm",plot=p1)
-ggsave(filename = "../Figures/Submission/FigS1.pdf",
-       dpi=800,width=16.6,height=23,units = "cm",plot=p1)
+save(p1, shades, textCol, file = "figs/figA.1.Rdata")

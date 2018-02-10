@@ -32,7 +32,7 @@ The relationship between land-use type and temperature interacted with both posi
 ## Supplementary figures
 
 ```{r, include = FALSE}
-source("figs/figA.1.R")
+source("scripts/figA.1.R")
 ```
 
 
@@ -47,14 +47,17 @@ readRDS("figs/figA.2.Rds")
 
 ```
 
-```{r fig-A-3}
+(ref:cap-A-3) Model estimates of the temperature difference between altered land-use types and primary forest, using a reduced dataset to balance sample sizes between the different studies that contributed data. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dashed line. Error bars are 95\% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081-2100 compared to the period 1986-2005, as a result of global climate change \citep{ipcc_climate_2013}. Shaded bands indicate 5\%–95\% ranges from the distribution of the climate model ensemble. Colours represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).
+
+```{r fig-A-3, fig.cap= "(ref:cap-A-3)"}
+plot(readRDS("figs/figA.3.Rds"))
 ```
 
-\begin{figure}
-\centering
-\includegraphics{figs/figA.3.pdf}
-\caption{(\#fig:fig-A-3)Model estimates of the temperature difference between altered land-use types and primary forest, using a reduced dataset to balance sample sizes between the different studies that contributed data. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dashed line. Error bars are 95\% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081-2100 compared to the period 1986-2005, as a result of global climate change \citep{ipcc_climate_2013}. Shaded bands indicate 5\%–95\% ranges from the distribution of the climate model ensemble. Colours represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).}
-\end{figure}
+<!-- \begin{figure} -->
+<!-- \centering -->
+<!-- \includegraphics{figs/figA.3.pdf} -->
+<!-- \caption{(\#fig:fig-A-3)Model estimates of the temperature difference between altered land-use types and primary forest, using a reduced dataset to balance sample sizes between the different studies that contributed data. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dashed line. Error bars are 95\% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081-2100 compared to the period 1986-2005, as a result of global climate change \citep{ipcc_climate_2013}. Shaded bands indicate 5\%–95\% ranges from the distribution of the climate model ensemble. Colours represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).} -->
+<!-- \end{figure} -->
 
 ```{r fig-A-4, fig.cap= "(ref:cap-A-4)", fig.align='center'}
 

@@ -38,15 +38,17 @@ draw_circle <- function(center = c(0,0),diameter = 1, npoints = 100){
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
                "#0072B2", "#D55E00", "#CC79A7")
-bwPalette<-c("black","grey50",brewer.pal(4,"Greys"))
+text_size <- 8
+title_size <- 10
+lab_size <- 7
 
 borneo<-readOGR(file.path(map_dir,"Borneo countries"),"borneo") 
 borneo_crop<-crop(borneo,extent(113,127,3.5,7))
 sabah<-readOGR(file.path(map_dir,"Main maps"),"sabah_outline")
 danum<-readOGR(file.path(map_dir,"Main maps"),"danum_area") 
-danum_crop<-crop(danum,extent(117.59,117.98,5.12,4.9))
+danum_crop<-crop(danum,extent(117.59,117.98,4.9,5.12))
 usmfr<-readOGR(file.path(map_dir,"Main maps"),"logging_concession")
-usmfr_crop<-crop(usmfr,extent(117.59,117.98,5.12,4.9))
+usmfr_crop<-crop(usmfr,extent(117.59,117.98,4.9,5.12))
 pol<-data.frame(xmin=117.59,xmax=117.98 ,ymin=5.12 ,ymax=4.9)
 
 plotInfo<-
@@ -258,16 +260,16 @@ combi <-
   draw_plot_label(label = c("(a)", "(b)", "(d)","(c)"),
                   x = c(0, 0.5,0, 0.5),
                   y = c(0.98, 0.98, 0.48,0.48),
-                  size = 9,
+                  size = lab_size,
                   hjust = c(-0.5,0.3,-0.5,0.3),
                   vjust = c(1.7,1.7,1.4,1.4))+
     draw_plot_label(label = "125 m",
                     x = 0.78, 
                     y = 0.32,
-                    size = 7)
+                    size = lab_size)
 
-ggsave(plot = combi,
-       filename = file.path(outDir,"fig4.1.png"),
-       dpi= 400,width = 16.6,height=9,units="cm")
+# ggsave(plot = combi,
+#        filename = file.path(outDir,"fig4.1.png"),
+#        dpi= 400,width = 16.6,height=9,units="cm")
 
 saveRDS(combi,file = file.path(outDir,"fig4.1.Rds"))
