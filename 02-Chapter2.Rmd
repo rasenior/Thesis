@@ -111,12 +111,6 @@ ggdraw() +
 readRDS("figs/fig2.2.Rds")
 ```
 
-<!-- \begin{figure} -->
-<!-- \centering -->
-<!-- \includegraphics{figs/fig2.2.pdf} -->
-<!-- \caption{(\#fig:fig-2-2)Raw day-time temperature against land-use type, across all studies contributing data to the analyses (plotted by study in \autoref{fig:fig-A-1}). Point shading indicates temperatures measured above-ground (orange) or below-ground (blue), and different symbols indicate temperatures measured during the dry season (circles) or wet season (triangles).} -->
-<!-- \end{figure} -->
-
 ## Results
 
 In total, 25 studies met the criteria for inclusion (\autoref{tab:tab-2-2}). Studies spanned 12 countries, across every continent within the tropics (\autoref{fig:fig-2-1}), and provided 113,894 observations of day-time temperature (\autoref{fig:fig-2-2} and \autoref{fig:fig-A-1}). Most observations represented either a single temperature observation within, or mean temperature across, a single day at the point location where measurements were taken. Six studies reported temperature at a coarser temporal resolution (mean = 107 days; minimum = 14 days; maximum = 183 days), and six studies reported temperature at a coarser spatial resolution (mean = 527 m^2^; minimum = 64 m^2^; maximum = 1,000 m^2^). The maximum elevational difference between sites within a single study ranged from 0 to 141 m (mean = 33 m), and site elevation was random with respect to land-use type (LMM, `r "\U03A7"`^2^ = 19.33, df = 14, P > 0.05; \autoref{fig:fig-A-2}). We were also able to obtain 113,459 night-time temperature observations (including temperature extremes) from 10 studies, plus 113,230 observations of day-time temperature extremes from 11 studies; but none of these data were collected in cropland or pasture.
@@ -141,31 +135,31 @@ The final models of (1) night-time temperature, and temperature extremes (minimu
 \cmidrule(l{2pt}r{2pt}){3-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
     & & \bfseries Primary forest & \bfseries Degraded forest & \bfseries Plantation & \bfseries Pasture & \bfseries Cropland & \bfseries Above-ground &
     \bfseries Below-ground & \bfseries Dry season & \bfseries Wet season \\ \midrule \showrowcolors
-    1. González del Pliego (Unpublished data) & Colombia      & X & X &   &   &  & X &   & X & \\
-    2. González-Di Pierro et al. (2011)       & Mexico        & X & X &   &   &  & X &   &  & X \\
-    3. Goode (Unpublished data)               & Mexico        & X & X &   &   &  & X &   &X & X \\
-    4. Goode and Allen (2009)                 & Mexico        & X & X &   &   &  & X &   &X & X \\
-    5. Ibanez et al. (2013)                   & New Caledonia & X & X &   &   &  & X &   &X & X \\
-    6. Lebrija-Trejos et al. (2011)           & Mexico        & X & X &   &   &  & X & X &X & X \\
-    7. Negrete-Yankelevich et al. (2007)      & Mexico        & X & X &   &   &  &   & X &  & X \\
-    8. Santos (2011)                          & Mexico        & X & X &   &   &  & X & X &  & X \\
-    9. Santos and Benítez-Malvido (2012)      & Mexico        & X & X &   &   &  & X & X &  & X \\
-    10. Sonnleitner et al. (2009)             & Costa Rica    & X & X &   &   &  & X &   &X &   \\
-    11. Wood and Lawrence (2008)              & Costa Rica    & X & X &   &   &  &   & X &  & X \\
-    12. Yashiro et al. (2008)                 & Malaysia      & X & X &   &   &  &   & X &X & X \\
-    13. Adachi et al. (2006)                  & Malaysia      & X & X & X &   &  &   & X &X &   \\
-    14. Hardwick and Orme (2016)              & Malaysia      & X & X & X &   &  & X &   &X & X \\
-    15. Hardwick et al. (2015)                & Malaysia      & X & X & X &   &  & X &   &X & X \\
-    16. Klein et al. (2002)                   & Indonesia     &   & X & X &   &  & X &   &  & X \\
-    17. Wangluk et al. (2013)                 & Thailand      &   & X & X &   &  &   & X &X & X \\
-    18. Werner et al. (2006)                  & China         &   & X & X &   &  &   & X &X &   \\
-    19. Holl (1999)                           & Costa Rica    & X &   &   & X &  & X & X &X &   \\
-    20. Liu and Zou (2002)                    & Puerto Rico   & X &   &   & X &  &   & X &X & X \\
-    21. King et al. (1998)                    & Australia     &   & X &   & X &  & X & X &  & X \\
-    22. Badejo et al. (2004)                  & Brazil        & X &   &   & X &X &   & X &  & X \\
-    23. Campos (2006)                         & Mexico        & X &   &   & X &X &   & X &X & X \\
-    24. Badejo (1990)                         & Nigeria       &   & X &   &   &X &   & X &X & X \\
-    25. Furukawa et al. (2005)                & Indonesia     &   & X &   &   &X & X & X &X & X \\
+    1. \citet{gonzalez_del_pliego_unpublished}       & Colombia      & X & X &   &   &  & X &   & X & \\
+    2. \citet{gonzalez-di_pierro_effects_2011}       & Mexico        & X & X &   &   &  & X &   &  & X \\
+    3. \citet{goode_unpublished}                     & Mexico        & X & X &   &   &  & X &   &X & X \\
+    4. \citet{goode_seed_2009}                       & Mexico        & X & X &   &   &  & X &   &X & X \\
+    5. \citet{ibanez_sharp_2013}                     & New Caledonia & X & X &   &   &  & X &   &X & X \\
+    6. \citet{lebrija-trejos_environmental_2011}     & Mexico        & X & X &   &   &  & X & X &X & X \\
+    7. \citet{negrete-yankelevich_successional_2007} & Mexico        & X & X &   &   &  &   & X &  & X \\
+    8. \citet{santos_interaccion_2011}               & Mexico        & X & X &   &   &  & X & X &  & X \\
+    9. \citet{santos_insect_2012}                    & Mexico        & X & X &   &   &  & X & X &  & X \\
+    10. \citet{sonnleitner_microclimatic_2009}       & Costa Rica    & X & X &   &   &  & X &   &X &   \\
+    11. \citet{wood_no_2008}                         & Costa Rica    & X & X &   &   &  &   & X &  & X \\
+    12. \citet{yashiro_effects_2008}                 & Malaysia      & X & X &   &   &  &   & X &X & X \\
+    13. \citet{adachi_differences_2006}              & Malaysia      & X & X & X &   &  &   & X &X &   \\
+    14. \citet{hardwick_aboveground_2016}            & Malaysia      & X & X & X &   &  & X &   &X & X \\
+    15. \citet{hardwick_relationship_2015}           & Malaysia      & X & X & X &   &  & X &   &X & X \\
+    16. \citet{klein_predatorprey_2002}              & Indonesia     &   & X & X &   &  & X &   &  & X \\
+    17. \citet{wangluk_role_2013}                    & Thailand      &   & X & X &   &  &   & X &X & X \\
+    18. \citet{werner_n2o_2006}                      & China         &   & X & X &   &  &   & X &X &   \\
+    19. \citet{holl_factors_1999}                    & Costa Rica    & X &   &   & X &  & X & X &X &   \\
+    20. \citet{liu_exotic_2002}                      & Puerto Rico   & X &   &   & X &  &   & X &X & X \\
+    21. \citet{king_ants_1998}                       & Australia     &   & X &   & X &  & X & X &  & X \\
+    22. \citet{badejo_response_2004}                 & Brazil        & X &   &   & X &X &   & X &  & X \\
+    23. \citet{campos_response_2006}                 & Mexico        & X &   &   & X &X &   & X &X & X \\
+    24. \citet{badejo_seasonal_1990}                 & Nigeria       &   & X &   &   &X &   & X &X & X \\
+    25. \citet{furukawa_effect_2005}                 & Indonesia     &   & X &   &   &X & X & X &X & X \\
 \bottomrule
 \end{tabular}
 \caption{(\#tab:tab-2-2)Summary of the 25 studies contributing data to analyses. Study number corresponds to point labels in \autoref{fig:fig-2-1}. Crosses indicate the land-use types, position(s) relative to ground level and season(s) considered by each study.}
