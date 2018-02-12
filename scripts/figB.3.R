@@ -36,6 +36,8 @@ rm(list = ls()[!(ls() %in% c(all_dat, "all_dat","qs2_ambient","qs2_vpd",
 source(file.path("C:/Users",user,
                  "Google Drive/Programming/R/functions/mround.R"))
 source("scripts/plotting_fn.R")
+# Define font sizes
+lab_size <- 7
 
 # Prepare data ------------------------------------------------------------
 
@@ -108,7 +110,7 @@ p_top <- plot_continuous(pred_df = figS3_top,
                          vary_EV = "tree_stand_BA",
                          constant_EV = "none",
                          x_lab = "",
-                         y_lab = paste("Macroclimate temperature (", "\U00B0","C)",sep=""),
+                         y_lab = paste("Macroclimate temp. (", "\U00B0","C)",sep=""),
                          facetting = "~ instrument",
                          facet_scale = "fixed",
                          panel_labs = "",
@@ -118,6 +120,8 @@ p_top <- plot_continuous(pred_df = figS3_top,
                          lab_hjust = 2,
                          lab_vjust = 1.45,
                          bw = FALSE)
+
+p_top$p <- p_top$p + scale_y_continuous(breaks = seq(20, 40, 5))
 
 # Plot VPD ----------------------------------------------------------------
 
@@ -179,8 +183,9 @@ combi <-
     draw_plot(p_leg, x = 0.05, y = 0.95, width = 0.95, height = 0.05) +
     draw_plot(p_main, x = 0, y = 0, width = 1, height = 0.95) +
     draw_plot_label(label = c("(a)", "(b)", "(c)", "(d)"),
-                    x = c(0.25, 0.485, 0.72, 0.95),
-                    y = rep(0.7, each = 4),
-                    size = 7)
+                    x = rep(c(0.504, 0.956), times = 2),
+                    y = rep(c(0.860, 0.384), each = 2),
+                    size = lab_size)
+combi
 
 saveRDS(combi,file = "figs/figB.3.Rds")

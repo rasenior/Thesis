@@ -30,6 +30,8 @@ source(file.path("C:/Users",user,
 source(file.path("C:/Users",user,
                  "Google Drive/Programming/R/functions/empirical_logit_transformation.R"))
 source("scripts/plotting_fn.R")
+# Define font sizes
+lab_size <- 7
 
 # Prepare data ------------------------------------------------------------
 
@@ -347,6 +349,9 @@ p5_bottom <- plot_categorical(pred_df = figS2_bottom,
                               lab_hjust = 1.7,
                               lab_vjust = 1.44)
 
+p5_bottom <- p5_bottom + 
+    theme(axis.text.x = element_text(size = 10,
+                                     colour = "black"))
 
 # Combine and save ----------------------------------------------------------------
 
@@ -360,19 +365,19 @@ combi <-
     draw_plot_label(label = paste("(",letters[1:(length(q1_som_results)-2)],")",sep=""),
                     x = c(
                         # 0.075, 0.572,
-                        0.075, 0.572,
-                        0.075, 0.572,
-                        0.075, 0.573,
-                        0.078, 0.383, 0.687
+                        0.080, 0.580,
+                        0.080, 0.580,
+                        0.080, 0.582,
+                        0.087, 0.390, 0.695
                     ),
                     y = c(
                         # 0.871, 0.871,
-                        0.840, 0.840,
-                        0.620, 0.620,
-                        0.399, 0.399,
-                        0.070, 0.070, 0.070
+                        rep(0.836, 2),
+                        rep(0.614, 2),
+                        rep(0.392, 2),
+                        rep(0.075, 3)
                     ),
-                    size= 8)+
+                    size= lab_size)+
     draw_plot_label(label = c(
         # "**"  , "*",
         "**" , "*" ,

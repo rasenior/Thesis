@@ -44,6 +44,8 @@ rm(list = ls()[!(ls() %in% c(day_df,night_df,"day_df","night_df",
 source(file.path("C:/Users",user,
                  "Google Drive/Programming/R/functions/mround.R"))
 source("scripts/plotting_fn.R")
+# Define font sizes
+lab_size <- 7
 
 # Prepare data ------------------------------------------------------------
 
@@ -193,10 +195,10 @@ combi <-
     draw_plot(p, x = 0, y = 0, width = 1, height = 1) +
     draw_plot_label(label = c("(a)", "(b)", "(c)", 
                               "(d)", "(e)", "(f)"),
-                    x = c(0.075, 0.368, 0.66,
-                          0.075, 0.368, 0.663),
-                    y = c(rep(0.79, 3), rep(0.445, 3)),
-                    size = 7)
+                    x = c(0.083, 0.372, 0.662,
+                          0.083, 0.372, 0.664),
+                    y = c(rep(0.78, 3), rep(0.445, 3)),
+                    size = lab_size)
 
 ggsave(plot = combi, filename = "figs/test.png", 
        dpi = 200, width = 16.6/2.54, height = 9/2.54, units = "in")
