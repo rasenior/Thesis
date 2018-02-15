@@ -2,9 +2,6 @@ rm(list=ls())
 
 user<-Sys.info()[7]
 
-#Define working directory
-baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
-
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
                "#0072B2", "#D55E00", "#CC79A7")
@@ -28,8 +25,8 @@ text_size <- 8
 title_size <- 10
 
 # Read in data
-load(file.path(baseDir,"sampleSizes_day_2016-05-27.Rds"))
-load(file.path(baseDir,"dayDat_2016-06-08.Rds"))
+load("data/ch2/sampleSizes_day_2016-05-27.Rds")
+load("data/ch2/dayDat_2016-06-08.Rds")
 
 ###############################################################################
 ###### Look at some exploratory figures
@@ -116,4 +113,4 @@ p1<-ggplot()+
                       guide=guide_legend(order=1))+
   facet_wrap(~studyID)
 
-save(p1, shades, textCol, file = "figs/figA.1.Rdata")
+# save(p1, shades, textCol, file = "figs/figA.1.Rdata")
