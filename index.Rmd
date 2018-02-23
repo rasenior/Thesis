@@ -13,7 +13,7 @@ lof: True
 lot: True
 site: bookdown::bookdown_site
 documentclass: report
-bibliography: [thesis-refs.bib, funky-refs.bib]
+bibliography: [refs.bib, funky-refs.bib]
 csl: C:/Users/Rebecca/Google Drive/Referencing/Citation styles/elsevier-harvard.csl
 biblio-style: apalike
 link-citations: yes
@@ -44,15 +44,15 @@ This chapter has been published as:
 
 **Senior RA, Hill JK, González del Pliego P, Goode LK, Edwards DP. A pantropical analysis of the impacts of forest degradation and conversion on local temperature. Ecology and Evolution. 2017;7:7897–7908.**
 
-This chapter is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S., D.P.E., and J.K.H conceived the study. R.A.S., P.G. and L.K.G. collated the data. R.A.S. performed statistical analyses. R.A.S. wrote the manuscript, with substantial editorial contributions from D.P.E. and J.K.H.
+This chapter is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S., D.P.E., and J.K.H conceived the study. R.A.S., P.G. and L.K.G. collated the data. R.A.S. performed statistical analyses. R.A.S. wrote the manuscript, with contributions from D.P.E. and J.K.H.
 
 **Chapter 4**
 
 This chapter has been published as:
 
-**Senior RA, Hill JK, Benedick S, Edwards DP. Tropical forests are thermally buffered despite intensive selective logging. Global Change Biology. 2017;00:1–12.**
+**Senior RA, Hill JK, Benedick S, Edwards DP. Tropical forests are thermally buffered despite intensive selective logging. Global Change Biology. 2018;24:1267–1278.**
 
-This chapter is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S., D.P.E., and J.K.H conceived the study. R.A.S. collected the data, with  S.B. providing logistical support. R.A.S. performed all statistical analyses and wrote the manuscript, with substantial editorial contributions from D.P.E. and J.K.H.
+This chapter is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S., D.P.E., and J.K.H conceived the study. R.A.S. collected the data, with  S.B. providing logistical support. R.A.S. performed all statistical analyses and wrote the manuscript, with contributions from D.P.E. and J.K.H.
 
 \pagebreak
 
