@@ -23,6 +23,105 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 \pagebreak
 
+
+<!-- # PLAN # -->
+
+<!-- ## Threats to biodiversity -->
+
+<!-- * Global extinction crisis, caused by humans -->
+<!--     * Stats on number of species lost compared to past -->
+<!-- * Main ways in which humans drive extinction -->
+<!--     * Land-use change, climate change, pollution, over-exploitation and invasive species -->
+<!-- * Why extinction matters  -->
+<!--     * Intrinsic value -->
+<!--     * Extrinsic value (ecosystem services) -->
+<!--     * Resilience -->
+<!-- * Why the tropics are particularly important -->
+<!--     * Harbour most of the world's terrestrial biodiversity -->
+<!--     * Many species yet to be discovered -->
+<!--     * Remaining pristine habitat, on which a disproportionate number of species depend -->
+<!-- * -> important to understand how biodiversity responds to human impacts, and how we can support adaptive responses to prevent extinction -->
+
+<!-- ## Land-use change in the tropics -->
+
+<!-- * Tropics is undergoing a huge amount of land-use change, which historically was concentrated more in temperate regions -->
+
+<!-- ### Forest conversion -->
+
+<!-- * Required primarily for agriculture -->
+<!-- * Devastating loss of habitat, particularly in SE Asia and Amazon -->
+<!-- * Greenhouse gas emission -->
+<!-- * Secondary impacts (roads, edge effects, fragmentation) -->
+
+<!-- ### Forest degradation -->
+
+<!-- * Includes fragmentation and edge effects (see above), as well as selective logging -->
+<!-- * Selective logging more extensive than conversion, esp. in SE Asia -->
+<!-- * These forests still retain conservation value, so part of a pragmatic conservation approach is maximising their ability to sustain biodiversity under additional threats e.g. climate change -->
+
+<!-- ## Climate change in the tropics -->
+
+<!-- ### Vulnerability of tropical species -->
+
+<!-- * Long periods of climatic stability in the tropics, with little seasonality in temperature -->
+<!--     * Earliest appearance of novel climate -->
+<!--     * Tropical species are likely to be less tolerant of temperature change -->
+<!-- * Globally, organisms can avoid extinction under climate change by adapting in situ or shifting their range -->
+
+<!-- ### In situ adaptation -->
+
+<!-- * Includes physiological platicity, genetic adaptation and behaviour -->
+<!-- * Behaviour is often overlooked, perhaps because it tends to act on a much shorter timescale than seems relevant to the pace of climate change -->
+<!--     * But short-term impacts of long-term climate change can be very important -> changes to climate distribution -->
+<!--     * Thus, day-to-day behavioural strategies for coping with suboptimal temperatures can have long-term implications for population viability -->
+<!-- * Importance of microclimates and microhabitats (set scene for chapters 2 and 4) -->
+<!-- * Improvements in technology inc. thermal cameras and dataloggers (set scene for chapter 3) -->
+
+<!-- ### Range shifts -->
+
+<!-- * Within and between generations, many species may shift their ranges -->
+<!--     * This can happen as well as in situ adaptation, or because such adaptation is difficult and selection tends to favour individuals that simply remove themselves from novel, suboptimal conditions -->
+<!-- * Prevalence globally and tropically of range-shifting as a response to climate change -->
+<!-- * Climate gradients: latitudinal, elevational and vertical -->
+<!-- * Factors influencing likelihood of range shifts: -->
+<!--     * Availability of target habitat -->
+<!--     * Accessbility of taget habitat -->
+<!--     * Ecological traits of the focal species -->
+<!-- * Many studies focus on availability of climate analogues, or present day connectedness of natural habitat, without considering the two things simultaenously (set scene for chapter 5) -->
+
+<!-- ## Thesis aims and rationale -->
+
+<!-- 1. Investigate the potential for land-use change to impact microclimates and microhabitats, and hence the subsequent impacts on: -->
+<!--     * The baseline of local climate change that global climate change is projected onto -->
+<!--     * The potential for thermal buffering as an adaptive response -->
+<!-- 2. Investigate the potential for land-use change to impact range shifts under climate change -->
+
+<!-- * Focus on the tropics -->
+<!-- * First use a literature review to collect local site-level temperature data in different land-use types across the tropics -->
+<!-- * Then consider temperature and temperature variation at an even finer scale, using a field study in Borneo -->
+<!-- * Develop methodology and software to utilise thermal images as a tool for assessing thermal heterogeneity -->
+<!-- * Finally, use pantropical forest cover and climate datasets to consider how recent forest loss has impacted species' ability to track climate change by shifting their ranges -->
+
+<!-- The specific objectives of the main data chapters are outlined below: -->
+
+<!-- ### Chapter 2 -- A pantropical analysis of the impacts of forest degradation and conversion on local temperature -->
+
+<!-- * The many studies considering impacts of climate change hint at the importance of temperature for species' ecology -->
+<!-- * When considering interactions between land-use change and global climate change, most studies tend to focus on how the former may cause or hinder adaptation to the latter -->
+<!-- * This chapter focused on how degradation and conversion of tropical forests directly causes climate change, on a fine spatiotemporal scale -->
+<!-- * Implications for the impact of further warming under global climate change, but suggests that degraded forests and microhabitats may be able to buffer species from further change -->
+
+<!-- ### Chapter 3 -- A framework for quantifying fine-scale thermal heterogeneity in the field -->
+
+
+
+<!-- ### Chapter 4 -- Tropical forests are thermally buffered despite intensive selective logging -->
+
+
+
+<!-- ### Chapter 5 -- The impact of recent forest cover change on climate connectivity in the tropics -->
+
+
 ## Threats to biodiversity
 
 Throughout the Anthropocene, humans have faced crises. In 2000 the United Nations developed eight goals for 2015, known as the Millennium Development Goals, one of which was to 'ensure environmental sustainability' [@united_nations_united_2014]. Amongst other things, this goal is in recognition of the current extinction crisis. Recent extinction rates far exceed their pre-human levels [@pimm_future_1995], and are close to constituting the 6th mass extinction event [@barnosky_has_2011].
@@ -33,7 +132,7 @@ Having diagnosed the threats for biodiversity, we cannot assuage them until we i
 
 Given the importance of the underlying drivers of climate change and land-use change for the persistence of the human population, it is unrealistic to expect these pressures to cease. One option is to mitigate change by stemming human population growth and increasing the efficiency of resource acquisition [@godfray_food_2010]. 
 
-Alternatively, the biodiversity crisis could be alleviated through a better understanding of how and why organisms respond to human impacts. In this way, we could modify our actions to minimise impact, and also facilitate organism responses that permit persistence through change. This is the step that I will address in the following review. Initially I will focus on organism responses to climate change, given the increasing importance of this pressure in the future [@sala_global_2000]. However, neither the impacts of climate change nor land-use change can be fully understood in isolation; the synergies between the two pressures are thought to be extensive, but generally poorly understood [@brodie_climate_2012; @mantyka-pringle_interactions_2012]. In the tropics forest degradation is some 20 times more pervasive than deforestation [@asner_contemporary_2009], yet there is particularly little discussion of how habitat degradation might interact with climate change. This is the key unexplored area that I will move on to discuss, before finally outlining my PhD framework. 
+Alternatively, the biodiversity crisis could be alleviated through a better understanding of how and why organisms respond to human impacts. In this way, we could modify our actions to minimise impact, and also facilitate organism responses that permit persistence through change. This is the step that I will address in the following review. Initially I will focus on organism responses to climate change, given the increasing importance of this pressure in the future [@sala_global_2000]. However, neither the imInvpacts of climate change nor land-use change can be fully understood in isolation; the synergies between the two pressures are thought to be extensive, but generally poorly understood [@brodie_climate_2012; @mantyka-pringle_interactions_2012]. In the tropics forest degradation is some 20 times more pervasive than deforestation [@asner_contemporary_2009], yet there is particularly little discussion of how habitat degradation might interact with climate change. This is the key unexplored area that I will move on to discuss, before finally outlining my PhD framework. 
 
 ## Responses to climate change
 
@@ -106,20 +205,6 @@ The impact of habitat degradation on species' ability to persist under climate c
 
 'Microhabitats' are fine-scale (mm to cm) features within a habitat, including leaf litter, deadwood, tree holes and epiphytes within rainforest habitats. Each of these features will have its own 'microclimate' which may be different from the macroclimate that acts at the level of the whole habitat (m to ha). When microhabitat features offer a more desirable microclimate than the macroclimate, the features can be referred to as 'thermal microrefugia' ('microrefugia' henceforth).
 
-### Chapter 2 -- A pantropical analysis of the impacts of forest degradation and conversion on local temperature
 
-SUMMARY
-
-### Chapter 3 -- A framework for quantifying fine-scale thermal heterogeneity in the field
-
-SUMMARY
-
-### Chapter 4 -- Tropical forests are thermally buffered despite intensive selective logging
-
-SUMMARY
-
-### Chapter 5 -- The impact of recent forest cover change on climate connectivity in the tropics
-
-SUMMARY
 
 
