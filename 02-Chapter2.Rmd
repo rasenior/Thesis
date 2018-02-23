@@ -11,10 +11,13 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=15cm]{pics/Bornean_horned_frog.jpg}
+\includegraphics[width=13cm]{pics/Bornean_horned_frog.jpg}
 \caption*{Bornean horned frog (\textit{Megophrys nasuta}).}
 \end{figure}
 
+This chapter has been published as:
+
+**Senior RA, Hill JK, González del Pliego P, Goode LK, Edwards DP. A pantropical analysis of the impacts of forest degradation and conversion on local temperature. Ecology and Evolution. 2017;7:7897–7908.**
 
 \pagebreak
 
@@ -244,11 +247,13 @@ By collating site-level data reported from the literature, we were able to achie
 
 Our study confirms that tropical land-use change leads to warming at a local scale (< 1 ha) across the tropics, of a magnitude comparable to that predicted from global climate change. We find pantropical evidence that the effects of land-use change on temperature are ameliorated below-ground, and absent in degraded forests. Many studies collect site-level climate data, and through sharing of these data and collaboration between scientific disciplines, there is much that can be done to integrate theoretical and empirical understanding of the processes that govern climate at different scales. This will greatly advance our knowledge of potential synergies between two of the greatest drivers of biodiversity loss -- land-use change and climate change -- and highlight mitigating factors, such as thermal microrefugia, which could be a pragmatic focus for conservation management.
 
-## Data and R code
+## Data availability and R code
 
 The collated dataset can be found on Dryad (https://doi.org/10.5061/dryad.g4000). Note that in many cases these data were aggregated for analyses. For finer resolution data please refer to the original data sources. R functions used to estimate time of sunset and sunrise can be downloaded from GitHub (https://github.com/rasenior/SolarCalc).
 
+## Acknowledgements
 
+We thank the following people for providing temperature data: Julieta Benítez Malvido, Stephen Hardwick, Karen Holl, Thomas Ibanez, and Bráulio Santos. A considerable amount of data was provided by the Stability of Altered Forest Ecosystem (SAFE) Project, for which we acknowledge their primary sponsor: the Sime Darby Foundation. We thank Tim Newbold for statistical advice. R.A.S. was funded by a NERC studentship through the ACCE (Adapting to the Challenges of a Changing Environment) Doctoral Training Partnership (Grant No. NE/L002450/1); P.G. was supported by CONACyT, Scholarship 359063. We also thank two anonymous referees for their comments, which greatly improved the manuscript.
 
 
 

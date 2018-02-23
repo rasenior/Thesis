@@ -123,9 +123,13 @@ qs4_hole <- read.csv(file.path(pred_dir,"figS4_sig_effects.csv"))
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=15cm]{pics/Bornean_tree_hole_frog.jpg}
+\includegraphics[width=13cm]{pics/Bornean_tree_hole_frog.jpg}
 \caption*{Bornean tree hole frog (\textit{Metaphrynella sundana}).}
 \end{figure}
+
+This chapter has been published as:
+
+**Senior RA, Hill JK, Benedick S, Edwards DP. Tropical forests are thermally buffered despite intensive selective logging. Global Change Biology. 2018;24:1267–1278.**
 
 \pagebreak
 
@@ -145,7 +149,7 @@ The most informative fine-scale temperature data are derived from point measurem
 
 A key novel question that we address in this paper is whether vegetation changes following commercial selective logging reduce the potential for thermal buffering. We focused on cool microclimates in the understorey only (climate at mm to m scale that is cooler than the macroclimate and located within ~2 m of the forest floor). Microclimates on the surface of the forest floor were captured by a thermal camera, while dataloggers were used to capture microclimates within cool understorey microhabitats: leaf litter, tree holes and deadwood [@scheffers_microhabitats_2014-1;  @scheffers_microhabitats_2014; @gonzalez_del_pliego_thermally_2016]. We determined thermal buffering potential according to: (1) the microclimate temperature relative to that of the macroclimate; (2) the daily variation in microclimate temperature; and (3) the availability of microclimates in space. The first two are roughly measures of microclimate 'quality' – they examine how effectively an organism will be buffered from macroclimate warming, assuming it moves into the microclimate. The third captures the likelihood that organisms can locate and move into suitable microclimates, according to the occurrence, distribution and thermal diversity of microclimates within the habitat [@sears_world_2011; @caillon_warming_2014]. We predicted that logged forests would be structurally distinct from primary forest, and we tested the hypothesis that this would lead to reduced thermal buffering potential and, subsequently, impaired ability of temperature-sensitive species to respond *in situ* to excessively high temperatures in the wider macroclimate.
 
-## Materials and Methods
+## Methods
 ### Study area
 
 Sampling took place in in an extensive area of contiguous forest in Sabah (Malaysian Borneo; \autoref{fig:fig-4-1}a). This area represents over 10,000 km^2^ of lowland dipterocarp forest, comprising production forest and areas of undisturbed protected forest [@reynolds_changes_2011]. In this study, we sampled sites in forest that had been commercially selectively logged twice (Ulu Segama-Malua Forest Reserve, 4&deg;57&rsquo;42.8&rdquo;N, 117&deg;56&rsquo;51.7&rdquo;E). The area was first logged from 1987-1991, using tractors and high-lead extraction techniques to harvest commercial trees (those in the family Dipterocarpaceae) with stems > 0.6 m diameter at breast height (D.B.H.), and yielding ~113 m^3^ of timber per hectare [@fisher_cost-effective_2011; @edwards_selective-logging_2014]. Between 2001 and 2007, the area was re-logged and the minimum harvested tree diameter reduced to > 0.4 m D.B.H., yielding an additional 31 m^3^/ha of timber [@fisher_cost-effective_2011]. Thus, we sampled sites that had been heavily disturbed about 10 years prior to the study, at which point 67% of the forest had an average density of < 10 trees per hectare with a D.B.H. greater than 40 cm [@reynolds_changes_2011]. The area has been recovering naturally since logging operations ceased. Control sites were located in undisturbed, protected primary forest (Danum Valley Conservation Area; 4&deg;57&rsquo;45.2&rdquo;N, 117&deg;48&rsquo;10.4&rdquo;E).
@@ -286,15 +290,12 @@ While thermal cameras are an important addition to the toolbox of microclimate r
 
 The ability of selectively logged tropical forests to retain current levels of biodiversity will critically depend on their ability to protect species from the impacts of increasingly severe climate change. As average temperatures increase over this century, so too will the intensity and frequency of extreme climatic events. Thermal buffering will likely be crucial in allowing species to move locally to avoid suboptimal climates. We sampled in some of the most intensively logged forest in the tropics, during abnormally hot and dry conditions of a severe ENSO event; it is highly unlikely that our study would have failed to detect any appreciable thermal differences between primary and logged forests had they existed. Regardless of whether commercially selectively logged forests remain biologically or structurally distinctive from undisturbed forests, this study shows for the first time that they are functionally equivalent in the provisioning of cool microclimates, and underscores their vital role in conservation both now and under future climate warming.
 
-## Acknowledgements
-Thanks to staff at Danum Valley Field Centre for logistical support; and Azlin Bin Sailim, Jessica Olid and Chloe Walker-Trivett for field assistance. R.A.S. was funded by a NERC studentship through the ACCE (Adapting to the Challenges of a Changing Environment) Doctoral Training Partnership (Grant No. NE/L002450/1).
-
 ## Data availability
 
 Data available from the University of Sheffield Online Research Data repository (https://doi.org/10.15131/shef.data.5414629).
 
-
-
+## Acknowledgements
+Thanks to staff at Danum Valley Field Centre for logistical support; and Azlin Bin Sailim, Jessica Olid and Chloe Walker-Trivett for field assistance. R.A.S. was funded by a NERC studentship through the ACCE (Adapting to the Challenges of a Changing Environment) Doctoral Training Partnership (Grant No. NE/L002450/1).
 
 
 
