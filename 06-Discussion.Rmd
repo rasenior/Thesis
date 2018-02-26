@@ -5,3 +5,68 @@
 \includegraphics[width=13cm]{pics/Frilled_tree_frog.jpg}
 \caption*{Frilled tree frog (\textit{Kurixalus appendiculatus}).}
 \end{figure}
+
+## Summary of thesis findings
+
+* Aims of thesis were:
+    1. Investigate the potential for land-use change to impact microclimates and microhabitats, and hence the subsequent impacts on:
+        * The baseline of local climate change that global climate change is projected onto
+        * The potential for thermal buffering as an adaptive response
+    2. Investigate the potential for land-use change to impact range shifts under climate change
+
+**Chapter 2 -- A pantropical analysis of the impacts of forest degradation and conversion on local temperature** 
+
+** Main objectives:**
+    1.
+    2.
+    3.
+* Assessed how degradation and conversion of tropical forests directly impacts temperature on a fine spatiotemporal scale
+* Implications for the impact of further warming under global climate change, but suggests that degraded forests and microhabitats may be able to buffer species from further change
+
+**Chapter 3 -- A framework for quantifying fine-scale thermal heterogeneity in the field** 
+
+** Main objectives:**
+    1.
+    2.
+    3.
+* Developed software and metrics for analysing thermal images
+* Enables other researchers to more easily utilise thermography as a technique for researching thermal regimes, which are vitally important to species' ecology
+
+**Chapter 4 -- Tropical forests are thermally buffered despite intensive selective logging** 
+** Main objectives:**
+    1.
+    2.
+    3.
+* Compared fine-scale temperature in primary and selectively logged forests of Borneo, using field data collected with dataloggers and a thermal camera
+* Found that despite clear structural differences between these forest types, there was very little temperature variation which suggests rapid thermal recovery and underscores the importance of logged forests for biodiversity both now and under future climate change
+
+**Chapter 5 -- The impact of recent forest cover change on climate connectivity in the tropics**
+
+** Main objectives:**
+    1.
+    2.
+    3.
+* Combined global tree cover and climate datasets to quantify, pantropically, the current physical potential for species to reach climate analogues through near-continuous forest, and the extent to which this has been affected by recent forest cover change
+* Found that current levels of climate connectivity are generally very poor, particularly in lowland regions with low forest cover and on mountain summits, hence many tropical species will struggle to reach analogous climate given current levels of forest cover
+
+## Climate at the fine scale
+
+* Chapter 2 highlights that climate at the very coarse scale can mask important patterns occurring at a local scale
+    * Land-use change has a direct impact on local climate
+    * Suggestion that below-ground and within degraded forests species may avoid direct warming as a result of land-use change
+* Chapter 3 establishes a framework and software to assess temperature and temperature variation at an even finer spatial scale, using thermography
+    * Importance of very fine spatial scale
+    * Importance of surface temperature
+    * Importance of spatial temperature variation
+* Chapter 4 applies the framework of Chapter 3, alongside traditional dataloggers similar to those used in much of the data collected for Chapter 2, to further explore thermal regimes in selectively logged forests of Borneo
+    * Confirm that local temperature is unaffected by selective logging, but so too is the fine-scale temperature variation that is vital for thermal buffering by animasls
+
+## Climate at the coarse scale
+
+* Fine-scale climate is important for the day-to-day responses of organisms to suboptimal temperatures, but over decades it is highly likely that many species will respond to coarse-scale climate change by shifting their ranges
+    * This could happen alongside in situ adaptation, which could provide a buffer and allow more time for species to reach new target habitat
+    * It could also be that in situ adaptation is not possible or is insufficient, for example in converted lands where the local temperature has increased to a level way beyond the thermal niche of forest specialists
+* Chapter 4 considers the extent to which land-use change impacts landscape permeability, and the subsequent potential for species to reach analgous climates through natural habitat
+
+
+
