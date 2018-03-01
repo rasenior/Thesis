@@ -5,7 +5,6 @@
 \pagenumbering{arabic}
 
 ```{r setup, include=FALSE}
-rm(list=ls())
 knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALSE, 
                       fig.width = 16.6/2.54, fig.height = 10/2.54, dpi = 800, 
                       fig.path = "./output/")
