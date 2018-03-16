@@ -27,49 +27,62 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 ## Threats to biodiversity
 
-* Global extinction crisis, caused by humans
-    * Stats on number of species lost compared to past
+* Global extinction crisis, caused by humans [@barnosky_has_2011]
+    * Recent rates if extinction are between 100 and 1000 times greater than pre-human levels [@barnosky_has_2011; @pimm_future_1995]
+    * Has not slowed despite increasing awareness and action [@butchart_globall_2010]
 * Main ways in which humans drive extinction
-    * Land-use change, climate change, pollution, over-exploitation and invasive species
+    * Land-use change, climate change, pollution, over-exploitation and invasive species [@hirsch_global_2010]
+    * Greatest overall threat to terrestrial systems is currently land-use change, climate change is forecast to become increasingly important [@sala_global_2000]
 * Why extinction matters
-    * Intrinsic value
-    * Extrinsic value (ecosystem services)
-    * Resilience
+    * Intrinsic value [@mace_whose_2014]
+    * Extrinsic value (ecosystem services) [@balmford_economic_2002; @constanza_value_1997]
+    * Resilience [@oliver_declining_2015] and planetary boundaries [@rockstrom_safe_2009]
 * Why the tropics are particularly important
-    * Harbour most of the world's terrestrial biodiversity
-    * Many species yet to be discovered
-    * Remaining pristine habitat, on which a disproportionate number of species depend
+    * Harbour most of the world's terrestrial biodiversity [@jenkins_global_2013]
+    * Many species yet to be discovered [REF]
+    * Remaining pristine habitat, on which a disproportionate number of species depend [WILDERNESS AREAS]
 * -> important to understand how biodiversity responds to human impacts, and how we can support adaptive responses to prevent extinction
 
 ## Land-use change in the tropics
 
-* Tropics is undergoing a huge amount of land-use change, which historically was concentrated more in temperate regions
+* Tropics is undergoing a huge amount of land-use change, which historically was concentrated more in temperate regions [@gibbs_tropical_2010; @foley_solutions_2011]
+* Land-use change has driven extensive and severe losses of biodiversity across the planet [@newbold_global_2015]
 
 ### Forest conversion
 
-* Required primarily for agriculture
-* Devastating loss of habitat, particularly in SE Asia and Amazon
-* Greenhouse gas emission
-* Secondary impacts (roads, edge effects, fragmentation)
+* Driven primarily by agriculture [@godfray_food_2010]
+* Devastating loss of habitat, particularly in SE Asia and Amazon [@gibbs_tropical_2010; @hansen_high-resolution_2013]
+* Greenhouse gas emission [@foley_global_2005; [@ipcc_climate_2013]]
+* Secondary impacts (roads, edge effects, fragmentation) [@laurance_impacts_2009; @murcia_edge_1995; @pfeifer_creation_2017; @ewers_fragmentation_2013]
 
 ### Forest degradation
 
-* Includes fragmentation and edge effects (see above), as well as selective logging
-* Selective logging more extensive than conversion, esp. in SE Asia
-* These forests still retain conservation value, so part of a pragmatic conservation approach is maximising their ability to sustain biodiversity under additional threats e.g. climate change
+* Includes fragmentation and edge effects (see above), as well as selective logging 
+* Selective logging more extensive than conversion, esp. in SE Asia [@hansen_humid_2008; @asner_contemporary_2009]
+* These forests still retain conservation value [@edwards_degraded_2011; @gibson_primary_2011; @edwards_biodiversity_2013], so part of a pragmatic conservation approach is maximising their ability to sustain biodiversity under additional threats e.g. climate change [@maxwell_biodiversity_2016]
 
 ## Climate change in the tropics
 
-### Vulnerability of tropical species
-
-* Long periods of climatic stability in the tropics, with little seasonality in temperature
-    * Earliest appearance of novel climate
-    * Tropical species are likely to be less tolerant of temperature change
-* Globally, organisms can avoid extinction under climate change by adapting in situ or shifting their range
+* Debate about vulnerability of tropical species
+* Vulnerability is about both exposure (extrinsic factors) and sensitivity (intrinsic factors) [@williams_towards_2008]
+* Exposure and senstivity interact to determine whether species _need_ to resist or recover from perturbations, as well as their _ability_ to do so
+* It is likely that most tropical species will need to respond to the effects of climate change in some way
+    * Exposure in terms of absolute change will be less than elsewhere [@corlett_impacts_2011; @corlett_climate_2012; @ipcc_climate_2013], but long periods of climatic stability mean that actually exposure in terms of relative change will likely be greatest in the tropics, with the earliest appearance of novel climates [@mora_projected_2013]
+    * Following limited temperature variation -- over space (shallow latitudinal temperature gradients [@colwell_global_2008]), and time (geologic and seasonally [@williams_towards_2008]) -- tropical species tend to have narrow thermal limits [@deutsch_impacts_2008; @tewksbury_putting_2008; @khaliq_global_2014], and already operate near the upper limits of these [REF]
+* Ability to respond depends on ability to either adapt in situ, or move
 
 ### In situ adaptation
 
-* Includes physiological platicity, genetic adaptation and behaviour
+* Includes genetic adaptation, physiological platicity, and behaviour
+* Evidence for genetic adaptation is limited
+    * Many of the tropical species of particular global conservation interest are highly specialised; specialisation tends to reduce variation in heritable traits and therefore decreases potential for genetic adaptation [@williams_towards_2008]
+    * Tends to be limited to selection for traits that underlie adaptive responses: namely, physiological plasticity or dispersal ability
+* Evidence for physiological plasticity is more common, but still tends to be limited to phenological changes (and those in temperate regions) rather than thermal tolerance directly
+* For animals, behaviour is a very common response to suboptimal climatic conditions, since it is employed on a regular basis to respond to changes within days and years
+
+
+### In situ adaptation
+
 * Behaviour is often overlooked, perhaps because it tends to act on a much shorter timescale than seems relevant to the pace of climate change
     * But short-term impacts of long-term climate change can be very important -> changes to climate distribution
     * Thus, day-to-day behavioural strategies for coping with suboptimal temperatures can have long-term implications for population viability
