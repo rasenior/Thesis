@@ -1,0 +1,58 @@
+---
+output:
+  bookdown::pdf_book:
+    keep_tex: yes
+mainfont: Calibri
+papersize: a4
+geometry: left=4cm,right=2.5cm,top=2.5cm,bottom=2.5cm
+fontsize: 12pt
+linestretch: 1.5
+toc-depth: 1
+secnumdepth: 1
+lof: True
+lot: True
+site: bookdown::bookdown_site
+documentclass: report
+bibliography: [refs.bib, funky-refs.bib]
+csl: C:/Users/Rebecca/Google Drive/Referencing/Citation styles/elsevier-harvard.csl
+biblio-style: apalike
+link-citations: yes
+github-repo: rasenior/Thesis
+twitter-handle: _rasenior
+description: "My PhD thesis in Bookdown."
+---
+
+# Abstract {-}
+
+Stuff about tropical forests being important and blah blah blah.
+
+\pagebreak
+
+# Acknowledgements {-}
+
+Thanks everyone for being alright.
+
+\pagebreak
+
+# Author's declaration {-}
+
+The research presented in this thesis is my own. This thesis has not been submitted for any other award at this or any other institution. In addition to myself (R.A.S.) there were several collaborators in this research: David Edwards (D.P.E.), Jane Hill (J.K.H.), Pamela González del Pliego (P.G.), Laurel Goode (L.K.G.) and Suzan Benedick (S.B.).
+
+**Chapter 2**
+
+This chapter has been published as:
+
+**Senior RA, Hill JK, González del Pliego P, Goode LK, Edwards DP. A pantropical analysis of the impacts of forest degradation and conversion on local temperature. Ecology and Evolution. 2017;7:7897–7908.**
+
+This chapter is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S., D.P.E., and J.K.H conceived the study. R.A.S., P.G. and L.K.G. collated the data. R.A.S. performed statistical analyses. R.A.S. wrote the manuscript, with contributions from D.P.E. and J.K.H.
+
+**Chapter 4**
+
+This chapter has been published as:
+
+**Senior RA, Hill JK, Benedick S, Edwards DP. Tropical forests are thermally buffered despite intensive selective logging. Global Change Biology. 2018;24:1267–1278.**
+
+This chapter is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S., D.P.E., and J.K.H conceived the study. R.A.S. collected the data, with  S.B. providing logistical support. R.A.S. performed all statistical analyses and wrote the manuscript, with contributions from D.P.E. and J.K.H.
+
+\pagebreak
+

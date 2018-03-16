@@ -1,0 +1,167 @@
+
+
+
+# A framework for quantifying fine-scale thermal heterogeneity in the field
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=15cm]{pics/Themal-image1.png}
+\caption*{Thermal image of rainforest floor.}
+\end{figure}
+
+\pagebreak
+
+## Abstract
+
+Variation in temperature at a fine spatial scale creates critically important microclimates for many organisms. Quantifying thermal heterogeneity at this scale is challenging, and has so far been largely restricted to the use of dataloggers. Thermography is becoming an increasingly affordable and viable alternative. A single thermal photo contains thousands of spatially-explicit surface temperature measurements, and is therefore ideal for rapidly assessing fine-scale spatial temperature variation, including the surfaces within a few cms of which most organisms actually experience temperature. Both the technology and data have been underexploited in terrestrial ecology, in part because there is limited technical support for processing and interpreting these data. Here we present a simple R package for batch extracting and converting data from FLIR thermal cameras, and for quantifying thermal heterogeneity in gridded temperature data more generally. We apply this framework to investigate how forest structure affects thermal heterogeneity in primary forests in Borneo, using both (1) fine-scale FLIR thermal images collected in the field, and (2) remotely-sensed thermal data. Our various metrics of thermal heterogeneity show.... Our framework simplifies the process of getting data into a usable format, and demonstrates that... The importance of microclimates to species' ecology necessitates an efficient methodology for sampling thermal heterogeneity at the relevant spatial scale; streamlining data processing and analysis -- as we do here -- is a major part of this.
+
+## Introduction
+
+* A key mechanism by which organisms will respond to future climate change is adaptation *in situ* [@hannah_fine-grain_2014]. 
+* Many organisms in structurally complex tropical rainforests respond to extremes of heat by exploiting fine-scale (mm to m) thermal heterogeneity [@scheffers_microhabitats_2014; @gonzalez_del_pliego_thermally_2016]. 
+* The ability of many tropical organisms to adaptively respond to climate change is therefore critically dependent on variation in temperature at this scale.
+* Previously, fine-scale thermal heterogeneity was captured using temperature dataloggers. Dataloggers suspended in the understorey record air temperature that has been equilibrated by the movement of air masses, and thus represents forest temperature at a local scale [m to ha; @scheffers_microhabitats_2014; @gonzalez_del_pliego_thermally_2016]. Dataloggers placed inside microhabitats -- such as tree holes and epiphytes -- record air temperature at the finest spatial scale (mm to cm), and we know from these studies that the cool microclimates inside these microhabitats are able to thermally buffer inhabitant frogs and lizards from temperature change at a local scale.
+* The use of temperature dataloggers has clearly been instrumental in advancing this field. However, dataloggers can only record the air temperature in their immediate vicinity, and must therefore be highly replicated in space (and in a variety of microhabitats) to adequately quantify spatial temperature variation. The number of dataloggers available to the user imposes a financial and logistical limit on the spatial representativeness of sampling. Furthermore, the vast majority of terrestrial organisms are very small, flat, or thigmothermic (thermoregulate via direct contact with a surface), and therefore surface temperature is often more relevant than air temperature [e.g. @kaspari_thermal_2015].
+* Technological advances mean that the use of thermal cameras is increasingly affordable and practical [@scheffers_extreme_2017; @faye_toolbox_2016]. 
+* Thermal photos are ideal for capturing fine-scale surface temperature in tropical rainforests. Each photo provides thousands of spatially-explicit temperature measurements at the mm-cm scale. However, both the technology itself and the data provided have thus far been underexploited. Owing to the novelty of the methodology, there is little guidance for what metrics ought to be calculated and how.
+* @faye_toolbox_2016 provide an excellent starting point from which to formulate such a framework. Using standard RGB images in combination with thermal images, collected using an unmanned aerial vehicle (UAV), Faye et al. demonstrate how this technology can be used to compare thermal heterogeneity between different surfaces (in this case, bare soil versus crop surface), and suggest metrics that they consider to be most appropriate to capture different facets of thermal heterogeneity.
+* Their toolbox, however, does not immediately facilitate a general assessment of thermal heterogeneity using photos collected in the field. While the use of UAVs in the tropics is indeed becoming more feasible and affordable [@sanchez-azofeifa_twenty-first_2017], for the foreseeable future it is likely that thermography in tropical rainforests will most commonly consist of manually collected thermal photos. 
+* Additionally, while @faye_toolbox_2016 and @scheffers_extreme_2017 provide introductory R scripts to facilitate the processing of thermal photos, there remains little technical support and guidance for ecologists for what is, in reality, an otherwise difficult and time-consuming element of any study seeking to utilise this technology.
+* The development of the `Thermimage` package in R has considerably eased the extraction and conversion of raw data from FLIR thermal cameras, but this package does not directly facilitate batch processing and does not calculate (nor suggest) what metrics are most appropriate to quantify thermal heterogeneity from thermal images.
+* In this study, we introduce a developmental R package -- `thermstats` -- for batch extraction, processing and analysing images from FLIR thermal cameras, extending the functionality of the `Thermimage` package. We outline the utility of our package by comparing metrics of thermal heterogeneity over time and varying forest structure. In addition, we demonstrate that our functions for quantifying thermal heterogeneity can also be applied to other kinds of thermal image, including those at a coarser spatial scale.
+
+## Methods
+
+### Step 1: Data collection
+
+* Key technical considerations for data collection
+    * Environmental parameters:
+        * Atmospheric temperature
+        * Relative humidity
+        * Object distance
+        * Emissivity
+* Camera calibration
+* Format of FLIR thermal images (e.g. for a model E40: 160 x 120 pixels)
+
+### Step 2: Data extraction
+
+* Requires ExifTool installation (freely available: https://sno.phy.queensu.ca/~phil/exiftool/)
+* Batch extract data from thermal jpeg files using  `batch_extract` function in `thermstats`
+    * Batch implementation of `readflirJPG` in `Thermimage` package
+
+### Step 3: Conversion of raw data
+
+* Describe format of the raw data
+* Retrieve camera calibration constants using `flirsettings` in `Thermimage` package
+* Specify environmental parameters (see Step 1)
+* Batch convert raw data to temperature in &deg;C using `batch_convert` in `thermstats`
+    * Batch implementation of `raw2temp` in `Thermimage` package
+  
+### Step 4: Calculate metrics of thermal hetereogeneity
+
+* Function `stats_by_group` in `thermstats` calculates statistics across multiple photos within a specified grouping
+    * Based on the assumption that multiple photos are required at each sampling location to adequately represent spatial variation in temperature...
+    * ...but also works if the photo itself is the unit of replication
+* Calculates summary statistics (specified by the user) across all pixels of all photos within the group, e.g.:
+    * Mean
+    * Standard deviation
+    * Median
+    * Percentiles
+    * Kurtosis and skewness
+    * Diversity indices
+* Identifies hot and cold patches using Getis-Ord local statistic [@getis_local_1996], via function `get_patches`
+    * Implements `localG` function from `spdep` package
+    * Option to return patches as a `SpatialPolygonsDataFrame` and plot using `plot_patches`
+* Calculates spatial statistics of hot and cold patches:
+    * Patch area (number of pixels)
+    * Patch density (number of hot/cold patches per m^2^)
+    * Patch configuration (Aggregation Index of hot/cold patches)
+    
+### Case studies
+  
+1. How does forest structure affect fine-scale thermal heterogeneity?
+    * Expect that more open and less structurally complex forest would be more homogenous (e.g. narrower temperature range, smaller and fewer cold patches that are highly clustered, but more hot patches)
+2. How does time of day affect fine-scale thermal heterogeneity?
+    * Midday is when ambient temperature is highest, and thus heterogeneity is most important for organisms seeking to avoid extremes of heat (especially important under climate change)
+    * Thermal heterogeneity will increase from dawn to midday as hot and cold spots increasingly deviate from the average temperature
+    * The effect will be more extreme in forests with a more complex physical structure, with a greater variety of radiative properties across the components of the surface
+  
+#### Field study
+
+* Description of study area and sampling design for collecting thermal images with FLIR E40 camera in 2014 and 2015
+* Description of forest structure variables
+    * Tree stand basal area and its coefficient of variation
+    * Sapling stand basal area and its coefficient of variation
+    * Proportion of trees that were dipterocarps
+    * % canopy cover
+    * % veg. cover at different strata
+* Statistical analyses
+    * Generalized Additive Mixed Models of each metric of thermal heterogeneity against forest structure and time of day
+    * Random intercept for plot nested in site
+  
+#### Remote study
+
+* Example of applying same metrics to coarser scale thermal data
+* Description of the thermal data and forest structure data
+    * Note that only forest structure is available here, not time of day
+    * Forest structure data from LiDAR, including canopy height and canopy openness
+* Statistical analyses
+    * Linear Models of each metric of thermal heterogeneity against forest structure
+  
+## Results
+
+### Frequency distribution of temperature
+
+* (Response variables include 5^th^ and 95^th^ percentiles, the range between them, Shannon Diversity Index and Simpson Diversity Index) 
+* Impact of time of day and forest structure
+    * Field study only
+* Impact of forest structure
+    * Field *and* remote study
+
+### Spatial distribution of temperature
+
+* (Response variables include patch area, patch density and patch Aggregation Index, for hot and cold patches separately) 
+* Impact of time of day and forest structure
+    * Field study only
+* Impact of forest structure
+    * Field *and* remote study
+* Example field study results:
+    * From dawn onwards the average area of hot patches increased slightly towards a plateau around midday (GAMM, F = 28.02, P < 0.001; \autoref{fig:fig-3-1}a). This was countered by a fall in the density of hot patches (per m^2^), which reached its minimum value at around midday (GAMM, F = 28.02, P < 0.001; \autoref{fig:fig-3-1}b). Forest structure (measured by tree stand basal area; m^2^/ha), however, did not affect hot patch area (GAMM, F = 0.029, P > 0.05) or density  (GAMM, F = 0.101, P > 0.05).
+    
+(ref:cap-3-1) The influence of time and forest structure (measured as tree stand basal area; m^2^/ha) on the average area of hot patches (a) and the density of hot patches (patches/m^2^; b). Points are shaded according to forest structure, from simpler, more open forests in light green to more complex and closed forests in dark green. Fitted values for patch characteristics against time of day are depicted by the black line, with a grey band for the 95% confidence intervals.
+    
+\begin{figure}
+\includegraphics{./output/fig-3-1-1} \caption{(ref:cap-3-1)}(\#fig:fig-3-1)
+\end{figure}
+
+## Discussion
+
+* Our developmental R package offers users a structured and simple way to process thermal photos, tailored towards photos collected using a FLIR camera but with applicability for other kinds of thermal photos
+* There are various metrics of thermal heterogeneity that we consider to be of prime biological importance, including our novel application of hot spot analysis
+    * Frequency distribution statistics describe the overall availability of different temperatures
+        * Important for meeting the thermal requirements of a variety of species
+        * Temperature extremes are particularly important for buffering organisms against temperature change at a coarser spatial scale
+    * Hot spot analysis allows us to identify spatial clusters of temperature extremes, the characteristics of which (e.g. area, density and configuration) determines the ease with which they can be utilised by different organisms
+    * Reiterate that these metrics are not readily captured by existing methodologies i.e. dataloggers
+* Discuss case studies
+    * Compare field and remote study results
+    * Over the course of day, changes in temperature at a coarser scale translate to changes in fine-scale thermal heterogeneity, which we are able to detect using our various metrics, which capture different facets of temperature variation.
+* Discuss the limitations of thermal cameras (best used in combination with dataloggers)
+    * Cannot directly capture sub-surface temperatures (though surface temperature is influenced by sub-surface temperature)
+    * Inferior to dataloggers for capturing temporal variation in temperature
+    * Still somewhat expensive and sensitive to heat and humidity
+    * Ensure that the camera is calibrated and environmental parameters are recorded
+
+### Summary
+
+* Thermal heterogeneity is crucial for thermoregulation by many species, and increasingly so under climate change. Our package and framework provides support and guidance for researchers, enabling them to address key issues in ecology with the help of increasingly efficient technology. 
+* We provide a fully-reproducible example of how our approach can be used to quantify thermal heterogeneity in tropical forests using data at a fine spatial scale, collected using a FLIR thermal camera. We also show how our metrics can be calculated for other kinds of thermal data, such as those collected at a coarser spatial scale.
+
+  
+  
+  
+  
+  
+
+
+
