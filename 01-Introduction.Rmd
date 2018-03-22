@@ -22,20 +22,17 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 \pagebreak
 
-
-# PLAN #
-
 ## Threats to biodiversity
 
 * Global extinction crisis, caused by humans [@barnosky_has_2011]
     * Recent rates if extinction are between 100 and 1000 times greater than pre-human levels [@barnosky_has_2011; @pimm_future_1995]
-    * Has not slowed despite increasing awareness and action [@butchart_globall_2010]
+    * Has not slowed despite increasing awareness and action [@butchart_global_2010]
 * Main ways in which humans drive extinction
     * Land-use change, climate change, pollution, over-exploitation and invasive species [@hirsch_global_2010]
     * Greatest overall threat to terrestrial systems is currently land-use change, climate change is forecast to become increasingly important [@sala_global_2000]
 * Why extinction matters
     * Intrinsic value [@mace_whose_2014]
-    * Extrinsic value (ecosystem services) [@balmford_economic_2002; @constanza_value_1997]
+    * Extrinsic value (ecosystem services) [@balmford_economic_2002; @costanza_value_1997]
     * Resilience [@oliver_declining_2015] and planetary boundaries [@rockstrom_safe_2009]
 * Why the tropics are particularly important
     * Harbour most of the world's terrestrial biodiversity [@jenkins_global_2013]
@@ -52,14 +49,14 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 * Driven primarily by agriculture [@godfray_food_2010]
 * Devastating loss of habitat, particularly in SE Asia and Amazon [@gibbs_tropical_2010; @hansen_high-resolution_2013]
-* Greenhouse gas emission [@foley_global_2005; [@ipcc_climate_2013]]
+* Greenhouse gas emission [@foley_global_2005; @ipcc_climate_2013]
 * Secondary impacts (roads, edge effects, fragmentation) [@laurance_impacts_2009; @murcia_edge_1995; @pfeifer_creation_2017; @ewers_fragmentation_2013]
 
 ### Forest degradation
 
 * Includes fragmentation and edge effects (see above), as well as selective logging 
 * Selective logging more extensive than conversion, esp. in SE Asia [@hansen_humid_2008; @asner_contemporary_2009]
-* These forests still retain conservation value [@edwards_degraded_2011; @gibson_primary_2011; @edwards_biodiversity_2013], so part of a pragmatic conservation approach is maximising their ability to sustain biodiversity under additional threats e.g. climate change [@maxwell_biodiversity_2016]
+* These forests still retain conservation value [@edwards_degraded_2011; @gibson_primary_2011; @edwards_biodiversity_2013], so part of a pragmatic conservation approach is maximising their ability to sustain biodiversity under additional threats e.g. climate change [@maxwell_biodiversity:_2016]
 
 ## Climate change in the tropics
 
