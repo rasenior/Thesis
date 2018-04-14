@@ -17,7 +17,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 This chapter has been published as:
 
-**Senior RA, Hill JK, González del Pliego P, Goode LK, Edwards DP. A pantropical analysis of the impacts of forest degradation and conversion on local temperature. Ecology and Evolution. 2017;7:7897–7908.**
+**Senior RA, Hill JK, González del Pliego P, Goode LK, Edwards DP. A pantropical analysis of the impacts of forest degradation and conversion on local temperature. Ecology and Evolution. 2017;7:7897-7908.**
 
 \pagebreak
 
@@ -170,11 +170,11 @@ The final models of (1) night-time temperature, and temperature extremes (minimu
 
 ### Effect of land-use change
 
-Altered land-use types were substantially hotter than primary forest (LMM, `r "\U03A7"`^2^ = 29.49, df = 4, P < 0.001; \autoref{tab:tab-2-3}; \autoref{fig:fig-2-3}), and the magnitude of the warming broadly matched the intensity of vegetation change associated with each land-use type. Thus, degraded forests in our sample were the most similar to primary forest with an average difference of only +1.1&deg;C, which was not statistically significant based on 95% confidence intervals (\autoref{fig:fig-2-3}). By contrast, converted habitats in our dataset – plantation, pasture and cropland – were, on average, hotter than primary forest by 2.7&deg;C, 6.2&deg;C and 7.6&deg;C, respectively. Results were robust to resampling from studies that provided disproportionate numbers of observations (\autoref{text-A-1}; \autoref{fig:fig-A-3}). 
+Altered land-use types were substantially hotter than primary forest (LMM, `r "\U03A7"`^2^ = 29.49, df = 4, P < 0.001; \autoref{tab:tab-2-3}; \autoref{fig:fig-2-3}), and the magnitude of the warming broadly matched the intensity of vegetation change associated with each land-use type. Thus, degraded forests in our sample were the most similar to primary forest with an average difference of only +1.1&deg;C, which was not statistically significant based on 95% confidence intervals (\autoref{fig:fig-2-3}). By contrast, converted habitats in our dataset - plantation, pasture and cropland - were, on average, hotter than primary forest by 2.7&deg;C, 6.2&deg;C and 7.6&deg;C, respectively. Results were robust to resampling from studies that provided disproportionate numbers of observations (\autoref{text-A-1}; \autoref{fig:fig-A-3}). 
 
 Night-time temperature, and day-time and night-time temperature extremes, showed varying results relative to primary forest in the two altered land-use types for which data were available: degraded forest and plantation. In all cases, sample sizes were very limited and confidence intervals were large, hence results should be interpreted with caution. Night-time temperature in degraded forest and plantation did not differ from that of primary forest (LMM, `r "\U03A7"`^2^ = 2.09, df = 2, P > 0.05; \autoref{fig:fig-A-4}), and neither did night-time minimum temperature (LMM, `r "\U03A7"`^2^ = 2.31, df = 2, P > 0.05; \autoref{fig:fig-A-5}d). Maximum night-time temperature was slightly higher overall in degraded forest and plantation compared to primary forest (LMM, `r "\U03A7"`^2^ = 6.35, df = 2, P < 0.05; \autoref{fig:fig-A-5}c), although pairwise differences were not statistically significant according to 95% confidence intervals. There was no difference between primary forest and degraded forest and plantation in terms of day-time maximum temperature (LMM, `r "\U03A7"`^2^ = 4.87, df = 2, P > 0.05; \autoref{fig:fig-A-5}a), or day-time minimum temperature (LMM, `r "\U03A7"`^2^ = 4.60, df = 2, P > 0.05; \autoref{fig:fig-A-5}b).
 
-(ref:cap-2-3) Model estimates of local day-time temperature in altered land-use types relative to primary forest (depicted by the black dashed line). In panel (a), different symbols denote position relative to the ground (above-or below-ground), and the season is held at the reference level (dry season). In panel (b), different symbols denote the season (dry or wet), and the position relative to the ground is held at the reference level (above-ground). Error bars are 95% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081–2100 compared to the period 1986–2005, as a result of global climate change \citep{ipcc_climate_2013}. Shaded bands indicate 5%–95% ranges from the distribution of the climate model ensemble. Colors represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).
+(ref:cap-2-3) Model estimates of local day-time temperature in altered land-use types relative to primary forest (depicted by the black dashed line). In panel (a), different symbols denote position relative to the ground (above-or below-ground), and the season is held at the reference level (dry season). In panel (b), different symbols denote the season (dry or wet), and the position relative to the ground is held at the reference level (above-ground). Error bars are 95% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081-2100 compared to the period 1986-2005, as a result of global climate change \citep{ipcc_climate_2013}. Shaded bands indicate 5%-95% ranges from the distribution of the climate model ensemble. Colors represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).
 
 ```{r fig-2-3, fig.cap= "(ref:cap-2-3)"}
 readRDS("figs/fig2.3.Rds")
@@ -253,10 +253,7 @@ The collated dataset can be found on Dryad (https://doi.org/10.5061/dryad.g4000)
 
 ## Acknowledgements
 
-We thank the following people for providing temperature data: Julieta Benítez Malvido, Stephen Hardwick, Karen Holl, Thomas Ibanez, and Bráulio Santos. A considerable amount of data was provided by the Stability of Altered Forest Ecosystem (SAFE) Project, for which we acknowledge their primary sponsor: the Sime Darby Foundation. We thank Tim Newbold for statistical advice. R.A.S. was funded by a NERC studentship through the ACCE (Adapting to the Challenges of a Changing Environment) Doctoral Training Partnership (Grant No. NE/L002450/1); P.G. was supported by CONACyT, Scholarship 359063. We also thank two anonymous referees for their comments, which greatly improved the manuscript.
-
-
-
+We thank the following people for providing temperature data: Julieta Ben&iacute;tez Malvido, Stephen Hardwick, Karen Holl, Thomas Ibanez, and Br&aacute;ulio Santos. A considerable amount of data was provided by the Stability of Altered Forest Ecosystem (SAFE) Project, for which we acknowledge their primary sponsor: the Sime Darby Foundation. We thank Tim Newbold for statistical advice. R.A.S. was funded by a NERC studentship through the ACCE (Adapting to the Challenges of a Changing Environment) Doctoral Training Partnership (Grant No. NE/L002450/1); P.G. was supported by CONACyT, Scholarship 359063. We also thank two anonymous referees for their comments, which greatly improved the manuscript.
 
 
 
