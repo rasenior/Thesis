@@ -16,6 +16,10 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 \caption*{Thermal image of rainforest floor.}
 \end{figure}
 
+This chapter is currently in preparation for submission to *Tropical Conservation Science* as:
+
+**Senior RA, Hill JK, Edwards DP. A framework for quantifying fine-scale thermal heterogeneity in the field. In prep.**
+
 \pagebreak
 
 ## Abstract

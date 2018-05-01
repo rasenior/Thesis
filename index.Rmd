@@ -46,6 +46,14 @@ This chapter has been published as:
 
 This chapter is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S., D.P.E., and J.K.H conceived the study. R.A.S., P.G. and L.K.G. collated the data. R.A.S. performed statistical analyses. R.A.S. wrote the manuscript, with contributions from D.P.E. and J.K.H.
 
+**Chapter 3**
+
+This chapter is currently in preparation for submission to *Tropical Conservation Science* as:
+
+**Senior RA, Hill JK, Edwards DP. A framework for quantifying fine-scale thermal heterogeneity in the field. In prep.**
+
+This chapter is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S. and D.P.E conceived the study. R.A.S., D.P.E., and J.K.H developed the methods, with R.A.S. writing scripts and performing statistical analyses. R.A.S. wrote the first draft of the manuscript, with contributions from D.P.E. and J.K.H.
+
 **Chapter 4**
 
 This chapter has been published as:
@@ -53,6 +61,14 @@ This chapter has been published as:
 **Senior RA, Hill JK, Benedick S, Edwards DP. Tropical forests are thermally buffered despite intensive selective logging. Global Change Biology. 2018;24:1267–1278.**
 
 This chapter is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S., D.P.E., and J.K.H conceived the study. R.A.S. collected the data, with  S.B. providing logistical support. R.A.S. performed all statistical analyses and wrote the manuscript, with contributions from D.P.E. and J.K.H.
+
+**Chapter 5**
+
+This chapter is currently in preparation for submission to *Nature* as: 
+
+**Senior RA, Hill JK, Edwards DP. Global loss of climate connectivity in tropical forests. In prep.**
+
+This chapter is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S. and D.P.E conceived the study. R.A.S., D.P.E., and J.K.H developed the methods, with R.A.S. writing scripts to calculate climate connectivity and performing statistical analyses. R.A.S. wrote the first draft of the manuscript, with contributions from D.P.E. and J.K.H.
 
 \pagebreak
 

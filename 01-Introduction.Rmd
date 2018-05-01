@@ -170,7 +170,7 @@ The specific objectives of the main data chapters are outlined below:
 * Using data collected in Borneo, this chapter compares various components of thermal buffering between intensively logged and unlogged forests, and finds little thermal difference despite lingering differences in forest structure
 * Confirms results hinted at in Chapter 2, underscoring the conservation value of degraded forests particularly when left to recover
 
-### Chapter 5 -- The impact of recent forest cover change on climate connectivity in the tropics
+### Chapter 5 -- Global loss of climate connectivity in tropical forests
 
 * In addition to in situ adaptation, or where such adaptation is insufficient, species may shift their ranges at coarse scale in response to climate change
 * Range shifting is well-documented in both modern times and paleontological records, but its ubiqutiousness across the tropics as a means to prevent species from going extinct under climate change depends on species being able to reach suitable habitat with a suitable climate
