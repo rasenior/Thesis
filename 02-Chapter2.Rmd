@@ -1,4 +1,4 @@
-```{r setup, include=FALSE}
+```{r knitr-setup, include=FALSE}
 rm(list=ls())
 knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALSE, 
                       fig.width = 16.6/2.54, fig.height = 10/2.54, dpi = 800, 
@@ -7,7 +7,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
                "#0072B2", "#D55E00", "#CC79A7")
 ```
 
-# A pantropical analysis of the impacts of forest degradation and conversion on local temperature
+# A pantropical analysis of the impacts of forest degradation and conversion on local temperature {#ch2}
 
 \begin{figure}[!htb]
 \centering

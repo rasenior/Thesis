@@ -1,4 +1,4 @@
-```{r setup, include=FALSE}
+```{r knitr-setup, include=FALSE}
 rm(list=ls())
 knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALSE, 
                       fig.width = 16.6/2.54, fig.height = 10/2.54, dpi = 800, 
@@ -281,7 +281,7 @@ ccc_polys$realm <- factor(ccc_polys$realm,
 
 ```
 
-# Global loss of climate connectivity in tropical forests
+# Global loss of climate connectivity in tropical forests {#ch5}
 
 \begin{figure}[!htb]
 \centering

@@ -1,5 +1,5 @@
 
-```{r setup, include=FALSE}
+```{r knitr-setup, include=FALSE}
 rm(list=ls())
 knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALSE, 
                       fig.width = 16.6/2.54, fig.height = 10/2.54, dpi = 800, 
@@ -119,7 +119,7 @@ qs4_litter_interaction_night <- qs4[qs4$microhabitat == "Leaf litter" & qs4$day_
 qs4_hole <- read.csv(file.path(pred_dir,"figS4_sig_effects.csv"))
 ```
 
-# Tropical forests are thermally buffered despite intensive selective logging
+# Tropical forests are thermally buffered despite intensive selective logging {#ch4}
 
 \begin{figure}[!htb]
 \centering

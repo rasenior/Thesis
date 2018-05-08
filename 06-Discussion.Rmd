@@ -1,4 +1,4 @@
-# Discussion
+# General Discussion {#ch6}
 
 \begin{figure}[!htb]
 \centering
@@ -109,6 +109,7 @@
 * On a local scale, enhancing thermal heterogeneity may help species to thermoregulate and so buffer species from climate change (at least offering them more time to adpat or disperse)
     * Chapter 4 suggests that natural resoration over a decade is sufficient for thermal recovery in the understorey, but this should be integrated with recovery of other abiotic and biotic requirements
     * More research is needed on the speed of thermal recovery, and whether active restoration or RIL techniques might have a role to play in enhancing thermal recovery from logging
+    * What about other forms of land-use change?
 * With improvements in technology, it would be fruitful to consider: 
     * Other climatic factors, particularly moisture, at a fine spatial scale
     * Linking different spatiotemporal scales e.g. combining thermal imagery with drones to characterise thermal landscapes more extensively, or developing correlative models to link subcanopy climate to remotely sensed temperature data e.g. LAI
