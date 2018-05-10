@@ -271,5 +271,3 @@ readRDS("figs/figB.4.Rds")
 readRDS("figs/figB.2.Rds")
 ```
 
-\clearpage
-\fancyhead[R]{Bibliography}
