@@ -2,6 +2,9 @@ rm(list=ls())
 
 user<-Sys.info()[7]
 
+#Define working directory
+baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
+
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
                "#0072B2", "#D55E00", "#CC79A7")
@@ -16,101 +19,163 @@ library(dplyr)
 library(gridExtra)
 library(grid)
 
+# ggplot(mtcars, aes(disp, mpg)) + geom_point() + 
+  # theme(axis.ticks.length=unit(-0.25, "cm"), axis.ticks.margin=unit(0.5, "cm"))
+
 # Assign date
 date<-Sys.Date()
 
-cbPalette <- c("#009E73","#F0E442", "#0072B2", "#D55E00", "#CC79A7",
-               "#E69F00", "#56B4E9")
-text_size <- 8
-title_size <- 10
-
 # Read in data
-load("data/ch2/sampleSizes_day_2016-05-27.Rds")
-load("data/ch2/dayDat_2016-06-08.Rds")
+load(file.path(baseDir,"modelOutputs_day_sampleTest2017-05-18.Rd"))
+load(file.path(baseDir,"sampleSizes_day_2016-05-27.Rds"))
 
-###############################################################################
-###### Look at some exploratory figures
-###############################################################################
+projections<-read.csv(file.path(baseDir, "ipcc_projections.csv"))
+projections<-projections[projections$region=="tropics" &
+                           projections$RCP %in% c("RCP2.6","RCP8.5"),]
+projections$posCI<-projections$mean_tempChange+
+  projections$range_tempChange_0.95
+projections$negCI<-projections$mean_tempChange-
+  projections$sd_tempChange
+
+
+max(sumStats$mean_temp_st)
+# [1] 13.60875
+min(sumStats$mean_temp_st)
+# [1] 0
+
+sumStats<-sumStats[sumStats$LUT!="Primary vegetation",]
+sumLUT<-sumLUT[sumLUT$LUT!="Primary vegetation",]
+
+sumStats$LUT <- factor(sumStats$LUT,
+                       levels = c("Degraded vegetation",
+                                  "Plantation","Pasture","Cropland"))
 sumLUT$LUT <- factor(sumLUT$LUT,
-                     levels = c("Primary vegetation",
-                                "Degraded vegetation",
+                     levels = c("Degraded vegetation",
                                 "Plantation","Pasture","Cropland"),
-                     labels = c("Primary forest",
-                                "Degraded forest",
+                     labels = c("Degraded forest",
                                 "Plantation","Pasture","Cropland"))
 
 # Define x-axis labels
 labs<-paste(levels(sumLUT$LUT),
             "\n(",sumLUT$N_sources," studies)",sep="")
 
+### Forest stratum interaction first
+height<-sumStats[sumStats$season=="Dry season",]
 
-dayDat$alpha<-abs(dayDat$densityProp-1)/3
-
-dayDat$alpha[dayDat$LUT %in% c("Cropland","Pasture")]<-0.6
-
-
-### Plot by study
-labs<-c("PF","DF","Pl","Pa","Cr")
-shades<-c("#E0EDD2","#D1ECE4","#E3E2F0","#F7DFCC","#FAEECC")
-textCol<-c("#66A61E","#1B9E77","#7570B3","#D95F02","#E6AB02")
-
-# Reorder factor levels
-dayDat$study <- factor(dayDat$study,
-                       levels = unique(dayDat$study))
-
-# Create data.frame with shading info
-shading <- data.frame(min = seq(from = 0.5, 
-                                to = max(as.numeric(as.factor(dayDat$LUT))), 
-                                by = 1),
-                      max = seq(from = 1.5, 
-                                to = max(as.numeric(as.factor(dayDat$LUT))) + 0.5, 
-                                by = 1),
-                      LUT = levels(dayDat$LUT),
-                      labs = labs,
-                      labPos = 1:5,
-                      labCols = textCol)
-shading$min[1]<--Inf
-shading$max[5]<-Inf
-
-
-p1<-ggplot()+
-  geom_jitter(data = dayDat,aes(x=LUT,y=mean_temp),alpha=0)+
-  geom_rect(data=shading,
-            aes(xmin = min, xmax = max, ymin = -Inf, ymax = Inf,
-                fill = factor(labPos)))+
-  geom_jitter(data = dayDat,
-              aes(x=LUT,y=mean_temp,
-                  colour=forest_stratum,shape=season),
-              alpha=0.4)+
-  geom_boxplot(data= dayDat,aes(x=LUT,y=mean_temp),alpha=0.8,
-               width=0.5)+
-  geom_text(data=shading,
-            aes(x = labPos,y = 8, label = labs),
-            colour=rep(textCol,25),size=2.5)+
-  theme_bw(base_size = 10)+
-  ylab(expression(paste("Temperature (",degree*C,")",sep="")))+
+p1<-ggplot(height, aes(x=LUT, y=mean_temp_st,
+                       shape=forest_stratum))+
+  geom_point(position = position_dodge(width = 0.4),size=2)+
+  geom_hline(data=projections,
+             aes(yintercept=mean_tempChange,
+                 colour=RCP),
+             alpha=0.6)+
+  geom_rect(data=projections,
+            aes(ymin=range_tempChange_0.05,
+                ymax=range_tempChange_0.95,
+                xmin=0.4,xmax=4.6,
+                fill=RCP),
+            alpha=0.2,inherit.aes = FALSE)+
+  geom_hline(yintercept =0,linetype="dashed",colour="black")+
+  geom_point(data=height,aes(x=LUT, y=mean_temp_st,
+                             shape=forest_stratum),
+             position = position_dodge(width = 0.4),size=2)+
+  geom_errorbar(aes(ymin = mean_temp_st-CI, 
+                    ymax = mean_temp_st+CI),width=0.1,
+                position = position_dodge(width = 0.4))+
+  # annotate("text", x = 4.5, y = 15.5, label = "(a)",size=3.5)+
+  theme_classic()+
+  ylab(expression(paste("Temperature difference (",degree*C,")",sep="")))+
   theme(axis.title.x = element_blank(),
-        axis.text.x=element_blank(),
-        axis.text.y=element_text(size= text_size,
-                                 margin=margin(r = 5,unit = "pt")),
-        axis.title.y = element_text(size= title_size,
-                                    margin=margin(r = 5,unit = "pt")),
-        axis.ticks.x = element_blank(),
+        # axis.text.x=element_blank(),
+        axis.text.x=element_text(size=0.05,margin=margin(t = 5, unit = "pt"),
+                                 colour="white"),
+        axis.text.y=element_text(size=8,margin=margin(r = 5, unit = "pt"),colour="black"),
+        axis.title.y = element_text(size=8,vjust=1), 
+        axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
         axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'),
-        strip.text=element_text(size= text_size),
-        strip.background=element_rect(fill="white"),
-        legend.position="top",
-        legend.text=element_text(size= text_size),
+        legend.position=c(0.200,0.85),
+        legend.text.align	= 0,
+        legend.text = element_text(size=8),
         legend.title=element_blank(),
         legend.key=element_blank(),
-        legend.spacing=unit(0.2,"cm"),
         legend.box = "horizontal",
         legend.box.just = "left",
-        panel.grid=element_blank())+
-  scale_y_continuous(breaks=seq(0,100,5))+
-  scale_fill_manual(values = shades,guide=FALSE)+
-  scale_colour_manual(values=cbPalette[4:3],
-                      guide=guide_legend(order=1))+
-  facet_wrap(~studyID)
+        panel.grid=element_blank(),
+        panel.border = element_blank() ,
+        plot.margin = unit(c(0.5,0.5,0.5,0.5), "lines"),
+        panel.background = element_blank())+
+  scale_y_continuous(breaks=seq(-4,20,2))+
+  scale_x_discrete(labels=labs)+
+  scale_shape_discrete(guide=guide_legend(order=1))+
+  scale_fill_manual(values=cbPalette[c(4,7)],
+                    guide=guide_legend(order=2))+
+  scale_colour_manual(values=cbPalette[c(4,7)],
+                      guide=guide_legend(order=2))
 
-# save(p1, shades, textCol, file = "figs/figA.1.Rdata")
+### Season next
+season<-sumStats[sumStats$forest_stratum=="Above-ground",]
+
+p2<-ggplot(season, aes(x=LUT, y=mean_temp_st,
+                       shape=season))+
+  geom_point(position = position_dodge(width = 0.4),size=2)+
+  geom_hline(data=projections,
+             aes(yintercept=mean_tempChange,
+                 colour=RCP),
+             alpha=0.6)+
+  geom_rect(data=projections,
+            aes(ymin=range_tempChange_0.05,
+                ymax=range_tempChange_0.95,
+                xmin=0.4,xmax=4.6,
+                fill=RCP),
+            alpha=0.2,inherit.aes = FALSE)+
+  geom_hline(yintercept =0,linetype="dashed",colour="black")+
+  geom_point(data=season,aes(x=LUT, y=mean_temp_st,
+                             shape=season),
+             position = position_dodge(width = 0.4),size=2)+
+  geom_errorbar(aes(ymin = mean_temp_st-CI, 
+                    ymax = mean_temp_st+CI),width=0.1,
+                position = position_dodge(width = 0.4))+
+  # annotate("text", x = 4.5, y = 15.5, label = "(b)",size=3.5)+
+  theme_classic()+
+  ylab(expression(paste("Temperature difference (",degree*C,")",sep="")))+
+  theme(axis.title.x = element_blank(),
+        axis.text.x=element_text(size= title_size,
+                                 margin=margin(t = 5, unit = "pt"),colour="black"),
+        axis.text.y=element_text(size= text_size,
+                                 margin=margin(r = 5, unit = "pt"),colour="black"),
+        axis.title.y = element_text(size= title_size,vjust=1),
+        axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+        axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'),
+        legend.position=c(0.094,0.8),
+        legend.text.align	= 0,
+        legend.text = element_text(size=text_size),
+        legend.title=element_blank(),
+        legend.key=element_blank(),
+        legend.box = "horizontal",
+        legend.box.just = "left",
+        plot.margin = unit(c(-0.3,0.5,0.5,0.5), "lines"),
+        panel.grid=element_blank())+
+  scale_y_continuous(breaks=seq(-4,20,2))+
+  scale_x_discrete(labels=labs)+
+  scale_fill_manual(values=cbPalette[c(4,7)],
+                    guide=guide_legend(order=2))+
+  scale_colour_manual(values=cbPalette[c(4,7)],
+                      guide=guide_legend(order=2))+
+  scale_shape_discrete(guide=guide_legend(order=1))+
+  guides(fill=FALSE,colour=FALSE)
+
+p1 <- p1 + theme(axis.title.y = element_blank()) 
+p2<- p2 + theme(axis.title.y = element_blank())
+
+p3<- ggdraw() +
+    draw_plot(p1, x = 0.1, y = 0.5, width = 0.9, height = 0.5) +
+    draw_plot(p2, x = 0.1, y = 0, width = 0.9, height = 0.5) +
+    draw_text(paste("Temperature difference (", "\U00B0", "C)",sep = ""),
+              x = 0.08, y= 0.5,size = title_size, angle=90) +
+    draw_plot_label(label = c("(a)", "(b)"),
+                    x = c(0.95, 0.95),
+                    y = c(0.99, 0.5),
+                    size = lab_size)
+p3
+saveRDS(p3, file = "figs/figA.3.Rds")
+
