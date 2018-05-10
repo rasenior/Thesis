@@ -1,0 +1,885 @@
+```{r knitr-setup, include=FALSE}
+rm(list=ls())
+knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALSE, 
+                      fig.width = 16.6/2.54, fig.height = 9/2.54, dpi = 800, 
+                      fig.path = "./output/", fig.align='center', fig.pos = 'H')
+```
+
+```{r}
+
+library(knitr)
+library(ggplot2)
+library(dplyr)
+library(cowplot)
+library(xtable)
+library(viridis)
+
+# Plotting parameters
+text_size <- 6
+title_size <- 8
+lab_size <- 7
+
+# Colourblind-friendly palette
+cbpal <- viridis(4, option = "D")
+cbpal2 <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#CC79A7", "#D55E00","#0072B2")
+```
+
+```{r load-data, include = FALSE}
+load("data/ch5/som_text3_dat.rdata")
+load("data/ch5/models/prop-cc-loss.Rdata")
+load("data/ch5/pantropics/stat_dat.Rdata")
+```
+
+```{r prep-data, include = FALSE}
+region_ccc_inc$prop_decrease_cc <-
+    region_ccc_inc$area_decrease_cc /
+    region_ccc_inc$sum_patch_area
+```
+
+# Supporting information for Chapter 5
+
+## Supplementary analysis without tree plantations {#text-C-1}
+
+Clever wordz here
+
+## Supplementary analyses for different patch parameters {#text-C-2}
+
+More wordz
+
+## Worked example of climate connectivity calculation {#text-C-3}
+
+The following text provides a step-by-step calculation of climate connectivity in the Brazilian states of Rond&ocirc;nia and Mato Grosso.
+
+### Step 1: Creating forest patches {#step-1}
+
+Climate connectivity is calculated using climate-partitioned patches of natural habitat [@mcguire_achieving_2016]. In this study natural habitat refers to tropical forest, derived from @hansen_high-resolution_2013 for the years 2000 and 2012. For the year 2000, cells were classed as forested if they had > 50% tree cover [\autoref{fig:fig-C-1}a; @hansen_high-resolution_2013]. For the year 2012, cells were classed as forest based on forest loss and forest gain, relative to forest cover in 2000 (\autoref{fig:fig-C-1}b). If a cell experienced forest loss, it had gone from a forested to non-forested state between 2000 and 2012 and was classed as non-forest. If a cell had experienced forest gain, it had gone from a non-forested to forested state between 2000 and 2012; providing there had been no concomitant loss, the cell was classed as forest. All subsequent steps were applied separately to forest cover in 2000 and 2012.
+
+(ref:cap-C-1) Tree cover in the year 2000 (a) ranges from low (beige) to high (darkgreen). Tree cover change from 2000 to 2012 (b) includes: no change (blue), forest loss (purple), forest gain (green) or both loss and gain (yellow). Both layers derive from @hansen_high-resolution_2013, and are used to classify cells into either forest or non-forest in the years 2000 and 2012.
+
+```{r, echo = FALSE, include = FALSE}
+p1a <-
+    ggplot()+
+    geom_raster(data = tc2000_raw, 
+                aes(x = x, y = y, fill = forest_cover)) +
+    geom_polygon(data = boundary, 
+                 aes(x = long, y = lat,
+                     group = group),
+                 colour = "grey40",
+                 size = 0.1,
+                 alpha = 0) +
+    theme_void() +
+    theme(legend.title = element_text(size = title_size),
+          legend.text = element_text(size = text_size),
+          legend.box.spacing = unit(0,"cm"),
+          legend.box.margin = margin(0,0,0,0),
+          legend.position = "right") +
+    coord_equal(ratio=1) +
+    scale_fill_gradient(low = "beige", 
+                        high = "darkgreen", 
+                        name = "Tree cover\nin 2000 (%)") 
+p1b <-
+    ggplot()+
+    geom_raster(data = gainloss, 
+                aes(x = x, y = y, fill = gain_loss)) +
+    theme_void() +
+    theme(legend.title = element_blank(),
+          legend.text = element_text(size = title_size),
+          legend.box.spacing = unit(0,"cm"),
+          legend.box.margin = margin(0,0,0,0),
+          legend.position = "right") +
+    coord_equal(ratio=1) +
+    scale_fill_manual(values = cbpal[c(2,1,3,4)]) 
+```
+
+```{r fig-C-1, fig.cap= "(ref:cap-C-1)", echo = FALSE}
+plot_grid(p1a, p1b, 
+          align = "hv",
+          nrow = 2, 
+          labels = c("(a)", "(b)"), 
+          label_size = lab_size,
+          label_x = 0.2)
+```
+
+We used Mean Annual Temperature (MAT) as our climate variable, which is the first bioclimatic variable of the WorldClim database [Version 1.4; @hijmans_very_2005]. All layers (forest cover and climate data) were projected into the World Cylindrical Equal Area projection and resampled to 1 km^2^ resolution. Current climate (~1950-2000) was assigned to forested cells, and rounded to increments of 0.5&deg;C. Adjacent cells with the same temperature were assigned to the same patch (\autoref{fig:fig-C-2}). Patches less than 10 km^2^ in area were removed, and patches within 2 km of each other were assigned to the same patch. Once forest patches had been determined we also calculated their future temperature in the year 2070 (2061-2080), using data from the HadGEM2-AO general circulation model [@ipcc_climate_2013] and Representative Concentration Pathway (RCP) 8.5, which is the most severe ('business-as-usual') IPCC scenario.
+
+(ref:cap-C-2) Forest patches in 2000 (a) and 2012 (b). Black inset (c) corresponds to magnified view of the subset of patches used below to calculate climate connectivity. Shading indicates unique patches and numbers correspond to patch identities, a sample of which can be found in \autoref{tab:tab-C-1}.
+
+```{r, echo = FALSE, include = FALSE}
+# Define custom function to ensure colour scheme is standardised
+plot_patches <- 
+    function(.data, colours = patch_pal){
+        ggplot() + 
+            geom_polygon(data = .data, 
+                         aes(x=long, y=lat, 
+                             fill= patch, 
+                             group = group)) +
+            scale_fill_manual(values = colours,
+                              guide = FALSE)
+    }
+
+p2a <- 
+    plot_patches(patches_poly) +
+    geom_polygon(data = boundary, 
+                 aes(x = long, y = lat,
+                     group = group),
+                 colour = "grey40",
+                 alpha = 0,
+                 size = 0.1) +
+    geom_rect(data = sub_extent,
+              aes(xmin = xmin,
+                  xmax = xmax,
+                  ymin = ymin,
+                  ymax = ymax,
+                  linetype = factor(year)),
+              colour = "black",
+              size = 0.5,
+              alpha = 0) +
+    facet_wrap(~ year) +
+    theme_void() +
+    theme(legend.text = element_text(size = text_size),
+          legend.title = element_text(size = text_size)) +
+    coord_equal(ratio=1) +
+    scale_linetype_manual(values = c("solid","blank"),
+                          guide = FALSE)
+
+centroids <- patches_sub[!duplicated(patches_sub$patch),]
+# patches_sub$jit <-
+#     with(patches_sub, 
+#          ifelse(patch == "KS" | abbrev == "LA", 1, 2))
+
+p2b <- 
+    plot_patches(patches_sub) +
+    geom_rect(data = sub_extent,
+              aes(xmin = xmin - 10000,
+                  xmax = xmax + 5000,
+                  ymin = ymin - 5000,
+                  ymax = ymax + 5000,
+                  linetype = factor(year)),
+              colour = "black",
+              linetype = "solid",
+              size = 0.1,
+              alpha = 0) +
+    geom_text(data = centroids, 
+              aes(x = long, y = lat, 
+                  label = patch,
+                  group = group),
+              size = 1.8,
+              position = 
+                  position_jitter(width = 1000, height = 0)) +
+    theme_void() +
+    theme(legend.text = element_text(size = text_size),
+          legend.title = element_text(size = text_size)) +
+    coord_equal(ratio=1) +
+    scale_linetype(guide = FALSE)
+```
+
+```{r fig-C-2, fig.cap = "(ref:cap-C-2)", echo = FALSE, fig.height= 15/2.54}
+ggdraw() +
+    draw_plot(p2a, x = 0, y = 0.5, height = 0.5) +
+    draw_plot(p2b, x = 0, y = 0, height = 0.5) +
+    draw_plot_label(label = c("(a)", "(b)", "(c)"),
+                    x = c(0.1, 0.5, 
+                          0.3),
+                    y = c(rep(0.98, 2), 0.48),
+                    size = lab_size)
+```
+
+
+### Step 2: Identifying destination patches {#step-2}
+
+Climate connectivity for a given patch depends on the difference between the current temperature of that patch, and the future temperature of the coolest patch that can be reached by traversing a gradient of hotter to cooler adjacent patches [@mcguire_achieving_2016]. The aim of this next step, therefore, was to determine the coolest destination patch for each origin patch.
+
+We first identified, for each pair of neighbouring patches, which of the two was the hotter 'origin' patch and which was the cooler 'destination' patch. In the code snippets below, `nbr` refers to a dataframe of patch neighbours, and `temp_dat` is a dataframe of the current and future temperature for all patches.
+
+```{r, echo = FALSE}
+nbr <- arrange(nbr, patch1, patch2)
+t1a <- head(nbr)
+```
+
+```{r}
+nbr$origin <- NA
+nbr$dest <- NA
+nbr$origin_temp <- NA
+nbr$dest_temp <- NA
+
+for (i in 1:nrow(nbr)){
+    # If temp1 is more than temp2, patch1 is the origin and patch 2 is 
+    # the destination
+    if(nbr$temp1[i] > nbr$temp2[i]){
+        nbr$origin[i] <- nbr$patch1[i]
+        nbr$origin_temp[i] <- nbr$temp1[i]
+        nbr$dest[i] <-nbr$patch2[i]
+        nbr$dest_temp[i] <- nbr$temp2[i]
+        # If temp2 is more than temp1, patch2 is the origin and patch 1 
+        # is the destination
+    }else{
+        nbr$origin[i]<- nbr$patch2[i]
+        nbr$origin_temp[i] <- nbr$temp2[i]
+        nbr$dest[i]<-nbr$patch1[i]
+        nbr$dest_temp[i] <- nbr$temp1[i]
+    }
+}
+```
+
+```{r, echo = FALSE}
+# Merge cdat and fdat
+temp_dat <- merge(cdat, fdat, by = "patch")
+rm(cdat, fdat)
+# Remove unnecessary variables
+nbr <- nbr[,c("origin", "dest", "origin_temp", "dest_temp")]
+nbr <- arrange(nbr, dest, origin)
+```
+
+```{r tab-C-1, echo=FALSE, results='asis'}
+t1a <- kable(t1a, format = "latex", booktabs = TRUE)
+t1b <- kable(head(nbr), format = "latex", booktabs = TRUE)
+
+cat(c("\\begin{table}[!htb]
+    \\caption{(\\#tab:tab-C-1) Dataframe of patch neighbours before (a) and after (b) sorting neighbours into either the hotter origin patch or cooler destination patch.}
+    \\begin{subtable}{.5\\linewidth}
+      \\centering
+        \\caption{}",
+    t1a,
+    "\\end{subtable}%
+    \\begin{subtable}{.5\\linewidth}
+      \\centering
+        \\caption{}",
+    t1b,
+    "\\end{subtable} 
+\\end{table}"
+))
+
+```
+
+Most patches have multiple neighbours, so we next identified *all* the neighbours for each origin patch (assigned to `connections`). For example, we can see below that origin patch 266 has only one neighbour: patch 104. Patch 231 has no neighbours, and patch 224 has many.
+
+```{r connections, echo = TRUE}
+connections <-
+    sapply(1:nrow(temp_dat), function(x){
+        nbr$dest[nbr$origin == temp_dat[x,"patch"]]
+    })
+names(connections) <- temp_dat$patch
+tail(connections)
+```
+
+To determine the final, coolest destination patch that can be reached from each origin patch, we traced the path according to which of the immediate neighbours was the coolest. This step was done by iterating over unique patch temperatures (`uniquetemps`), from cooler to hotter.
+
+```{r uniquetemps, echo = TRUE}
+uniquetemps <- sort(unique(temp_dat$temp))
+uniquetemps
+```
+
+We created variables in `temp_dat` to populate with the temperature and patch identity of the final destination patch for each origin patch, and created a copy of this dataframe called `running`. The dataframe `running` is updated with each iteration.
+
+```{r output, echo = TRUE}
+# Set up output columns
+temp_dat$dest <- NA
+temp_dat$dest_temp <- NA
+temp_dat$inter_patch <- NA
+
+# Copy the original dataframe
+running <- temp_dat[, c("patch", "temp")]
+```
+
+In each iteration through unique temperatures (from cooler to warmer) we identified:
+
+* The origin patches that corresponded to that temperature
+* The coolest neighbour of each origin patch
+
+And subsequently we:
+
+* Populated the empty columns in our original dataframe with the patch identity and temperature of the final destination patch of the coolest neighbour
+* Updated the `running` dataframe, to track the pathway from each origin patch to its final destination patch (which may or may not be an immediate neighbour)
+
+The iterations below were run in a loop, but for illustrative purposes we will iterate over each unique temperature manually.
+
+#### Iteration 1 {#iter-1}
+
+We begin by defining the focal unique temperature of this iteration. In this case, it's the first (i.e. coolest) value from our previously defined vector of unique temperatures, `uniquetemps`.
+
+```{r iter-1, echo = TRUE}
+this_temp <- uniquetemps[1]
+this_temp
+```
+
+Next we define the indices of all patches that are 22&deg;C (`inds`).
+
+```{r}
+inds <- which(running[,"temp"] == this_temp)
+running[inds, "patch"]
+```
+
+Patch number 12 is the only patch at this temperature. Now we need to see if patch 12 has any associated destination patches:
+
+```{r}
+length(connections[[inds]]) > 0
+```
+
+No, therefore the final destination patch and the final destination temperature are the same as the origin: patch 12, temperature 22&deg;C. The reason that we use the `running` dataframe (a copy of the original `temp_dat` dataframe) to retrieve the temperature and identity of the destination patch will become clear in later iterations (i.e. [Iteration 5](#iter-5)).
+
+```{r}
+temp_dat$dest[inds]<- running[inds, "patch"]
+temp_dat$dest_temp[inds]<- this_temp
+```
+
+Let's look at the row in our dataframe that we have just populated:
+
+```{r}
+temp_dat[inds,]
+```
+
+Note that because the origin and destination patch are the same, there are no intermediate patches and so the value for `inter_patch` remains NA.
+
+#### Iteration 2 {#iter-2}
+
+Moving onto the next unique temperature. This iteration is more complicated because the origin patch *does* have one or more neighbouring destination patches.
+
+```{r iter-2a, echo = TRUE}
+this_temp <- uniquetemps[2]
+this_temp
+```
+
+Again we define the indices of all patches that have this temperature (22.5&deg;C).
+
+```{r}
+inds <- which(running[,"temp"] == this_temp)
+running[inds, "patch"]
+```
+
+This time both patch 53 and patch 58 have the temperature that we're interested in. We start with patch 53 (index 1 in the vector `inds`). 
+
+Are there any associated destination patches?
+
+```{r}
+length(connections[[inds[1]]]) > 0
+```
+
+Yes. We define the indices of the destination patches as well (`dest_inds`).
+
+```{r}
+dest_inds <- which(temp_dat$patch %in%  connections[[inds[1]]])
+```
+
+There may be multiple destination patches, so we need to identify the minimum temperature across all of them (`t`), as well as the index of the patch (or patches) that correspond to this minimum temperature (`min_ind`).
+
+```{r}
+t <- min(running[dest_inds, "temp"])
+t
+min_ind <- which(running[dest_inds, "temp"] == t)
+```
+
+Is there more than one destination patch that has this minimum temperature (22&deg;C)?
+
+```{r}
+length(min_ind) > 1
+```
+
+No, so `min_ind` is the index of the destination patch that we're interested in. If there were more than one destination patch with the same minimum temperature, the first would be used arbitrarily.
+
+Which patch does this index correspond to?
+```{r}
+temp_dat$patch[min_ind]
+```
+
+Patch 12. This is the final destination patch for patch 53. We assign the final temperature (22&deg;C) and the identity of the final destination patch (12) to the associated origin patch (53) in our original dataframe, `temp_dat`. 
+
+```{r}
+temp_dat$dest_temp[inds[1]] <- t
+temp_dat$dest[inds[1]] <- running$patch[min_ind]
+```
+
+We must also update the `running` dataframe so that patch 53 acquires the temperature and identity of patch 12. This step is vital for contructing more complicated pathways. In this example, since the final destination of patch 53 is patch 12, any origin patches in subsequent iterations whose neighbouring destination is patch 53 (see [Iteration 5](#iter-5)) will be assigned the final destination temperature and identity of patch 12, *not* patch 53.
+
+```{r}
+running$temp[inds[1]] <- t
+running$patch[inds[1]] <- running$patch[min_ind]
+```
+
+Finally, we capture intermediate patches that are traversed from origin to destination. The path from patch 53 to patch 12 cannot have intermediate patches because patch 12 is its own destination (there were no neighbouring patches that were cooler; see [Iteration 1](#iter-1)).
+
+```{r, echo = TRUE}
+inter_patch <- temp_dat[min_ind, "inter_patch"]
+is.na(inter_patch)
+```
+
+We assign the final destination patch as the only intermediate patch. This is not strictly necessary since we have already recorded patch 12 as part of the path because it is the destination. However, this step highlights the fact that in this iteration the destination patch is not the same as the origin patch.
+
+```{r}
+temp_dat$inter_patch[inds[1]] <- temp_dat[min_ind, "patch"]
+```
+
+We can now check the row for patch 53 in `temp_dat` and in the `running` dataframe. Note how in the `running` dataframe the row associated with patch 53 now has the identity and temperature of patch 12 instead.
+
+```{r}
+temp_dat[inds[1],]
+running[inds[1],]
+```
+
+Remembering that there were two origin patches corresponding to the focal temperature (22.5&deg;C), we must now repeat the above process for patch 58 (index 2 in the vector `inds`).
+
+Does patch 58 have any neighbouring destination patches?
+
+```{r iter-2b, echo = TRUE}
+length(connections[[inds[2]]]) > 0
+```
+
+No. As with [Iteration 1](#iter-1), we assign the final destination temperature and patch identity to be the same as the origin. 
+
+```{r}
+temp_dat$dest[inds[2]]<- running[inds[2], "patch"]
+temp_dat$dest_temp[inds[2]]<- this_temp
+temp_dat[inds[2],]
+```
+
+```{r iter-3, echo = FALSE}
+this_temp <- uniquetemps[3]
+
+# Define indices of all patches that have this temperature
+inds <- which(running[,"temp"] == this_temp)
+
+for (k in 1:(length(inds))){
+    ii <- inds[k]
+    if(length(connections[[ii]]) == 0){
+        temp_dat$dest_temp[ii]<- this_temp
+        temp_dat$dest[ii]<- running[ii, "patch"]
+    }
+}
+```
+
+```{r iter-4, echo = FALSE}
+this_temp <- uniquetemps[4]
+
+# Define indices of all patches that have this temperature
+inds <- which(running[,"temp"] == this_temp)
+
+for (k in 1:(length(inds))){
+    ii <- inds[k]
+    if(length(connections[[ii]]) == 0){
+        temp_dat$dest_temp[ii]<- this_temp
+        temp_dat$dest[ii]<- running[ii, "patch"]
+    }
+}
+```
+
+#### Iteration 5 {#iter-5}
+
+We will now skip ahead to the fifth unique temperature, which illustrates the importance of updating the `running` dataframe in each iteration and using this to assign the temperature and identity of the final destination patch.
+
+```{r iter-5, echo = TRUE}
+this_temp <- uniquetemps[5]
+this_temp
+
+inds <- which(running[,"temp"] == this_temp)
+running[inds, "patch"]
+```
+
+Patch 135 is the only origin patch that is 22.8&deg;C. Does it have any neighbouring destination patches?
+
+```{r}
+length(connections[[inds[1]]]) > 0
+dest_inds <- which(temp_dat$patch %in%  connections[[inds[1]]])
+```
+
+Yes. Of the one or more neighbouring destination patches, what is the minimum temperaure and what is the index of the corresponding patch?
+
+```{r}
+t <- min(running[dest_inds, "temp"])
+t
+min_ind <- dest_inds[which(running[dest_inds, "temp"] == t)]
+```
+
+Is there more than one destination patch at this minimum temperature (22&deg;C)?
+
+```{r}
+length(min_ind) > 1
+temp_dat$patch[min_ind]
+```
+
+No. Patch 53 is the destination for patch 135. At this point, note that patch 53 was encountered in [Iteration 2](#iter-2), and is itself connected to patch 12. As such, the row corresponding to the index of patch 53 actually has the temperature and identity of patch 12:
+
+```{r}
+running[min_ind,]
+```
+
+Because the final destination temperature and patch identity are retrieved from the `running` dataframe, we assign the final destination identity and temperature as patch 12, 22&deg;C.
+
+```{r}
+temp_dat$dest_temp[inds[1]] <- t
+temp_dat$dest[inds[1]] <- running$patch[min_ind]
+```
+
+We again update the `running` dataframe. In subsequent iterations any origin patch whose coolest neighbour is patch 135 will also be assigned the final destination temperature and identity of patch 12.
+
+```{r}
+running$temp[inds[1]] <- t
+running$patch[inds[1]] <- running$patch[min_ind]
+```
+
+Lastly, we define the intermediate patches. 
+
+```{r}
+inter_patch <- temp_dat[min_ind, "inter_patch"]
+is.na(inter_patch)
+```
+
+In this case of course there *is* an intermediate patch between the origin and the destination -- patch 53. We paste this patch together with the final destination to construct the full pathway from origin to destination.
+
+```{r}
+temp_dat$inter_patch[inds[1]] <-
+    paste(temp_dat[min_ind, "patch"],
+          inter_patch[!(is.na(inter_patch))],
+          sep = ";")
+```
+
+Let's inspect the rows that we have just populated:
+
+```{r}
+temp_dat[inds[1],]
+running[inds[1],]
+```
+
+```{r join-patches, echo = FALSE}
+# Run it all together
+#set up output file
+temp_dat$dest <- NA
+temp_dat$dest_temp <- NA
+temp_dat$inter_patch <- NA
+
+# Define temporary list of patchs and temps to update as patchs are
+# connected to each other
+running <- temp_dat[,c("patch", "temp")]
+
+# Loop through each unique temperature, from colder to warmer
+for (j in 1:length(uniquetemps)){
+    # Define the focal unique temperature
+    this_temp <- uniquetemps[j]
+    # Define the indices of patchs that correspond to the focal temperature
+    inds <- which(running[,"temp"] == this_temp)
+    
+    # Iterate over the indices
+    for (k in 1:(length(inds))){
+        ii <- inds[k]
+        # If the focal patch associated with this index does not connect to
+        # any other patch, the final destination patch is the same as the focal
+        # patch and its final temp is the same as its starting temp
+        if(length(connections[[ii]]) == 0){
+            temp_dat$dest_temp[ii]<- this_temp
+            temp_dat$dest[ii]<- running[ii, "patch"]
+            # If it does connect to another patch...
+        }else{
+            # Retrieve indices of the destination patchs
+            topatchsinds <- which(temp_dat$patch %in%  connections[[ii]])
+            # Calculate which of the destination patchs has the lowest temperature
+            t <- min(running[topatchsinds, "temp"])
+            # Retrieve indices of the destination patchs that correspond to
+            # this minimum temperature
+            a <- which(running[topatchsinds, "temp"] == t)
+            
+            if(length(a)==1){
+                # If there is only one coldest patch, index that destination (colder) patch &
+                minind <- topatchsinds[a]
+            }else{
+                # If there is more than one colder patch w/ = temperatures, arbitrarily select the first one
+                minind <- topatchsinds[a[1]]
+            }
+            
+            # Assign the min destination temp as the final temp. of the focal patch
+            temp_dat$dest_temp[ii] <- t
+            # Assign the final patch of the focal patch as its coldest (destination) patch
+            temp_dat$dest[ii] <- running[minind, "patch"]
+            # Assign the final patch and its intermediate patches
+            inter_patch <- temp_dat[minind, "inter_patch"]
+            
+            if(!(is.na(inter_patch))){
+                temp_dat$inter_patch[ii] <-
+                    paste(temp_dat[minind, "patch"],
+                          inter_patch[!(is.na(inter_patch))],
+                          sep = ";")
+            }else{
+                temp_dat$inter_patch[ii] <- temp_dat[minind, "patch"]
+            }
+            # Assign the final temp of the focal patch as the new minimum temperature
+            running[ii, "temp"] <- t
+            # Have new colder (destination) patch replace the origin patch in runningpatch
+            running[ii, "patch"] <- running[minind, "patch"]
+        }
+    }
+}
+```
+
+### Step 3: Calculating climate connectivity {#step-3}
+
+At this point we know the current and future temperature of all patches ([Step 1](#step-1)), and the identity and current temperature of their final destination patches ([Step 2](#step-2)). Combining this information we can easily assign to each origin patch the future temperature of its destination patch:
+
+```{r dest-ftemp, echo = TRUE}
+temp_dat$dest_ftemp <-
+    vapply(1:nrow(temp_dat), function(x){
+        dest <- temp_dat$dest[x]
+        dest_ftemp <- temp_dat$ftemp[temp_dat$patch == dest]
+        return(dest_ftemp)
+    }, FUN.VALUE = numeric(1))
+```
+
+Finally, we calculate climate connectivity. Conceptually, climate connectivity is the maximum temperature difference that can be achieved by traversing a gradient of hotter to cooler adjacent patches. Mathematically, this is therefore calculated as the current temperature of the origin patch minus the future temperature of the destination patch. If this value is zero or positive then climate connectivity is successful -- organisms could potentially reach a forest patch that, under climate change, is the same as or cooler than where they currently are.
+
+```{r climate-connectivity, echo = TRUE}
+temp_dat$clim_conn <- temp_dat$temp - temp_dat$dest_ftemp
+```
+
+Final results can be seen in \autoref{fig:fig-C-3} and \autoref{tab:tab-C-2}. Table \@ref(tab:tab-C-3) demonstrates what the `running` dataframe looks like after having updated for each iteration. 
+
+```{r tab-C-2, echo = FALSE}
+kable(
+    temp_dat[1:20,], booktabs = TRUE,
+    caption = 'Extract of results dataframe with final destination patches, final temperatures and climate connectivity for each origin patch.' 
+)
+
+```
+
+```{r tab-C-3, echo = FALSE}
+kable(
+    running[1:20,], booktabs = TRUE,
+    caption = 'Extract of the running dataframe, after updating with each iteration through unique temperatures. Note the repeated appearance of patch 12, which is a common final destination patch.' 
+)
+
+```
+
+```{r, echo = FALSE, include = FALSE}
+centroids <- patches_sub[!duplicated(patches_sub$patch),]
+
+# Merge results of connectivity analysis with centroids dataframe
+centroids <- merge(centroids, temp_dat, by = "patch")
+
+# Separate out intermediate patches and create long dataframe
+int_patches <- centroids[!(duplicated(centroids$patch)),
+                         c("patch", "inter_patch")]
+
+int_patches <-
+    int_patches %>% 
+    mutate(inter_patch = strsplit(as.character(inter_patch), ";")) %>%
+    tidyr::unnest(inter_patch) %>% 
+    na.omit() %>%
+    group_by(patch) %>% 
+    mutate(seq = row_number())
+
+# For each origin patch, assign the starting point as the 
+# end point of the previous step
+
+get_seq <- function(start_patch){
+    
+    sub_dat <- int_patches[int_patches$patch == start_patch,
+                           c("patch", "inter_patch")]
+    sub_dat$patch <- paste(sub_dat$patch) %>% as.integer()
+    sub_dat$inter_patch <- paste(sub_dat$inter_patch) %>% as.integer()
+    seq_len <- nrow(sub_dat)
+    
+    for(i in 1:seq_len){
+        if(i > 1){
+            sub_dat[i, "patch"] <- sub_dat[i - 1, "inter_patch"]
+        }
+    }
+    colnames(sub_dat) <- c("start", "end")
+    
+    # Add the absolute starting patch
+    sub_dat$abs_start <- sub_dat$start[1]
+    
+    return(as.data.frame(sub_dat))
+}
+
+int_patches <- lapply(unique(int_patches$patch), get_seq) %>%
+    bind_rows()
+
+# Add coordinates
+int_patches <- merge(int_patches, 
+                     centroids[,c("patch", "long", "lat")], 
+                     by.x = "end",
+                     by.y = "patch")
+colnames(int_patches)[4:5] <- c("xend", "yend")
+int_patches <- merge(int_patches, 
+                     centroids[,c("patch", "long", "lat")], 
+                     by.x = "start",
+                     by.y = "patch")
+colnames(int_patches)[6:7] <- c("x", "y")
+
+# Add diff in coordinates (for calculating midpoint)
+int_patches$xdiff <- int_patches$xend - int_patches$x
+int_patches$ydiff <- int_patches$yend - int_patches$y
+
+# Sort factor levels
+centroids$patch <- factor(centroids$patch,
+                          levels = paste(centroids$patch) %>% 
+                              as.numeric() %>% 
+                              sort())
+int_patches$abs_start <- factor(int_patches$abs_start,
+                                levels = sort(int_patches$abs_start) %>%
+                                    .[!(duplicated(.))])
+
+patch_pal <-c("#fc7b20",
+              "#004ac3",
+              "#6ac02a",
+              "#8b3fc5",
+              "#dea700",
+              "#777aff",
+              "#8e7200",
+              "#d329ab",
+              "#01af74",
+              "#f32896",
+              "#79da95",
+              "#c6002d",
+              "#01b9b4",
+              "#a4084d",
+              "#ccca6a",
+              "#5c4398",
+              "#bccd8c",
+              "#006297",
+              "#ff825d",
+              "#c1b0ff",
+              "#a14e00",
+              "#744268",
+              "#3b5b1f",
+              "#ff88a4",
+              "#75592d")
+
+# Merge results of connectivity analysis
+temp_dat$patch <- as.factor(temp_dat$patch)
+patches_sub <- merge(patches_sub, temp_dat, by = "patch", all.x = TRUE)
+```
+
+```{r, echo = FALSE, include = FALSE}
+p3a <-
+    ggplot()+
+    # Patch outlines
+    geom_polygon(data = patches_sub, 
+                 aes(x = long, y = lat, 
+                     fill = ctemp,
+                     group = group),
+                 alpha = 1) +
+    geom_polygon(data = patches_sub_outline, 
+                 aes(x = long, y = lat,
+                     group = group),
+                 alpha = 0,
+                 colour = "grey40",
+                 size = 0.05) +
+    # Patch connections
+    geom_segment(data = int_patches,
+                 aes(x = x - 1000, xend = xend - 1000,
+                     y = y - 5500, yend = yend - 5500,
+                     colour = abs_start),
+                 size = 0.7) +
+    # Patch connection arrows
+    geom_segment(data = int_patches,
+                 aes(x = x - 1000, xend = x - 1000 + (xdiff / 2),
+                     y = y - 5500, yend = y - 5500 + (ydiff / 2),
+                     colour = abs_start),
+                 arrow = arrow(length = unit(3, "mm"),
+                               angle = 30,
+                               ends = "last"),
+                 size = 0.7) +
+    # Patch centroids
+    geom_point(data = centroids, 
+               aes(x = long, y = lat,
+                   group = group,
+                   colour = patch),
+               size = 6) +
+    geom_point(data = centroids, 
+               aes(x = long, y = lat,
+                   group = group),
+               size = 4.5,
+               colour = "white") +
+    # Patch labels
+    geom_text(data = centroids, 
+              aes(x = long, y = lat,
+                  group = group,
+                  label = patch),
+              size = 2,
+              colour = "black") +
+    # # Bounding box
+    # geom_rect(data = sub_extent,
+    #           aes(xmin = xmin,
+    #               xmax = xmax,
+    #               ymin = ymin,
+    #               ymax = ymax),
+    #           colour = "black",
+    #           alpha = 0) +
+    theme_void() +
+    theme(legend.title = element_text(size = text_size),
+          legend.text = element_text(size = text_size),
+          legend.box.spacing = unit(0,"cm"),
+          legend.box.margin = margin(0,0,0,0),
+          legend.position = "right") +
+    coord_equal(ratio=1) +
+    scale_fill_gradient(low = "black",
+                        high = "grey90",
+                        name = paste("Current\ntemperature\n(", "\U00B0","C)",sep="")) +
+    scale_colour_manual(name = "Patch ID", 
+                        values = patch_pal,
+                        guide = FALSE) +
+    guides(fill = guide_colourbar(title.position = "top"))
+
+p3b <-
+    ggplot()+
+    # Patch outlines
+    geom_polygon(data = patches_sub, 
+                 aes(x = long, y = lat, 
+                     fill = clim_conn,
+                     group = group),
+                 alpha = 1) +
+    geom_polygon(data = patches_sub_outline, 
+                 aes(x = long, y = lat,
+                     group = group),
+                 alpha = 0,
+                 colour = "grey40",
+                 size = 0.05) +
+    theme_void() +
+    theme(legend.title = element_text(size = text_size),
+          legend.text = element_text(size = text_size),
+          legend.box.spacing = unit(0,"cm"),
+          legend.box.margin = margin(0,0,0,0),
+          legend.position = "right") +
+    coord_equal(ratio=1) +
+    scale_fill_viridis(option = "A",
+                       name = paste("Climate\nconnectivity\n(", "\U00B0","C)",sep=""))
+
+```
+
+(ref:cap-C-3) Pathways from origin to destination patches (a) and climate connectivity across all patches (b). In panel a, patch shading corresponds to current mean annual temperature (&deg;C), from cooler (black) to hotter (light grey). Circles indicate patch centroids; the numbers inside correspond to the patch identity (as in Tables \ref{tab:tab-C-1}, \ref{tab:tab-C-2} and \ref{tab:tab-C-3}) and the arrows between indicate the direction of travel from hotter to cooler patches. In panel b, patch shading corresponds to climate connectivity (&deg;C), measured as the current temperature of the origin patch minus the future temperature of the destination patch. If this value is zero or positive (not shown) the patch has achieved successful climate connectivity, meaning that species could reach analogous climate under future climate warming, given existing forest cover.
+
+```{r fig-C-3, fig.cap = "(ref:cap-C-3)", echo = FALSE}
+plot_grid(p3a, p3b, 
+          align = "hv",
+          ncol = 2, 
+          labels = c("(a)", "(b)"), 
+          label_size = lab_size)
+```
+
+\pagebreak
+
+## Supplementary figures
+
+(ref:cap-C-4) The proportion of total forested area in each land mass that lost climate connectivity between 2000 and 2012, according to biogeographic realm and forested area in the year 2000. Points correspond to raw data and fitted lines derive from model predictions. Note that confidence intervals are omitted because standard error calculation for new predicted values is not currently supported in the gamlss package.
+
+```{r fig-C-4, fig.cap= "(ref:cap-C-4)", fig.height= 9/2.54}
+ggplot(cc_loss_dat$tc_2000_pred, 
+       aes(x = tc_2000,
+           y = prop_decrease_cc * 100,
+           colour = realm)) +
+    geom_point(data = region_ccc_inc) +
+    geom_line() +
+    xlab(paste("Forested area in 2000 (km","\U00B2",")",sep="")) +
+    ylab("Proportion area losing connectivity (%)") +
+    theme_bw() +
+    theme(axis.text = element_text(size = text_size),
+          axis.title = element_text(size = title_size),
+          legend.text = element_text(size = text_size),
+          legend.title = element_blank(),
+          legend.position = "top",
+          # legend.position = c(0.1, 0.8),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(0,100,10))+
+    scale_colour_manual(values = cbpal2)
+```
+
+\clearpage
+\fancyhead[R]{Bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
+
