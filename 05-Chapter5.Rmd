@@ -529,7 +529,7 @@ p1
 
 (ref:cap-5-2) Climate connectivity of land masses in different biogeographic realms in the year 2000 (green) and 2012 (purple). Panel a shows results for median climate connectivity, with the dashed line indicating zero climate connectivity, at which point and above successful climate connectivity is achieved. Panel b shows results for the proportion of total forested area that achieves successful climate connectivity. Solid points are model-predicted values with 95% confidence intervals. Raw data are plotted in the background as semi-transparent points.
 
-```{r fig-5-2, fig.cap= "(ref:cap-5-2)"}
+```{r fig-5-2, fig.cap= "(ref:cap-5-2)", fig.height = 8/2.54}
 
 p2a <-
 ggplot(data = median_cc_dat, 
@@ -618,7 +618,7 @@ The total area that experienced loss of connectivity was `r format(cc_decrease_a
 
 (ref:cap-5-3) The proportion of total forested area in each land mass that lost climate connectivity between 2000 and 2012, with increasing area of forest loss and across different biogeographic realms (orange = Afrotropics, blue = Australasia, green = Indomalaya, yellow = Neotropics and pink = Oceania). Points correspond to raw data, with point size indicating the number of observations at that location. Fitted lines derive from model predictions. Note that confidence intervals are omitted because standard error calculation for new predicted values is not currently supported in the gamlss package.
 
-```{r fig-5-3, fig.cap= "(ref:cap-5-3)", fig.height=10/2.54}
+```{r fig-5-3, fig.cap= "(ref:cap-5-3)"}
 ggplot(cc_loss_dat$tc_loss_pred, 
        aes(x = expm1(tc_loss_log1p),
            y = prop_decrease_cc * 100,
