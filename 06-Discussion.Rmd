@@ -1,4 +1,4 @@
-# General discussion {#ch6}
+# General Discussion {#ch6}
 
 \begin{figure}[!htb]
 \centering
