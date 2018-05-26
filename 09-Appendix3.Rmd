@@ -9,6 +9,7 @@ knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALS
 
 library(knitr)
 library(ggplot2)
+library(scales)
 library(dplyr)
 library(cowplot)
 library(xtable)
@@ -20,31 +21,315 @@ title_size <- 8
 lab_size <- 7
 
 # Colourblind-friendly palette
-cbpal <- viridis(4, option = "D")
+cbpal1 <- viridis(4, option = "D")
 cbpal2 <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#CC79A7", "#D55E00","#0072B2")
+
+# Function for extracting legend
+g_legend<-function(a.gplot){
+    tmp <- ggplot_gtable(ggplot_build(a.gplot))
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+    legend <- tmp$grobs[[leg]]
+    return(legend)}
+
+# Significance val
+get_signif <- function(p_val){
+    signif_level <- 
+        ifelse(p_val >0.05, paste("= ", signif(p_val, 3), sep = ""),
+               ifelse(p_val <= 0.05 & p_val >0.01, "<0.05",
+                      ifelse(p_val <= 0.01 & p_val >0.001, "<0.01", 
+                             "<0.001")))
+    return(signif_level)
+}
+
+relevel_df <- function(df){
+    # Relevel dataset name
+    df[,"df_name"] <- 
+        factor(df[,"df_name"], 
+               levels = c(c("plantations_w", "plantations_wo"),
+                          paste("full_area_", 
+                                c(1,5,10,25,100), 
+                                "_sep_2", 
+                                sep = "")),
+               labels = c(c("With plantations",
+                            "Without plantations"),
+                          paste("Min. patch size = ", 
+                                c(1,5,10,25,100), 
+                                " km", 
+                                "\U00B2", sep = "")))
+    # Relevel realm
+    if("realm" %in% names(df)){
+        df[,"realm"] <- factor(df[,"realm"],
+                               levels = c("Neotropics",
+                                          "Afrotropics",
+                                          "Indomalaya",
+                                          "Australasia",
+                                          "Oceania")) 
+        df <- arrange(df, df_name, realm)
+    }else df <- arrange(df, df_name)
+    
+    return(df)
+}
+
+sort_results <- function(dat, RV, Df, stat, stat_val,P, fig_refs){
+    dat <-
+        do.call("rbind",
+                lapply(dat,
+                       function(x) rbind(x[["main_results"]])))
+    row.names(dat) <- NULL
+    dat <- 
+        data.frame(dat) %>% 
+        mutate(RV = RV,
+               Df = Df,
+               EV = dropped_EV,
+               stat = stat,
+               stat_val = dat[,stat_val],
+               P = dat[,P],
+               p_val = get_signif(P),
+               fig_ref = fig_refs) %>%
+        filter(!(is.na(p_val))) %>% 
+        select(df_name, RV, EV, Df, stat, stat_val, P, p_val, fig_ref) %>% 
+        mutate(ref = paste(stat, " = ", signif(stat_val,3), ", ",
+                           "p ", p_val, 
+                           "; ", fig_ref,
+                           sep = "")) %>% 
+        relevel_df()
+    return(dat)
+}
 ```
 
-```{r load-data, include = FALSE}
-load("data/ch5/som_text3_dat.rdata")
-load("data/ch5/models/prop-cc-loss.Rdata")
-load("data/ch5/pantropics/stat_dat.Rdata")
+```{r raw-dat, include = FALSE}
+# Identify all the subdirs
+paths <- 
+    list.files("data/ch5", 
+               recursive = FALSE, 
+               pattern = "^area_|^plantations", 
+               full.names = TRUE)
+
+# Climate connectivity ---------------------------------------------------------
+region_cc <- 
+    # Define paths
+    file.path(paths, "region_cc.Rds") %>% 
+    # Read in
+    lapply(function(x) as.data.frame(readRDS(x)))
+# Bind for plotting
+region_cc <- do.call("rbind", region_cc) %>% 
+    relevel_df()
+# Separate for diff sections
+region_cc_som1 <- region_cc[grep("plantations",region_cc$df_name),]
+region_cc_som2 <- region_cc[grep("patch size",region_cc$df_name),]
+rm(region_cc)
+
+# Climate connectivity change --------------------------------------------------
+region_ccc <- 
+    # Define paths
+    file.path(paths, "region_ccc.Rds") %>% 
+    # Read in
+    lapply(function(x) as.data.frame(readRDS(x)))
+# Bind for plotting
+region_ccc <- do.call("rbind", region_ccc) %>% 
+    relevel_df()
+# Add log tc loss
+region_ccc$tc_loss_log1p <- log1p(region_ccc$loss)
+# Add prop cc loss
+region_ccc$prop_decrease_cc <-
+    region_ccc$area_decrease_cc /
+    region_ccc$sum_patch_area
+# Separate for diff sections
+region_ccc_som1 <- region_ccc[grep("plantations",region_ccc$df_name),]
+region_ccc_som2 <- region_ccc[grep("patch size",region_ccc$df_name),]
+rm(region_ccc)
 ```
 
-```{r prep-data, include = FALSE}
-region_ccc_inc$prop_decrease_cc <-
-    region_ccc_inc$area_decrease_cc /
-    region_ccc_inc$sum_patch_area
+```{r median-cc-dat, include = FALSE}
+
+# With/without plantations -----------------------------------------------------
+load("data/ch5/models/plantations/median_cc.Rdata")
+median_cc_dat_som1 <- median_cc_dat
+median_cc_results_som1 <- median_cc_results
+rm(median_cc_dat, median_cc_results)
+
+# Sort results
+median_cc_results_som1 <- 
+    sort_results(dat = median_cc_results_som1, 
+                 RV = "median_cc", 
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
+                 fig_refs = "\\autoref{fig:fig-C-5}a")
+
+
+# Sort predicted values
+median_cc_dat_som1 <-
+    median_cc_dat_som1 %>% 
+    relevel_df() %>% 
+    mutate(median_cc = signif(median_cc,3))
+
+# Different patch parameters  --------------------------------------------------
+load("data/ch5/models/patch_params/median_cc.Rdata")
+median_cc_dat_som2 <- median_cc_dat
+median_cc_results_som2 <- median_cc_results
+rm(median_cc_dat, median_cc_results)
+
+# Sort results
+median_cc_results_som2 <- 
+    sort_results(dat = median_cc_results_som2, 
+                 RV = "median_cc", 
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
+                 fig_refs = "\\autoref{fig:fig-C-7}a")
+
+
+# Sort predicted values
+median_cc_dat_som2 <-
+    median_cc_dat_som2 %>% 
+    relevel_df() %>% 
+    mutate(median_cc = signif(median_cc,3))
+```
+
+```{r prop_success_dat, include = FALSE}
+
+# With/without plantations -----------------------------------------------------
+load("data/ch5/models/plantations/prop_success.Rdata")
+prop_success_dat_som1 <- success_area_dat
+prop_success_results_som1 <- success_area_results
+rm(success_area_dat, success_area_results)
+
+# Sort results
+prop_success_results_som1 <- 
+    sort_results(dat = prop_success_results_som1, 
+                 RV = "prop_success_area", 
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
+                 fig_refs = "\\autoref{fig:fig-C-5}b")
+
+# Sort predicted values
+prop_success_dat_som1 <-
+    prop_success_dat_som1 %>% 
+    relevel_df() %>% 
+    mutate(prop_success = signif(prop_success_area * 100,3))
+
+# Different patch parameters----------------------------------------------------
+load("data/ch5/models/patch_params/prop-success.Rdata")
+prop_success_dat_som2 <- success_area_dat
+prop_success_results_som2 <- success_area_results
+rm(success_area_dat, success_area_results)
+
+# Sort results
+prop_success_results_som2 <- 
+    sort_results(dat = prop_success_results_som2, 
+                 RV = "prop_success_area", 
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
+                 fig_refs = "\\autoref{fig:fig-C-5}b")
+
+# Sort predicted values
+prop_success_dat_som2 <-
+    prop_success_dat_som2 %>% 
+    relevel_df() %>% 
+    mutate(prop_success = signif(prop_success_area * 100,3))
+```
+
+```{r cc-loss-dat, include = FALSE}
+
+# Main dataset -----------------------------------------------------------------
+# Subset to main dataset (only for area 10 km^2 and sep of 2 km)
+cc_loss_tc_2000_main <- 
+    cc_loss_tc_2000_som2[cc_loss_tc_2000_som2$df_name == "Min. patch size = 10 km²",]
+region_ccc_main <-
+    region_ccc_som2[region_ccc_som2$df_name == "Min. patch size = 10 km²",]
+
+# With/without plantations -----------------------------------------------------
+load("data/ch5/models/plantations/cc_loss.Rdata")
+cc_loss_tc_2000_som1 <- cc_loss_tc2000
+cc_loss_tc_loss_som1 <- cc_loss_tc_loss
+cc_loss_results_som1 <- cc_loss_results
+rm(cc_loss_results, cc_loss_tc_loss, cc_loss_tc2000)
+
+# Sort results
+cc_loss_results_som1 <- 
+    sort_results(dat = cc_loss_results_som1, 
+                 RV = "cc_loss", 
+                 Df = "df",
+                 stat =  paste("\U03A7", "\U00B2", sep = ""),
+                 stat_val = "chi",
+                 P =  "p.val",
+                 fig_refs = rep(paste("\\autoref{fig:fig-C-6}", 
+                                  c("a", "b"), 
+                                  sep = ""), 2))
+
+# Sort predicted values
+cc_loss_tc_2000_som1 <-
+    cc_loss_tc_2000_som1 %>% 
+    relevel_df() %>% 
+    mutate(prop_decrease_cc = signif(prop_decrease_cc,3))
+cc_loss_tc_loss_som1 <-
+    cc_loss_tc_loss_som1 %>% 
+    relevel_df() %>% 
+    mutate(prop_decrease_cc = signif(prop_decrease_cc,3))
+
+# Different patch parameters ---------------------------------------------------
+load("data/ch5/models/patch_params/cc_loss.Rdata")
+cc_loss_tc_2000_som2 <- cc_loss_tc2000
+cc_loss_tc_loss_som2 <- cc_loss_tc_loss
+cc_loss_results_som2 <- cc_loss_results
+rm(cc_loss_results, cc_loss_tc_loss, cc_loss_tc2000)
+
+# Sort results
+cc_loss_results_som2 <- 
+    sort_results(dat = cc_loss_results_som2, 
+                 RV = "cc_loss", 
+                 Df = "df",
+                 stat =  paste("\U03A7", "\U00B2", sep = ""),
+                 stat_val = "chi",
+                 P =  "p.val",
+                 fig_refs = rep(paste("\\autoref{fig:fig-C-8}", 
+                                  c("", "a","b"), 
+                                  sep = ""), 5))
+
+# Sort predicted values
+cc_loss_tc_2000_som2 <-
+    cc_loss_tc_2000_som2 %>% 
+    relevel_df() %>% 
+    mutate(prop_decrease_cc = signif(prop_decrease_cc,3))
+cc_loss_tc_loss_som2 <-
+    cc_loss_tc_loss_som2 %>% 
+    relevel_df() %>% 
+    mutate(prop_decrease_cc = signif(prop_decrease_cc,3))
+
 ```
 
 # Supporting information for Chapter 5
 
 ## Supplementary analysis without tree plantations {#text-C-1}
 
-Clever wordz here
+### Methods
+
+The tree cover layers from @hansen_high-resolution_2013 do not currently distinguish between natural forests and tree plantations. However, boundary polygons for tree plantations are available for seven countries: Brazil, Cambodia, Colombia, Indonesia, Liberia, Malaysia, and Peru [@transparent_world_tree_2015]. We therefore re-ran our analyses (see [Chapter 5: Methods](#ch5-methods)) for these seven countries only, with and without cells inside tree plantations. We buffered country polygons by 100 km to prevent artificial truncation of climate gradients [cf. @mcguire_achieving_2016]. Statistical models were analogous to those in the main text (see [Chapter 5: Methods](#ch5-stats)), except that biogeographic realm was not included as an explanatory variable because of the smaller and more uneven sample sizes in this subset of the data.
+
+### Results and Discussion
+
+Median climate connectivity in 2012 was `r median_cc_dat_som1$median_cc[median_cc_dat_som1$df_name == "With plantations" & median_cc_dat_som1$year == "2012"]`&deg;C including cells in tree plantations, versus `r median_cc_dat_som1$median_cc[median_cc_dat_som1$df_name == "Without plantations" & median_cc_dat_som1$year == "2012"]`&deg;C excluding tree plantations. Median climate connectivity did not differ by year in either case (p > 0.05; \autoref{fig:fig-C-5}a). Thus, regardless of the year or inclusion of tree plantations, typical tropical forest fails to connect patches to future analogous climates.
+
+The proportion of forest that achieved successful climate connectivity in 2012 was nearly identical regardless of whether tree plantations were included (`r signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "With plantations" & prop_success_dat_som1$year == "2012"] * 100, 3)`% if including plantations versus `r signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "Without plantations" & prop_success_dat_som1$year == "2012"] * 100, 3)`% excluding plantations), although the trends over time did differ. If cells inside plantations were included, there was a slight increase (+`r signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "With plantations" & prop_success_dat_som1$year == "2012"] * 100, 3) - signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "With plantations" & prop_success_dat_som1$year == "2000"] * 100, 3)`%) from 2000 to 2012 in the proportion of successfully connected forest `r prop_success_results_som1$ref[prop_success_results_som1$df_name == "With plantations"]`. The opposite was true when cells inside plantations were excluded (`r prop_success_results_som1$ref[prop_success_results_som1$df_name == "Without plantations"]`), with the ptroportion of forest achieving successful climate connectivity decreasing by `r signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "Without plantations" & prop_success_dat_som1$year == "2000"] * 100, 3) - signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "Without plantations" & prop_success_dat_som1$year == "2012"] * 100, 3)`% from 2000 to 2012. The discrepancy between datasets in the effect of year is very likely to be driven by increases in tree cover inside tree plantations. 
+
+Whether or not tree plantations were included, tree cover in the year 2000 had little effect on the proportion of forest that experienced a loss of climate connectivity (p > 0.05; \autoref{fig:fig-C-6}a). Loss of climate connectivity was, however, dependent on loss of forest area, whether including tree plantations (`r cc_loss_results_som1$ref[cc_loss_results_som1$df_name == "With plantations" & cc_loss_results_som1$EV == "tc_loss_log1p"]`) or excluding tree plantations (`r cc_loss_results_som1$ref[cc_loss_results_som1$df_name == "Without plantations" & cc_loss_results_som1$EV == "tc_loss_log1p"]`). 
 
 ## Supplementary analyses for different patch parameters {#text-C-2}
 
-More wordz
+### Methods
+
+Following @mcguire_achieving_2016 we excluded forest patches less than 10 km^2^. This was based on an assumption that excessively small patches are incapable of sustaining populations for long enough to enable range shifts through differential fitness at the leading and trailing edge of a species' range. However, the critical patch size to enable such demographic processes to occur will depend on the species in question, and indeed some species may shift their ranges via within-generation movement of migrating individuals. We tested the influence of minimum patch size by repeating the analyses for patch sizes of 1, 5, 25 and 100 km^2^. Note that a minimum size of 1 km^2^ corresponds to no exclusions, since this is the resolution of the layers used. 
+
+### Results and Discussion
+
+
 
 ## Worked example of climate connectivity calculation {#text-C-3}
 
@@ -859,11 +1144,11 @@ plot_grid(p3a, p3b,
 (ref:cap-C-4) The proportion of total forested area in each land mass that lost climate connectivity between 2000 and 2012, according to biogeographic realm and forested area in the year 2000. Points correspond to raw data and fitted lines derive from model predictions. Note that confidence intervals are omitted because standard error calculation for new predicted values is not currently supported in the gamlss package.
 
 ```{r fig-C-4, fig.cap= "(ref:cap-C-4)", fig.height= 9/2.54}
-ggplot(cc_loss_dat$tc_2000_pred, 
+ggplot(cc_loss_tc_2000_main, 
        aes(x = tc_2000,
            y = prop_decrease_cc * 100,
            colour = realm)) +
-    geom_point(data = region_ccc_inc) +
+    geom_point(data = region_ccc_main) +
     geom_line() +
     xlab(paste("Forested area in 2000 (km","\U00B2",")",sep="")) +
     ylab("Proportion area losing connectivity (%)") +
@@ -876,7 +1161,340 @@ ggplot(cc_loss_dat$tc_2000_pred,
           # legend.position = c(0.1, 0.8),
           panel.grid = element_blank()) +
     scale_y_continuous(breaks = seq(0,100,10))+
+    scale_x_continuous(trans="log1p",
+                       breaks = trans_breaks("log1p", function(x) expm1(x)),
+                       labels = trans_format("log1p", math_format())) +
     scale_colour_manual(values = cbpal2)
+```
+
+(ref:cap-C-5) Climate connectivity in the year 2000 (green) and 2012 (purple), including or excluding cells that fall inside tree plantations. Panel a shows results for median climate connectivity, with the dashed line indicating zero climate connectivity, at which point and above successful climate connectivity is achieved. Panel b shows results for the proportion of total forested area that achieves successful climate connectivity. Solid points are model-predicted values with 95% confidence intervals. Raw data are plotted in the background as semi-transparent points.
+
+```{r fig-C-5, fig.cap= "(ref:cap-C-5)", fig.height= 9/2.54}
+
+pc5a <-
+    ggplot(data = median_cc_dat_som1, 
+           aes(x = year,
+               y = median_cc,
+               colour = year)) +
+    geom_hline(yintercept = 0, linetype = "dashed") +
+    geom_jitter(data = region_cc_som1,
+                alpha = 0.2,
+                shape = 16,
+                size= 1) +
+    geom_point(position = position_dodge(width = 0.5)) +
+    geom_errorbar(aes(ymin = lwr, ymax = upr), 
+                  width = 0.2,
+                  position = position_dodge(width = 0.5)) +
+    facet_wrap(~ df_name, nrow = 1, strip.position="bottom") +
+    ylab(paste("Median climate connectivity (", "\U00B0","C)",sep="")) +
+    theme_bw() +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.text.y = element_text(size = text_size),
+          strip.text = element_text(size = lab_size),
+          legend.title = element_blank(),
+          legend.text = element_text(size = lab_size),
+          legend.position = c(0.1, 0.87), 
+          legend.direction = "vertical",
+          legend.key.size = unit(5, units = "mm"),
+          # legend.background = element_rect(fill = "pink"),
+          legend.margin = margin(0,0,0,0),
+          panel.spacing = unit(0, units = "cm"),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(-4,4,0.5)) +
+    scale_colour_manual(values = cbpal1[c(3,1)])
+
+pc5b <-
+    ggplot(data = prop_success_dat_som1, 
+           aes(x = year,
+               y = prop_success,
+               colour = year)) +
+    geom_point(position = position_dodge(width = 0.5)) +
+    geom_errorbar(aes(ymin = lwr * 100, ymax = upr * 100), 
+                  width = 0.2,
+                  position = position_dodge(width = 0.5)) +
+    geom_jitter(data = region_cc_som1,
+                aes(y = (success_patch_area / sum_patch_area) * 100),
+                alpha = 0.2,
+                shape = 16,
+                size= 1) +
+    facet_wrap(~ df_name, nrow = 1, strip.position="bottom") +
+    ylab("Area successful connectivity (%)") +
+    theme_bw() +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.text.y = element_text(size = text_size),
+          strip.text = element_text(size = lab_size),
+          legend.title = element_blank(),
+          legend.text = element_text(size = 4),
+          legend.position = "none", 
+          legend.direction = "horizontal",
+          panel.spacing = unit(0, units = "cm"),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(-0,100,10)) +
+    scale_colour_manual(values = cbpal1[c(3,1)])
+
+pc5 <-
+    plot_grid(pc5a, pc5b, 
+              nrow = 1, ncol = 2,
+              align = "hv",
+              labels = c("(a)", "(b)"), 
+              label_size = lab_size)
+pc5
+```
+
+(ref:cap-C-6) The proportion of total forested area in each land mass that lost climate connectivity between 2000 and 2012, with increasing area of forest loss and across different biogeographic realms (orange = Afrotropics, blue = Australasia, green = Indomalaya, yellow = Neotropics and pink = Oceania). Points correspond to raw data, with point size indicating the number of observations at that location. Fitted lines derive from model predictions. Note that confidence intervals are omitted because standard error calculation for new predicted values is not currently supported in the gamlss package.
+
+```{r fig-C-6, fig.cap= "(ref:cap-C-6)"}
+pc6b <-
+    ggplot(cc_loss_tc_loss_som1, 
+           aes(x = expm1(tc_loss_log1p),
+               y = prop_decrease_cc * 100,
+               colour = df_name)) +
+    geom_count(data = region_ccc_som1,
+               alpha = 0.7) +
+    geom_line()+
+    xlab(paste("Area of forest loss (km","\U00B2",")",sep="")) +
+    ylab("Proportion area losing connectivity (%)") +
+    theme_bw() +
+    theme(axis.text = element_text(size = text_size),
+          axis.title = element_text(size = title_size),
+          legend.direction = "horizontal", 
+          legend.position = "none",
+          legend.text = element_text(size = text_size),
+          legend.box = "vertical",
+          legend.spacing = unit(0, "cm"),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(0,100,10)) +
+    scale_x_continuous(trans="log1p",
+                       breaks = trans_breaks("log1p", function(x) expm1(x)),
+                       labels = trans_format("log1p", math_format())) +
+    guides(colour = guide_legend(title = NULL),
+           size = guide_legend(title = NULL, nrow = 1)) +
+    scale_colour_manual(values = cbpal2[c(7,6)])
+
+pc6a <-
+    ggplot(cc_loss_tc_2000_som1, 
+           aes(x = tc_2000,
+               y = prop_decrease_cc * 100,
+               colour = df_name)) +
+    geom_point(data = region_ccc_som1) +
+    geom_line() +
+    xlab(paste("Forested area in 2000 (km","\U00B2",")",sep="")) +
+    ylab("Proportion area losing connectivity (%)") +
+    theme_bw() +
+    theme(axis.text = element_text(size = text_size),
+          axis.title = element_text(size = title_size),
+          legend.text = element_text(size = text_size),
+          legend.title = element_blank(),
+          legend.position = "none",
+          # legend.position = c(0.1, 0.8),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(0,100,10))+
+    scale_x_continuous(trans="log1p",
+                       breaks = trans_breaks("log1p", function(x) expm1(x)),
+                       labels = trans_format("log1p", math_format())) +
+    scale_colour_manual(values = cbpal2[c(7,6)])
+
+dummy <-
+    ggplot(cc_loss_tc_loss_som1, 
+           aes(x = expm1(tc_loss_log1p),
+               y = prop_decrease_cc * 100,
+               colour = df_name)) +
+    geom_count(data = region_ccc_som1,
+               alpha = 0.7) +
+    geom_line() +
+    theme_bw() +
+    theme(legend.direction = "horizontal", 
+          legend.position = "top",
+          legend.margin = margin(0,0,0,0),
+          legend.text = element_text(size = text_size),
+          legend.box = "vertical",
+          legend.spacing = unit(0, "cm")) +
+    guides(colour = guide_legend(title = NULL),
+           size = guide_legend(title = NULL, nrow = 1)) +
+    scale_colour_manual(values = cbpal2[c(7,6)])
+legend <- g_legend(dummy)
+
+pc6 <-
+    ggdraw() +
+    draw_plot(legend, x = 0, y = 0.90, width = 0.95, height = 0.1) +
+    draw_plot(pc6a, x = 0, y = 0, width = 0.5, height = 0.9) +
+    draw_plot(pc6b, x = 0.5, y = 0, width = 0.5, height = 0.9) +
+    draw_plot_label(label = c("(a)", "(b)"),
+                    x = c(0.07, 0.57),
+                    y = 0.88,
+                    size = lab_size)
+pc6
+```
+
+(ref:cap-C-7) Climate connectivity in the year 2000 (green) and 2012 (purple), including or excluding cells that fall inside tree plantations. Panel a shows results for median climate connectivity, with the dashed line indicating zero climate connectivity, at which point and above successful climate connectivity is achieved. Panel b shows results for the proportion of total forested area that achieves successful climate connectivity. Solid points are model-predicted values with 95% confidence intervals. Raw data are plotted in the background as semi-transparent points.
+
+```{r fig-C-7, fig.cap= "(ref:cap-C-7)", fig.height= 9/2.54}
+
+pc7a <-
+    ggplot(data = median_cc_dat_som2, 
+           aes(x = year,
+               y = median_cc,
+               colour = year)) +
+    geom_hline(yintercept = 0, linetype = "dashed") +
+    geom_jitter(data = region_cc_som2,
+                alpha = 0.2,
+                shape = 16,
+                size= 1) +
+    geom_point(position = position_dodge(width = 0.5)) +
+    geom_errorbar(aes(ymin = lwr, ymax = upr), 
+                  width = 0.2,
+                  position = position_dodge(width = 0.5)) +
+    facet_grid(df_name ~ realm, switch = "x") +
+    ylab(paste("Median climate connectivity (", "\U00B0","C)",sep="")) +
+    theme_bw() +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.text.y = element_text(size = text_size),
+          strip.text = element_text(size = lab_size),
+          legend.title = element_blank(),
+          legend.text = element_text(size = lab_size),
+          legend.position = "top", 
+          legend.direction = "horizontal",
+          legend.key.size = unit(5, units = "mm"),
+          legend.margin = margin(0,0,0,0),
+          panel.spacing = unit(0, units = "cm"),
+          panel.grid = element_blank()) +
+    scale_colour_manual(values = cbpal1[c(3,1)])
+
+pc7b <-
+    ggplot(data = prop_success_dat_som2, 
+           aes(x = year,
+               y = prop_success,
+               colour = year)) +
+    geom_point(position = position_dodge(width = 0.5)) +
+    geom_errorbar(aes(ymin = lwr * 100, ymax = upr * 100), 
+                  width = 0.2,
+                  position = position_dodge(width = 0.5)) +
+    geom_jitter(data = region_cc_som2,
+                aes(y = (success_patch_area / sum_patch_area) * 100),
+                alpha = 0.2,
+                shape = 16,
+                size= 1) +
+    facet_grid(df_name ~ realm, switch = "x") +
+    ylab("Area successful connectivity (%)") +
+    theme_bw() +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.text.y = element_text(size = text_size),
+          strip.text = element_text(size = lab_size),
+          legend.title = element_blank(),
+          legend.text = element_text(size = 4),
+          legend.position = "top", 
+          legend.direction = "horizontal",
+          panel.spacing = unit(0, units = "cm"),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(-0,100,10)) +
+    scale_colour_manual(values = cbpal1[c(3,1)])
+
+pc7 <-
+    plot_grid(pc7a, pc7b, 
+              nrow = 2, ncol = 1,
+              align = "hv",
+              labels = c("(a)", "(b)"), 
+              label_size = lab_size)
+pc7
+```
+
+(ref:cap-C-8) The proportion of total forested area in each land mass that lost climate connectivity between 2000 and 2012, with increasing area of forest loss and across different biogeographic realms (orange = Afrotropics, blue = Australasia, green = Indomalaya, yellow = Neotropics and pink = Oceania). Points correspond to raw data, with point size indicating the number of observations at that location. Fitted lines derive from model predictions. Note that confidence intervals are omitted because standard error calculation for new predicted values is not currently supported in the gamlss package.
+
+```{r fig-C-8, fig.cap= "(ref:cap-C-8)"}
+pc8b <-
+    ggplot(cc_loss_tc_loss_som2, 
+           aes(x = expm1(tc_loss_log1p),
+               y = prop_decrease_cc * 100,
+               colour = realm)) +
+    geom_count(data = region_ccc_som2,
+               alpha = 0.7) +
+    geom_line()+
+    facet_wrap(~ df_name, nrow = 1) +
+    xlab(paste("Area of forest loss (km","\U00B2",")",sep="")) +
+    ylab("Proportion area losing connectivity (%)") +
+    theme_bw() +
+    theme(axis.text = element_text(size = text_size),
+          axis.title = element_text(size = title_size),
+          legend.direction = "horizontal", 
+          legend.position = "none",
+          legend.text = element_text(size = text_size),
+          legend.box = "vertical",
+          legend.spacing = unit(0, "cm"),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(0,100,10)) +
+    scale_x_continuous(trans="log1p",
+                       breaks = trans_breaks("log1p", function(x) expm1(x)),
+                       labels = trans_format("log1p", math_format())) +
+    guides(colour = guide_legend(title = NULL),
+           size = guide_legend(title = NULL, nrow = 1)) +
+    scale_colour_manual(values = cbpal2)
+
+pc8a <-
+    ggplot(cc_loss_tc_2000_som2, 
+           aes(x = tc_2000,
+               y = prop_decrease_cc * 100,
+               colour = realm)) +
+    geom_point(data = region_ccc_som2) +
+    geom_line() +
+    facet_wrap(~ df_name, nrow = 1) +
+    xlab(paste("Forested area in 2000 (km","\U00B2",")",sep="")) +
+    ylab("Proportion area losing connectivity (%)") +
+    theme_bw() +
+    theme(axis.text = element_text(size = text_size),
+          axis.title = element_text(size = title_size),
+          legend.text = element_text(size = text_size),
+          legend.title = element_blank(),
+          legend.position = "none",
+          # legend.position = c(0.1, 0.8),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(0,100,10))+
+    scale_x_continuous(trans="log1p",
+                       breaks = trans_breaks("log1p", function(x) expm1(x)),
+                       labels = trans_format("log1p", math_format())) +
+    scale_colour_manual(values = cbpal2)
+
+dummy <-
+    ggplot(cc_loss_tc_loss_som2, 
+           aes(x = expm1(tc_loss_log1p),
+               y = prop_decrease_cc * 100,
+               colour = realm)) +
+    geom_count(data = region_ccc_som2,
+               alpha = 0.7) +
+    geom_line() +
+    theme_bw() +
+    theme(legend.direction = "horizontal", 
+          legend.position = "top",
+          legend.margin = margin(0,0,0,0),
+          legend.text = element_text(size = text_size),
+          legend.box = "vertical",
+          legend.spacing = unit(0, "cm")) +
+    guides(colour = guide_legend(title = NULL),
+           size = guide_legend(title = NULL, nrow = 1)) +
+    scale_colour_manual(values = cbpal2)
+legend <- g_legend(dummy)
+
+pc8 <-
+    ggdraw() +
+    draw_plot(legend, x = 0, y = 0.90, width = 1, height = 0.1) +
+    draw_plot(pc8a, x = 0, y = 0.45, width = 1, height = 0.45) +
+    draw_plot(pc8b, x = 0, y = 0, width = 1, height = 0.45) +
+    draw_plot_label(label = c("(a)", "(b)"),
+                    x = 0.07,
+                    y = c(0.85, 0.4),
+                    size = lab_size)
+pc8
 ```
 
 \clearpage
