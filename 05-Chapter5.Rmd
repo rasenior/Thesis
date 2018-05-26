@@ -37,21 +37,29 @@ get_signif <- function(p_val){
 ```
 
 ```{r load-results, include = FALSE}
-load("data/ch5/models/median-cc.Rdata")
-load("data/ch5/models/prop-success.Rdata")
-load("data/ch5/models/prop-cc-loss.Rdata")
-load("data/ch5/pantropics/map_dat.Rdata")
-load("data/ch5/pantropics/stat_dat.Rdata")
-rm(ccc_bi_exc, ccc_bi_exc_df,
-   ccc_bi_inc, ccc_bi_inc_df,
-   ccc_polys_df,
-   region_ccc_exc)
+# Median cc results
+load("data/ch5/models/patch_params/median_cc.Rdata")
+median_cc_results <- median_cc_results$full_area_10_sep_2.results
+# Successful area results
+load("data/ch5/models/patch_params/prop-success.Rdata")
+success_area_results <- success_area_results$full_area_10_sep_2.results
+# Cc loss results
+load("data/ch5/models/patch_params/cc_loss.Rdata")
+cc_loss_results <- cc_loss_results$full_area_10_sep_2.results
+# Cc polygons
+load("data/ch5/area_10_sep_2/map_dat_cc.Rdata")
+# Ccc polygons
+load("data/ch5/area_10_sep_2/map_dat_ccc.Rdata")
+# Raw cc data
+region_cc <- readRDS("data/ch5/area_10_sep_2/region_cc.Rds")
+# Raw ccc data
+region_ccc <- readRDS("data/ch5/area_10_sep_2/region_ccc.Rds")
 ```
 
-```{r prep-results, include = FALSE}
+```{r median-cc-results, include = FALSE}
 ### Median cc
 median_cc_interaction <- 
-    data.frame(median_cc_interaction) %>% 
+    data.frame(median_cc_results$interaction_results) %>% 
     mutate(RV = "median_cc",
            EV = "interaction",
            stat = "F",
@@ -66,15 +74,15 @@ median_cc_interaction <-
                        "; ", fig_ref,
                        sep = ""))
 median_cc_results <- 
-    data.frame(anova(median_cc_mod)) %>% 
+    data.frame(median_cc_results$main_results) %>% 
     mutate(RV = "median_cc",
-           EV = row.names(.),
+           EV = dropped_EV,
            stat = "F",
-           stat_val = F.value,
+           stat_val = F,
            P = Pr..F.,
            p_val = get_signif(Pr..F.),
            fig_ref = "\\autoref{fig:fig-5-2}a") %>% 
-    filter(EV != "Residuals") %>% 
+    filter(!(is.na(p_val))) %>% 
     select(RV, EV, Df, stat, stat_val, P, p_val, fig_ref) %>% 
     mutate(ref = paste(stat, " = ", signif(stat_val,3), ", ",
                        "p ", p_val, 
@@ -84,16 +92,20 @@ median_cc_results <-
 # Sort predicted results for 2012 into order, lowest to highest
 median_cc_dat_2012 <-
     median_cc_dat %>% 
-    filter(year == "2012") %>% 
+    filter(year == "2012" &
+               df_name == "full_area_10_sep_2") %>% 
     arrange(median_cc) %>% 
     mutate(median_cc = signif(median_cc,3))
 
 # Overall median (across everything)
-median_cc_2012 <- median(patches$cc[patches$year == "2012"])
+median_cc_2012 <- unique(region_cc$median_cc_2012)
+```
+
+```{r prop-success-results, include = FALSE}
 
 ### Proportion connected area
 prop_success_interaction <- 
-    data.frame(prop_success_interaction) %>% 
+    data.frame(success_area_results$interaction_results) %>% 
     mutate(RV = "prop_success",
            EV = "interaction",
            stat = "F",
@@ -109,9 +121,9 @@ prop_success_interaction <-
                        sep = ""))
 
 prop_success_results <-
-    data.frame(anova(prop_success_mod,test="F")) %>% 
+    data.frame(success_area_results$main_results) %>% 
     mutate(RV = "prop_success",
-           EV = row.names(.),
+           EV = dropped_EV,
            stat = "F",
            stat_val = F,
            P = Pr..F.,
@@ -130,23 +142,31 @@ fail_area <- sum(region_cc$fail_patch_area[region_cc$year == "2012"])
 total_area <- sum(region_cc$sum_patch_area[region_cc$year == "2012"])
 
 prop_success_dat_2012 <-
-    prop_success_dat %>% 
-    filter(year == "2012") %>% 
-    arrange(prop_success) %>% 
-    mutate(prop_success = signif(prop_success * 100,3))
+    success_area_dat %>% 
+    filter(year == "2012" &
+               df_name == "full_area_10_sep_2") %>% 
+    arrange(prop_success_area) %>% 
+    mutate(prop_success_area = signif(prop_success_area * 100,3))
 prop_success_dat_yr <-
-    prop_success_dat %>% 
+    success_area_dat %>% 
     group_by(realm) %>% 
-    summarise(prop_success_diff = diff(prop_success)) %>% 
+    filter(df_name == "full_area_10_sep_2") %>%
+    summarise(prop_success_diff = diff(prop_success_area)) %>% 
     mutate(prop_success_diff = (signif(prop_success_diff * 100, 3))) %>% 
     arrange(prop_success_diff)
+```
+
+```{r cc-loss-results, include = FALSE}
 
 ### Proportion cc loss
 cc_loss_results <-
-    cc_loss_results %>%
+    cc_loss_results$main_results %>%
     mutate(RV = "cc_loss",
-           stat_val = as.numeric(paste(stat_val)),
-           P = as.numeric(paste(P)),
+           EV = dropped_EV,
+           Df = df,
+           stat = paste("\U03A7", "\U00B2", sep = ""),
+           stat_val = chi,
+           P = p.val,
            p_val = get_signif(P),
            fig_ref = c("\\autoref{fig:fig-5-3}",
                        "\\autoref{fig:fig-C-4}",
@@ -157,23 +177,40 @@ cc_loss_results <-
                        "; ", fig_ref,
                        sep = ""))
 
-region_ccc_inc$tc_loss_log1p <- log1p(region_ccc_inc$tc_loss)
-region_ccc_inc$prop_decrease_cc <-
-    region_ccc_inc$area_decrease_cc /
-    region_ccc_inc$sum_patch_area
+region_ccc$tc_loss_log1p <- log1p(region_ccc$loss)
+region_ccc$prop_decrease_cc <-
+    region_ccc$area_decrease_cc /
+    region_ccc$sum_patch_area
 
-cc_decrease_area <- sum(region_ccc_inc$area_decrease_cc)
-cc_increase_area <- sum(region_ccc_inc$area_increase_cc)
-total_ccc_area <- sum(region_ccc_inc$sum_patch_area)
+cc_decrease_area <- sum(region_ccc$area_decrease_cc)
+cc_increase_area <- sum(region_ccc$area_increase_cc)
+total_ccc_area <- sum(region_ccc$sum_patch_area)
 
 results <- rbind(median_cc_results, prop_success_results, cc_loss_results)
 
 ```
 
 ```{r prep-4-plotting, include = FALSE}
+boundaries_df <-
+    filter(boundaries, !(duplicated(id))) %>% 
+    select(region = id,
+           region_area,
+           realm,
+           biome,
+           ecoregion,
+           cells_2000,
+           tc_2000,
+           nontc_2000,
+           cells_2012,
+           tc_2012,
+           nontc_2012,
+           loss,
+           gain,
+           nochange,
+           df_name)
 # Read in background realm polygons
 realms <-
-    readOGR("data/ch5/pantropics/plotting_boundaries", "realms_sub",
+    readOGR("data/ch5", "realms",
             use_iconv = TRUE, encoding = "UTF-8") %>% 
     # Reproject
     spTransform(CRS(cea)) %>% 
@@ -204,8 +241,6 @@ realms <-
 patches <- patches[patches$year == "2012",]
 
 # Add region info
-patches <- merge(patches, boundaries_df, by = "region")
-ccc_polys <- merge(ccc_polys, boundaries_df, by = "region")
 ccc_polys$year <- "2012 - 2000"
 
 # Remove regions < 5000 km^2
@@ -311,11 +346,11 @@ Studies that do integrate habitat connectivity with climate are highly informati
 
 In this study, we combined current and future climate data with data from tropical land-use change that has already occurred, to quantify both the current climate connectivity across the tropics, and the patterns of change in the recent past. We hypothesised that current climate connectivity, in terms of its average value and the area of successfully connected forest, would vary across biogeographic realms, according to differences in biogeography and land-use history. Loss of climate connectivity will invariably depend on loss of forest area, but we expected greater loss of climate connectivity in regions with low starting climate connectivity (in 2000) and beyond a critical level of forest loss.
 
-## Materials and Methods
+## Methods {#ch5-methods}
 
-We focused our study on the pantropics, including all land masses located between &plusmn;23.4&deg; latitude. We excluded land masses smaller than the minimum permissible area for forest patches (10 km^2^; see ["Climate-partitioned forest patches"](#ch4-forest-patches)), as well as those with a temperature range less than the predicted temperature change under climate warming, since range shifts are unlikely to be sufficient responses to climate change in these regions. Boundaries were initially buffered by 100 km to reduce artificial truncation of climate gradients for those land masses with a true extent beyond the tropics [e.g. Africa and Australia; cf. @mcguire_achieving_2016]. Maps were analysed at 1-km resolution projected into the World Cylindrical Equal Area projection. All spatial layers were processed with Python code implemented using the arcpy module in ArcMap version 10.4.1 [@esri_arcgis].
+We focused our study on the pantropics, including all land masses located between &plusmn;23.4&deg; latitude. We excluded land masses smaller than the minimum permissible area for forest patches (10 km^2^; see ["Climate-partitioned forest patches"](#ch5-forest-patches)), as well as those with a temperature range less than the predicted temperature change under climate warming, since range shifts are unlikely to be sufficient responses to climate change in these regions. Boundaries were initially buffered by 100 km to reduce artificial truncation of climate gradients for those land masses with a true extent beyond the tropics [e.g. Africa and Australia; cf. @mcguire_achieving_2016]. Maps were analysed at 1-km resolution projected into the World Cylindrical Equal Area projection. All spatial layers were processed with Python code implemented using the arcpy module in ArcMap version 10.4.1 [@esri_arcgis].
 
-### Climate-partitioned forest patches {#ch4-forest-patches}
+### Climate-partitioned forest patches {#ch5-forest-patches}
 
 Since we were interested in climate connectivity for species inhabiting tropical forests, we calculated climate connectivity based on movement along a temperature gradient within forested areas only. We defined cells as forest or non-forest using tree cover data from @hansen_high-resolution_2013. For the year 2000, cells were defined as forested if they had >50% tree cover [@hansen_high-resolution_2013]. Results are conservative because the @hansen_high-resolution_2013 dataset does not differentiate between natural forest and tree plantations, but see [Appendix C.1](#text-C-1) for analyses excluding cells within tree plantations, for those countries (Brazil, Cambodia, Colombia, Indonesia, Liberia, Malaysia, and Peru) where plantation boundaries were available [@transparent_world_tree_2015]. For the year 2012, cells were classified based on forest loss and forest gain [@hansen_high-resolution_2013] relative to forest cover in 2000. If a cell had experienced forest loss from 2000 to 2012, it had gone from a forested to non-forested state and the cell was classed as non-forest in 2012. Conversely, if a cell had experienced forest gain from 2000 to 2012, it had gone from a non-forested to a forested state; providing there had been no concomitant loss, the cell was classed as forest in 2012. 
 
@@ -329,7 +364,7 @@ To trace each forest patch to its final destination, we identified which patches
 
 Once each origin patch has a designated final destination patch, climate connectivity is calculated as the temperature differential between them. The key question is whether forest cover is sufficient for organisms to reach a place that, under future climate warming, is the same as or cooler than the temperature of their current location. Thus, climate connectivity is the current temperature of the origin patch minus the future temperature of the destination patch. Where this value is zero or positive, the patch has achieved successful climate connectivity: there is sufficient structural connectivity between forested areas for organisms to reach forest that is same as or cooler than the temperatures they currently experience. Negative values indicate that the coolest reachable forest is still warmer under climate change than the current temperature, and inhabitant organisms would fail to reach an analogous climate under projected warming.
 
-### Statistical analyses
+### Statistical analyses {#ch5-stats}
 
 All data were analysed in R [version 3.5.0; @r_core_team_2018]. For all models, statistical significance was inspected by dropping each fixed effect in turn and comparing to the full model [@zuur_mixed_2009]. The significance of main effects involved in an interaction was assessed in the same way, except reduced models were compared to a full model without the interaction term.
 
@@ -623,7 +658,7 @@ ggplot(cc_loss_dat$tc_loss_pred,
        aes(x = expm1(tc_loss_log1p),
            y = prop_decrease_cc * 100,
            colour = realm)) +
-    geom_count(data = region_ccc_inc,
+    geom_count(data = region_ccc,
                alpha = 0.7) +
     geom_line()+
     xlab(paste("Area of forest loss (km","\U00B2",")",sep="")) +
