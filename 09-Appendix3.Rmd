@@ -45,7 +45,8 @@ relevel_df <- function(df){
     # Relevel dataset name
     df[,"df_name"] <- 
         factor(df[,"df_name"], 
-               levels = c(c("plantations_w", "plantations_wo"),
+               levels = c(c("plantations-w_10_sep_2", 
+                            "plantations-wo_10_sep_2"),
                           paste("full_area_", 
                                 c(1,5,10,25,100), 
                                 "_sep_2", 
@@ -238,19 +239,11 @@ prop_success_dat_som2 <-
 
 ```{r cc-loss-dat, include = FALSE}
 
-# Main dataset -----------------------------------------------------------------
-# Subset to main dataset (only for area 10 km^2 and sep of 2 km)
-cc_loss_tc_2000_main <- 
-    cc_loss_tc_2000_som2[cc_loss_tc_2000_som2$df_name == "Min. patch size = 10 km²",]
-region_ccc_main <-
-    region_ccc_som2[region_ccc_som2$df_name == "Min. patch size = 10 km²",]
-
 # With/without plantations -----------------------------------------------------
 load("data/ch5/models/plantations/cc_loss.Rdata")
-cc_loss_tc_2000_som1 <- cc_loss_tc2000
 cc_loss_tc_loss_som1 <- cc_loss_tc_loss
 cc_loss_results_som1 <- cc_loss_results
-rm(cc_loss_results, cc_loss_tc_loss, cc_loss_tc2000)
+rm(cc_loss_results, cc_loss_tc_loss)
 
 # Sort results
 cc_loss_results_som1 <- 
@@ -260,15 +253,9 @@ cc_loss_results_som1 <-
                  stat =  paste("\U03A7", "\U00B2", sep = ""),
                  stat_val = "chi",
                  P =  "p.val",
-                 fig_refs = rep(paste("\\autoref{fig:fig-C-6}", 
-                                  c("a", "b"), 
-                                  sep = ""), 2))
+                 fig_refs = "\\autoref{fig:fig-C-6}")
 
 # Sort predicted values
-cc_loss_tc_2000_som1 <-
-    cc_loss_tc_2000_som1 %>% 
-    relevel_df() %>% 
-    mutate(prop_decrease_cc = signif(prop_decrease_cc,3))
 cc_loss_tc_loss_som1 <-
     cc_loss_tc_loss_som1 %>% 
     relevel_df() %>% 
@@ -276,10 +263,9 @@ cc_loss_tc_loss_som1 <-
 
 # Different patch parameters ---------------------------------------------------
 load("data/ch5/models/patch_params/cc_loss.Rdata")
-cc_loss_tc_2000_som2 <- cc_loss_tc2000
 cc_loss_tc_loss_som2 <- cc_loss_tc_loss
 cc_loss_results_som2 <- cc_loss_results
-rm(cc_loss_results, cc_loss_tc_loss, cc_loss_tc2000)
+rm(cc_loss_results, cc_loss_tc_loss)
 
 # Sort results
 cc_loss_results_som2 <- 
@@ -289,20 +275,19 @@ cc_loss_results_som2 <-
                  stat =  paste("\U03A7", "\U00B2", sep = ""),
                  stat_val = "chi",
                  P =  "p.val",
-                 fig_refs = rep(paste("\\autoref{fig:fig-C-8}", 
-                                  c("", "a","b"), 
-                                  sep = ""), 5))
+                 fig_refs = "\\autoref{fig:fig-C-8}")
 
 # Sort predicted values
-cc_loss_tc_2000_som2 <-
-    cc_loss_tc_2000_som2 %>% 
-    relevel_df() %>% 
-    mutate(prop_decrease_cc = signif(prop_decrease_cc,3))
 cc_loss_tc_loss_som2 <-
     cc_loss_tc_loss_som2 %>% 
     relevel_df() %>% 
     mutate(prop_decrease_cc = signif(prop_decrease_cc,3))
 
+
+# Main dataset -----------------------------------------------------------------
+# Subset to main dataset (only for area 10 km^2 and sep of 2 km)
+region_ccc_main <-
+    region_ccc_som2[region_ccc_som2$df_name == "Min. patch size = 10 km²",]
 ```
 
 # Supporting information for Chapter 5
@@ -325,7 +310,7 @@ Whether or not tree plantations were included, tree cover in the year 2000 had l
 
 ### Methods
 
-Following @mcguire_achieving_2016 we excluded forest patches less than 10 km^2^. This was based on an assumption that excessively small patches are incapable of sustaining populations for long enough to enable range shifts through differential fitness at the leading and trailing edge of a species' range. However, the critical patch size to enable such demographic processes to occur will depend on the species in question, and indeed some species may shift their ranges via within-generation movement of migrating individuals. We tested the influence of minimum patch size by repeating the analyses for patch sizes of 1, 5, 25 and 100 km^2^. Note that a minimum size of 1 km^2^ corresponds to no exclusions, since this is the resolution of the layers used. 
+Following @mcguire_achieving_2016 we excluded forest patches less than 10 km^2^. This was based on the assumption that excessively small patches are incapable of sustaining populations for long enough to enable range shifts through differential fitness at the leading and trailing edge of a species' range. However, the critical patch size to enable such demographic processes to occur will depend on the species in question, and indeed some species may shift their ranges via within-generation movement of migrating individuals. We tested the influence of minimum patch size by repeating the analyses for patch sizes of 1, 5, 25 and 100 km^2^. Note that a minimum size of 1 km^2^ corresponds to no exclusions, since this is the resolution of the layers used. 
 
 ### Results and Discussion
 
