@@ -24,18 +24,19 @@ Some studies contributed substantially more temperature observations than others
 
 ### Results
 
-All results were qualitatively unchanged from those derived using the full dataset. Local day-time temperature was warmer in altered land-use types, compared to primary forest (LMM, `r "\U03A7"`^2^ = 32.19, df = 4, P < 0.001; \autoref{fig:fig-A-3}). Averaged across above- and below-ground, and across seasons, the temperature differential was greatest in cropland (7.7&deg;C), followed by pasture (6.4&deg;C), plantation (3.2&deg;C) and degraded forest (0.9&deg;C).
-The relationship between land-use type and temperature interacted with both position relative to ground level (LMM, `r "\U03A7"`^2^ = 681, df = 4, P < 0.001; \autoref{fig:fig-A-3}a) and season (LMM, `r "\U03A7"`^2^ = 105.63, df = 4, P < 0.001; \autoref{fig:fig-A-3}b). Specifically, the difference between altered land-use types and primary forest was greater above-ground than below-ground (\autoref{fig:fig-A-3}a), and variable between seasons according to the land-use type (\autoref{fig:fig-A-3}b).
+All results were qualitatively unchanged from those derived using the full dataset. Local day-time temperature was warmer in altered land-use types, compared to primary forest (LMM, `r "\U03A7"`^2^ = 32.19, df = 4, P < 0.001; \autoref{fig:fig-A-1}). Averaged across above- and below-ground, and across seasons, the temperature differential was greatest in cropland (7.7&deg;C), followed by pasture (6.4&deg;C), plantation (3.2&deg;C) and degraded forest (0.9&deg;C).
 
-\pagebreak
-
-## Supplementary figures
+The relationship between land-use type and temperature interacted with both position relative to ground level (LMM, `r "\U03A7"`^2^ = 681, df = 4, P < 0.001; \autoref{fig:fig-A-1}a) and season (LMM, `r "\U03A7"`^2^ = 105.63, df = 4, P < 0.001; \autoref{fig:fig-A-1}b). Specifically, the difference between altered land-use types and primary forest was greater above-ground than below-ground (\autoref{fig:fig-A-1}a), and variable between seasons according to the land-use type (\autoref{fig:fig-A-1}b).
 
 (ref:cap-A-1) Model estimates of the temperature difference between altered land-use types and primary forest, using a reduced dataset to balance sample sizes between the different studies that contributed data. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dashed line. Error bars are 95\% confidence intervals. Solid lines indicate projected warming in the tropics for the period 2081-2100 compared to the period 1986-2005, as a result of global climate change \citep{ipcc_climate_2013}. Shaded bands indicate 5\%–95\% ranges from the distribution of the climate model ensemble. Colours represent the lowest and highest warming scenarios (RCP2.6 and RCP8.5, respectively).
 
 ```{r fig-A-1, fig.cap= "(ref:cap-A-1)"}
 plot(readRDS("figs/figA.1.Rds"))
 ```
+
+\pagebreak
+
+## Supplementary figures
 
 (ref:cap-A-2) Model estimates of the nocturnal temperature difference between altered land-use types and primary forest. Note that cropland and pasture are missing from this analysis because nocturnal temperature data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals.
 
@@ -52,16 +53,20 @@ readRDS("figs/figA.3.Rds")
 
 ```
 
+\pagebreak
+
+(ref:cap-A-4) Day-time temperature against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Shading of points indicates temperatures measured above-ground (orange) or below-ground (blue), and point symbol indicates temperatures measured during the dry season (circles) or wet season (triangles).
+
 ```{r, include = FALSE}
 source("scripts/figA.4.R")
 ```
-
-(ref:cap-A-4) Day-time temperature against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Shading of points indicates temperatures measured above-ground (orange) or below-ground (blue), and point symbol indicates temperatures measured during the dry season (circles) or wet season (triangles).
 
 ```{r fig-A-4, fig.cap= "(ref:cap-A-4)",fig.height=22/2.54, fig.align='center'}
 p1
 
 ```
+
+\pagebreak
 
 (ref:cap-A-5) Site elevation against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Dotted black lines connect the mean elevation of all the sites within each land-use type.
 
@@ -71,8 +76,6 @@ readRDS("figs/figA.5.Rds")
 
 ```
 
-
-
-
+\pagebreak
 
 
