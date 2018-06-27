@@ -6,64 +6,55 @@
 \caption*{Frilled tree frog (\textit{Kurixalus appendiculatus}).}
 \end{figure}
 
+\pagebreak
+
 ## Summary of thesis findings
 
-* Aims of thesis were:
-    1. Investigate the potential for land-use change to impact microclimates and microhabitats, and hence the subsequent impacts on:
-        * The baseline of local climate change that global climate change is projected onto
-        * The potential for thermal buffering as an adaptive response
-    2. Investigate the potential for land-use change to impact range shifts under climate change
+The main aims of this thesis were to determine how land-use change in the tropics impacts (1) exposure to local warming, and the feasibility of both (2) microclimates and of (3) range shifts as mechanisms by which species can avoid extinction under global climate change. First, I compared local, site-level temperature in various different land-use types using field data collated from the literature. I went on to develop a framework and R package to facilitate assessment of fine-scale (mm to m) thermal heterogeneity using thermal images, which I combined with temperature dataloggers and microhabitat assessments to compare the potential for thermal buffering in logged and unlogged forests on Borneo. Even with thermal buffering the distribution of many species will shift as the climate warms, hence I used global forest cover and climate datasets to quantify, across the tropics, the extent to which range shifts to analogous future climates are facilitated by existing forest cover, and how this has changed in recent years. In this final chapter I synthesise the results from each chapter to illustrate how, overall, the loss and degradation of forests has impacted species' ability to respond to future climate change in the tropics. I conclude with recommendations for conservation practitioners and policy-makers, and some suggestions for future research directions.
 
-**Chapter 2 -- A pantropical analysis of the impacts of forest degradation and conversion on local temperature** 
+**[Chapter 2](#ch2) -- A pantropical analysis of the impacts of forest degradation and conversion on local temperature** 
 
-** Main objectives:**
-    1.
-    2.
-    3.
-* Assessed how degradation and conversion of tropical forests directly impacts temperature on a fine spatiotemporal scale
-* Implications for the impact of further warming under global climate change, but suggests that degraded forests and microhabitats may be able to buffer species from further change
+__Main objectives:__
 
-**Chapter 3 -- A framework for quantifying fine-scale thermal heterogeneity in the field** 
+1. Compare local temperature in different land-use types across the tropics.
+2. Assess whether results were consistent between wet and dry seasons and above-ground compared to below-ground.
 
-** Main objectives:**
-    1.
-    2.
-    3.
-* Developed software and metrics for analysing thermal images
-* Enables other researchers to more easily utilise thermography as a technique for researching thermal regimes, which are vitally important to species' ecology
+Using site-level temperature data collated from the literature, I found that in both wet and dry seasons forest conversion directly and profoundly influences local climate even before future global climate change is taken into account. Local warming was, however, not evident in degraded forests or below-ground. Thus, species persisting in deforested land have already experienced substantial warming, and are likely to be at greater risk under future climate change than non-forest species. Degraded forests and microhabitats may be capable of buffering species from such change, and could therefore be important assests within a landscape for maximising climate resilience at local and regional scales.
 
-**Chapter 4 -- Tropical forests are thermally buffered despite intensive selective logging** 
-** Main objectives:**
-    1.
-    2.
-    3.
-* Compared fine-scale temperature in primary and selectively logged forests of Borneo, using field data collected with dataloggers and a thermal camera
-* Found that despite clear structural differences between these forest types, there was very little temperature variation which suggests rapid thermal recovery and underscores the importance of logged forests for biodiversity both now and under future climate change
+**[Chapter 3](#ch3) -- A framework for quantifying fine-scale thermal heterogeneity using thermography** 
 
-**Chapter 5 -- The impact of recent forest cover change on climate connectivity in the tropics**
+__Main objectives:__ 
 
-** Main objectives:**
-    1.
-    2.
-    3.
-* Combined global tree cover and climate datasets to quantify, pantropically, the current physical potential for species to reach climate analogues through near-continuous forest, and the extent to which this has been affected by recent forest cover change
-* Found that current levels of climate connectivity are generally very poor, particularly in lowland regions with low forest cover and on mountain summits, hence many tropical species will struggle to reach analogous climate given current levels of forest cover
+1. Provide a simple `R` package to streamline the processing of thermal images from FLIR thermal cameras.
+2. Suggest and facilitate the calculation of key metrics of thermal heterogeneity, for any gridded temperature data.
+
+My `R` package `ThermStats` is publically available on GitHub (https://github.com/rasenior/ThermStats), and will be of particular use to researchers interested in using FLIR thermal cameras to quantify thermal heterogeneity in the field. I demonstrate its utility using two case studies. The first uses fine-scale data from FLIR thermal images to assess thermal heterogeneity over time and in logged and unlogged forests on Borneo. The second quantifies seasonal patterns in thermal heterogeneity on Borneo, using data from WorldClim2 at ~1 km^2^ resolution. For both fine- and coarse-scale data, I found strong temporal patterns in nearly all metrics of thermal heterogeneity.
+
+**[Chapter 4](#ch4) -- Tropical forests are thermally buffered despite intensive selective logging** 
+
+__Main objectives:__
+
+1. Asssess the impact of commercial selective logging on the difference between temperature at coarse (m to ha) and fine scales (mm to m).
+2. Investigate whether selectively logged and unlogged forests differ in the thermal stability and availability of microclimates.
+
+Despite clear structural differences in intensively selectively logged forest and primary, unlogged forest on Borneo, I found very little difference between forest types in the availability of microclimates or their ability to buffer organism from warming of the habitat as a whole. This suggests a propensity for rapid thermal recovery in degraded forests, and highlights their long-term value for the conservation of temperature-sensitive forest specialists.
+
+**[Chapter 5](#ch5) -- The impact of recent forest cover change on climate connectivity in the tropics**
+
+__Main objectives:__
+
+1. Determine the extent to which current forest cover in the tropics facilitates species movement to analogous future climate.
+2. Assess how species' ability to reach future climate analogues has been impacted by recent changes in forest cover.
+
+Combining global forest cover and climate datasets, we found that the ability of tropical forests to facilitate species range shifts under climate change was generally very poor, and rapidly declines with increasing loss of forest area. Many species will struggle to each analogous future climates given current levels of forest cover, so there is a need to prevent further forest loss where possible, and to reforest in key areas, such as along elevational gradients.
 
 ## Climate at the fine scale
 
-* Chapter 2 highlights that climate at the very coarse scale can mask important patterns occurring at a local scale
-    * Land-use change has a direct impact on local climate
-    * Suggestion that below-ground and within degraded forests species may avoid direct warming that results from loss of forest cover
-    * Bias towards particular regions & LUT
-    * Doesn't account for intensity
-* Chapter 3 establishes a framework to assess thermal regimes at an even finer spatial scale, using thermography
-    * Importance of very fine spatial scale
-    * Importance of surface temperature
-    * Importance of spatial temperature variation
-* Chapter 4 applies the framework of Chapter 3, alongside traditional dataloggers cf. Chapter 2, to further explore the potential for thermal buffering in selectively logged forests of Borneo
-    * Confirm that local temperature is unaffected by selective logging, but so too is the fine-scale temperature variation that is vital for thermal buffering by animasls
-* Neither approach considered other climatic variables that are important to species' ecology under climate change (e.g. water & wind)
-* Should also consider the vertical climate gradient in tropical rainforest [@scheffers_tropical_2018; @scheffers_vertical_2017]
+Until recently most studies of climate change impacts have used very coarse resolution climate data -- up to 10,000 times greater than the size of the organism in question [@potter_microclimatic_2013] -- and have not well integrated the combined effects of land-use change and climate change [@titeux_global_2017]. The findings of [Chapter 2](#ch2) highlight that coarse data can mask important anthropogenic impacts at the level of the organism. Namely, that in many parts of the tropics where forest has been lost, extreme warming has already occurred. I also suggest that degraded forests and below-ground habitat avoid local warming through land-use change, although [Chapter 2](#ch2) did not consider the temperature at an even finer spatial scale (mm to m; 'microclimates') that allows mobile organisms to behaviourally thermoregulate [@scheffers_microhabitats_2014; @gonzalez_del_pliego_thermally_2016], and can even influence fine-scale distribution of less mobile organisms [@maclean_fine-scale_2017]. 
+
+Capturing fine-scale, biologically-relevant temperature data has become increasingly feasbile with the advent of tiny dataloggers and affordable thermal imaging technology [@scheffers_extreme_2017]. The latter has, however, been underutilised at least in part because there is little guidance available for processing and anlysing thermal images in ecological research. I addressed this shortfall in [Chapter 3](#ch3), where I presented a developmental 'R' package -- `ThermStats` -- designed in particular for streamlining the processing of images from FLIR thermal cameras, but also capable of calculating key metrics of thermal hetereogeneity for all gridded temperature data. 
+
+In [Chapter 4](#ch4) I built on the findings of [Chapter 2](#ch2) by assessing microclimate availability and buffering capacity in intensively selected logged forests on Borneo compared to nearby unlogged, primary forest. Using techniques developed in [Chapter 3](#ch3), alongside dataloggers and microhabitat measurements, I found that not only are degraded forests and primary forests comparable in local temperature (cf. [Chapter 2](#ch2)]), but microclimates are also similar in availability, thermal stability and ability to buffer organisms from local warming at coarser spatial scales. 
 
 ## Climate at the coarse scale
 
@@ -75,9 +66,16 @@
 * Only considering structural connectivity - no species data (this would make the approach species-specific and impose data limitations)
 * Do not consider other climate variables, because their projections are uncertain and spatially variable, which makes it impossible at this stage to determine the gradient that species would have to follow to maintain climate parity
 
+<!-- BIGGER PICTURE -->
+
 ## Wider applicability of findings
 
 ### Biological relevance
+
+<!-- * Bias towards particular regions & LUT -->
+<!-- * Doesn't account for intensity -->
+<!-- * Should also consider the vertical climate gradient in tropical rainforest [@scheffers_tropical_2018; @scheffers_vertical_2017] -->
+<!-- WATER -->
 
 * Chapters 2-4 are most relevant to small-bodied ectotherms, that are heavily influenced by local and fine-scale temperature and which are widely known to utilise thermal variation at this scale as a means to avoid suboptimal climatic conditions at a coarser scale
     * Also relevant to small-bodied endotherms, although less is known about the extent to which they can and do utilise microclimates in tropical forests
@@ -89,7 +87,10 @@
     * Different kinds of forest, which will limit different species to differeng extents
     * Inclusion of tree plantations may not be appropriate for many forest specialists, since they tend to lack structural and biological diversity 
     
-### Relevance across tropics
+### Relevance across tropics and elsewhere
+
+<!-- Vertical climate gradients -->
+<!-- Other land use type, land use change and land use intensities -->
 
 * Chapter 2 was pantropical, but Africa was poorly represented 
     * Where natural vegetation is not forest (e.g. parámo, cerrado, savannah, dessert), it is expected that land-use change will have a much less substantial impact on local temperature
@@ -99,6 +100,9 @@
 * Chapter 4 only focused on the understorey, but in vertically complex forests there may well me a different result above the understorey
 
 ## Recommendations for conservation and futher research
+
+<!-- Linking different spatiotemporal scales -->
+<!-- Combining technologies, data & techniques -->
 
 * Land-use change is still a primary cause of species loss, and the lack of consideration of climatic impacts of land-use change may have underestimated this impact or caused it to be confounded with climate change (Chapter 2)
 * Growing literature on the ways in which land-use change and climate change interact, but the impacts on risk of extinction for particular species will depend on many factors:
