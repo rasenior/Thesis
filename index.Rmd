@@ -1,7 +1,12 @@
 ---
 output:
-  bookdown::pdf_book:
-    keep_tex: yes
+    bookdown::pdf_document2:
+        toc: yes
+        latex_engine: xelatex
+        fig_caption: yes
+        keep_tex: yes
+    bookdown::pdf_book:
+        keep_tex: yes
 mainfont: Calibri
 papersize: a4
 geometry: left=4cm,right=2.5cm,top=2.5cm,bottom=2.5cm
@@ -24,13 +29,33 @@ description: "My PhD thesis in Bookdown."
 
 # Abstract {-}
 
-Stuff about tropical forests being important and blah blah blah.
+Most of the Earth's remaining terrestrial biodiversity is found in tropical forests. Conservation of tropical forests is therefore a global priority, which must be reconciled with ongoing land-use change and unavoidable climate change. Tropical species are among the most sensitive to climate change, and their long-term persistence will therefore be strongly dependent on their ability to either adapt in situ, or move elsewhere. A crucial unknown is the extent to which these strategies are impeded by land-use change. In this thesis, I begin by assessing how both conversion and degradation of tropical forests directly impact local climate. Using local, site-level (m-ha) temperature data from across the tropics, I show that forest conversion can cause warming of between 1.6 and 13.6&deg;C, but this is avoided in degraded forests and below-ground. I further explored the conservation value of degraded forests and microhabitats by considering temperature at even finer spatial scales (mm-m), the spatiotemporal variation of which can allow species to avoid suboptimal temperatures at a coarser scale. I developed a framework and R package to assess fine-scale thermal heterogeneity using thermal images, which I subsequently combined with dataloggers and microhabitat measurements to compare intensively selectively logged and unlogged forests on Borneo. I found that only 9-12 years after repeated selective logging, and despite lingering differences in forest structure, the potential for thermal buffering was comparable between the logged and unlogged forests. Finally, I considered that even where thermal buffering is feasible, large-scale range shifts may eventually be necessary for species to survive climate change in the long-term. Combining global forest cover and climate datasets, I found that the current area and spatial configuration of tropical forests means that 65% fail to connect to analogous future climates. In only 12 years, connectivity to future climate analogues decreased in 27% of tropical forest area, with losses accelerating as the area of forest loss increased. Together, my results suggest that degraded forests have the potential to buffer species from climate change, but wholesale conversion has extreme negative consequences for the ability of species to respond to climate change. To enhance climate resilience of tropical forests there is a need to protect and restore degraded forests, to minimise further forest loss, and strategically plan all forest cover with climate gradients in mind. 
 
 \pagebreak
 
 # Acknowledgements {-}
 
-Thanks everyone for being alright.
+A huge thanks first of all to both of my supervisors: Dr David Edwards and Prof Jane Hill. Your guidance throughout has been invaluable. Everything I have learnt on this fascinating journey would simply not have been possible without you. 
+
+Thanks to the Natural Environment Research Council for funding this project, and to the ACCE (Adapting to the Challenges of a Changing Environment) Doctoral Training Partnership for coordinating my PhD and providing so many great opportunities. A particular thanks to Venelina Koleva for dealing with all my awkward requests and queries.
+
+Thanks to my local collaborator, Dr Suzan Benedick, for supporting my work in the field. Thanks to Sabah Biodiversity Council, Danum Valley Wildlife Management Committee, Royal Society South East Asia Rainforest Research Programme, Yayasan Sabah and the Sabah Wildlife Department for permitting me to work in Sabah and the Danum Valley Conservation Area. For facilitating my fieldwork I must also thank all the staff at Danum Valley Research Centre, particularly the logistical support of Datuk Dr Glen Reynolds and Adrian Karolus. For field assistance I thank: Azlin Bin Sailim, Amat, Deddy, Jessica Olid and Chloe Walker-Trivett. 
+
+Throughout my PhD I was very humbled to receive data, advice and code freely from various different researchers all over the world. Many are named in the relevant chapters, but I would like to add a special thanks to Dr Tim Newbold and Dr Jenny McGuire. Numerous people within my Universities of Sheffield and York provided helpful discussions and feedback: my project supporter, Prof Rob Freckleton, everyone from Conservation Bites, and the J2 lab. Felix Lim and Simon Mills must get a special mention for listening to my various rambling thought processes.
+
+Many people and animals supported me on a personal level, without which I'd probably be in a perpetual, chocolate-laden slump. Thanks to the Mynas for listening to my rants and keeping the snack table topped up. Thanks to Cindy Cosset and Chloe Walker-Trivett for general laughs and amazing food. Thanks to my brother, Thomas, for being a constant source of entertainment, and to my Grandparents, Charles and Marylyn Marchington, for remaining interested in the strange activities of your wayward granddaughter. 
+
+To my Mum -- where to start! Thanks for always being there, for always being supportive, and for being a total inspiration. Whenever I think I can't do something, I think of you. Not just your words of encouragement, but the example you set -- turning your hand to anything and never giving up.
+
+To Kieran -- you've been an anchor throughout my PhD and I can't really do that justice here. I'm so grateful for eveything -- the pep talks, the silliness, the enforced relaxing, the emergency mug cakes...so many things! Noms, fol and abductions.  
+
+I dedicate my PhD to Dr Aisha Coggan. I wish you were here to finish this with me. I hope I've done you proud!
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=15cm]{pics/doggies.jpg}
+\caption*{For unconditional love and understanding, and the best cuddles a human could ask for, I am grateful to my beautiful doggies: Ruby (left) and Teddy (right).}
+\end{figure}
 
 \pagebreak
 
