@@ -35,13 +35,13 @@ Most of the Earth's remaining terrestrial biodiversity is found in tropical fore
 
 # Acknowledgements {-}
 
-A huge thanks first of all to both of my supervisors: Dr David Edwards and Prof Jane Hill. Your guidance throughout has been invaluable. Everything I have learnt on this fascinating journey would simply not have been possible without you. 
+A huge thanks first of all to both of my supervisors: Dr David Edwards and Prof Jane Hill. Your guidance throughout has been invaluable.
 
 Thanks to the Natural Environment Research Council for funding this project, and to the ACCE (Adapting to the Challenges of a Changing Environment) Doctoral Training Partnership for coordinating my PhD and providing so many great opportunities. A particular thanks to Venelina Koleva for dealing with all my awkward requests.
 
-Thanks to my local collaborator, Dr Suzan Benedick, for supporting my work in the field. Thanks to Sabah Biodiversity Council, Danum Valley Wildlife Management Committee, Royal Society South East Asia Rainforest Research Programme, Yayasan Sabah and the Sabah Wildlife Department for permitting me to work in Sabah and the Danum Valley Conservation Area. For facilitating my fieldwork I thank all the staff at Danum Valley Research Centre, particularly the logistical support of Dr Glen Reynolds and Adrian Karolus. For field assistance I thank: Azlin Bin Sailim, Amat, Deddy, Jessica Olid and Chloe Walker-Trivett. 
+Thanks to my local collaborator, Dr Suzan Benedick, for supporting my work in the field. Thanks to Sabah Biodiversity Council, Danum Valley Wildlife Management Committee, Royal Society South East Asia Rainforest Research Programme, Yayasan Sabah and the Sabah Wildlife Department for permitting me to work in Sabah and the Danum Valley Conservation Area. For facilitating my fieldwork I thank all the staff at Danum Valley Research Centre, particularly the logistical support of Datuk Dr Glen Reynolds and Adrian Karolus. For field assistance I thank: Azlin Bin Sailim, Ahmad Bin Jelling, Deddy Nurdin, Jessica Olid and Chloe Walker-Trivett. 
 
-Throughout my PhD I was very humbled to receive data, advice and code freely from various different researchers (named in the relevant chapters). Numerous people within my Universities of Sheffield and York provided helpful discussions and feedback: my project supporter, Prof Rob Freckleton, everyone from Conservation Bites, and also the J2 lab. Felix Lim and Simon Mills must get a special mention for joining me on various rambling thought processes.
+Throughout my PhD I was humbled to receive data, advice and code freely from various different researchers (named in the relevant chapters). Numerous people within my Universities of Sheffield and York provided helpful discussions and feedback: my project supporter, Prof Rob Freckleton, everyone from Conservation Bites and the J2 lab. Felix Lim and Simon Mills must get a special mention for joining me on various rambling thought processes.
 
 Many people (and some animals!) supported me on a personal level, without which I would have probably been in a perpetual, chocolate-laden slump. Thanks to the Mynas for listening to my rants and keeping the snack table topped up. Thanks to Cindy Cosset and Chloe Walker-Trivett for general laughs and amazing food. Thanks to my brother, Thomas, for being a source of entertainment and for helping me with mathsy stuff, and to my Grandparents -- Charles and Marylyn Marchington -- for remaining interested in the strange activities of your wayward granddaughter. 
 
@@ -53,7 +53,7 @@ I dedicate my PhD to Dr Aisha Coggan. I wish you were here to finish this with m
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=15cm]{pics/doggies.jpg}
+\includegraphics[angle=270,origin=c]{pics/doggies.jpg}
 \caption*{For unconditional love and understanding, and the best cuddles a human could ask for, I am grateful to my beautiful doggies: Ruby (left) and Teddy (right).}
 \end{figure}
 
