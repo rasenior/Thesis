@@ -100,7 +100,7 @@ sort_results <- function(dat, RV, Df, stat, stat_val,P,
         filter(!(is.na(p_val))) %>% 
         dplyr::select(df_name, RV, EV, Df, stat, stat_val, P, p_val, fig_ref) %>% 
         mutate(ref = paste(stat, " = ", signif(stat_val,3), ", ",
-                           "p ", p_val, 
+                           "P ", p_val, 
                            "; ", fig_ref,
                            sep = "")) %>% 
         relevel_df()
