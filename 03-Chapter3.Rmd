@@ -92,7 +92,7 @@ worldclim_stars <-
 \caption*{Thermal image of rainforest floor.}
 \end{figure}
 
-This chapter is currently in preparation for submission to *Tropical Conservation Science* as:
+This chapter is currently in preparation for submission to *Ecography* as:
 
 **Senior RA, Hill JK, Edwards DP. A framework for quantifying fine-scale thermal heterogeneity in the field. In prep.**
 
