@@ -7,6 +7,9 @@ knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALS
 
 ```{r}
 
+library(raster)
+library(rgdal)
+library(rgeos)
 library(knitr)
 library(ggplot2)
 library(scales)
@@ -14,6 +17,9 @@ library(dplyr)
 library(cowplot)
 library(xtable)
 library(viridis)
+library(extrafont)
+
+source("../../Programming/R/functions/geom_holygon.R")
 
 # Plotting parameters
 text_size <- 6
@@ -45,19 +51,21 @@ relevel_df <- function(df){
     # Relevel dataset name
     df[,"df_name"] <- 
         factor(df[,"df_name"], 
-               levels = c(c("plantations-w_10_sep_2", 
+               levels = c(c("full_rcp26",
+                            "full_rcp85"),
+                          c("plantations-w_10_sep_2", 
                             "plantations-wo_10_sep_2"),
                           paste("full_area_", 
                                 c(1,5,10,25,100), 
                                 "_sep_2", 
                                 sep = "")),
-               labels = c(c("With plantations",
+               labels = c(c("RCP2.6", 
+                            "RCP8.5"),
+                          c("With plantations",
                             "Without plantations"),
-                          paste(
-                              # "Min. patch size = ", 
-                              c(1,5,10,25,100), 
-                              " km", 
-                              "\U00B2", sep = "")))
+                          paste(c(1,5,10,25,100), 
+                                " km", 
+                                "\U00B2", sep = "")))
     # Relevel realm
     if("realm" %in% names(df)){
         df[,"realm"] <- factor(df[,"realm"],
@@ -90,7 +98,7 @@ sort_results <- function(dat, RV, Df, stat, stat_val,P,
                p_val = get_signif(P),
                fig_ref = fig_refs) %>%
         filter(!(is.na(p_val))) %>% 
-        select(df_name, RV, EV, Df, stat, stat_val, P, p_val, fig_ref) %>% 
+        dplyr::select(df_name, RV, EV, Df, stat, stat_val, P, p_val, fig_ref) %>% 
         mutate(ref = paste(stat, " = ", signif(stat_val,3), ", ",
                            "p ", p_val, 
                            "; ", fig_ref,
@@ -102,24 +110,36 @@ sort_results <- function(dat, RV, Df, stat, stat_val,P,
 
 ```{r raw-dat, include = FALSE}
 # Identify all the subdirs
-paths <- 
-    list.files("data/ch5", 
+paths <- c(
+    list.files("data/ch5/rcps", 
                recursive = FALSE, 
-               pattern = "^area_|^plantations", 
-               full.names = TRUE)
+               pattern = "rcp", 
+               full.names = TRUE),
+    list.files("data/ch5/patch_params", 
+               recursive = FALSE, 
+               pattern = "^area_", 
+               full.names = TRUE),
+    list.files("data/ch5/plantations", 
+               recursive = FALSE, 
+               pattern = "^plantations", 
+               full.names = TRUE))
 
 # Climate connectivity ---------------------------------------------------------
 region_cc <- 
     # Define paths
     file.path(paths, "region_cc.Rds") %>% 
     # Read in
-    lapply(function(x) as.data.frame(readRDS(x)))
+    lapply(function(x) as.data.frame(readRDS(x))) %>% 
+    lapply(function(x) mutate(x,region_area_log = log(region_area)))
+
 # Bind for plotting
 region_cc <- do.call("rbind", region_cc) %>% 
     relevel_df()
 # Separate for diff sections
 region_cc_som1 <- region_cc[grep("plantations",region_cc$df_name),]
 region_cc_som2 <- region_cc[grep("km",region_cc$df_name),]
+region_cc_som3 <- region_cc[grep("RCP",region_cc$df_name),]
+region_cc_vuln <- filter(region_cc_som3, df_name == "RCP8.5")
 rm(region_cc)
 
 # Climate connectivity change --------------------------------------------------
@@ -127,19 +147,216 @@ region_ccc <-
     # Define paths
     file.path(paths, "region_ccc.Rds") %>% 
     # Read in
-    lapply(function(x) as.data.frame(readRDS(x)))
+    lapply(function(x) as.data.frame(readRDS(x))) %>% 
+    lapply(function(x){
+        mutate(x, 
+               region_area_log = log(region_area),
+               prop_decrease_cc = area_decrease_cc / sum_patch_area,
+               area_nondecrease_cc = area_increase_cc + area_same_cc, 
+               tc_2000_log = log(tc_2000),
+               tc_loss_log1p = log1p(loss))
+    })
 # Bind for plotting
-region_ccc <- do.call("rbind", region_ccc) %>% 
-    relevel_df() %>% 
-    mutate(prop_decrease_cc = area_decrease_cc / sum_patch_area,
-           tc_loss_log1p = log1p(loss))
+region_ccc <- 
+    do.call("rbind", region_ccc) %>% 
+    relevel_df()
 # Separate for diff sections
 region_ccc_som1 <- region_ccc[grep("plantations",region_ccc$df_name),]
 region_ccc_som2 <- region_ccc[grep("km",region_ccc$df_name),]
+region_ccc_som3 <- region_ccc[grep("RCP",region_ccc$df_name),]
 rm(region_ccc)
 
 # Data for worked example
 load("data/ch5/som_text3_dat.rdata")
+```
+
+```{r map-overlays, include = FALSE}
+
+# Boundary
+boundary <- readRDS("data/ch5/boundary.Rds")
+
+# Patches
+patches <- 
+    readRDS("data/ch5/rcps/rcp85/patches.Rds") %>% 
+    na.omit() %>% 
+    filter(year == "2012")
+
+# Ccc polygons
+ccc_polys <- 
+    readRDS("data/ch5/rcps/rcp85/ccc_polys.Rds") %>% 
+    na.omit() %>% 
+    mutate(year = "2012 - 2000")
+
+# Vulnerability overlay
+vuln <- readRDS("data/ch5/vuln.Rds")
+
+# Vulnerability mask
+vuln_mask <- 
+    readRDS("data/ch5/vuln_mask.Rds")
+
+# KBA overlay
+kba <- readRDS("data/ch5/kba.Rds")
+
+# KBA mask
+kba_mask <- readRDS("data/ch5/kba_mask.Rds")
+
+# Full region cc df
+region_cc <- readRDS("data/ch5/rcps/rcp85/region_cc.Rds")
+
+# Order Oceania regions by area & assign name
+oceania <- 
+    filter(patches,
+           realm == "Oceania",
+           !(duplicated(region)))
+
+oceania <-
+    region_cc[match(oceania$region, region_cc$region),] %>%
+    dplyr::select(region, region_area) %>% 
+    arrange(desc(region_area)) %>% 
+    mutate(region_name = c("Viti Levu (Fiji)",
+                           "Hawai'i (Hawaii)",
+                           "Vanua Levu (Fiji)",
+                           "O'ahu (Hawaii)",
+                           "Kauai (Hawaii)",
+                           "Kadavu Island (Fiji)",
+                           "Taveuni Island (Fiji)",
+                           "Babeldaob (Palau)"))
+
+#   region region_area
+# 1 p25236  10651.6281 = Viti Levu (Fiji)
+# 2 p10780  10431.1066 = Hawai'i (Hawaii)
+# 3 p22626   5689.2545 = Vanua Levu (Fiji)
+# 4  p3617   1556.0912 = O'ahu (Hawaii)
+# 5 p21905   1438.5133 = Kauai (Hawaii)
+# 6  p2145    439.6505 = Kadavu Island (Fiji)
+# 7 p15596    435.9987 = Taveuni Island (Fiji)
+# 8 p21477    365.1751 = Babeldaob (Palau)
+
+# Add region name to polygon layers
+boundary$region_name <- 
+    oceania$region_name[match(boundary$id, oceania$region)]
+vuln_mask$region_name <- 
+    oceania$region_name[match(vuln_mask$id, oceania$region)]
+kba$region_name <- 
+    oceania$region_name[match(kba$id, oceania$region)]
+kba_mask$region_name <- 
+    oceania$region_name[match(kba_mask$id, oceania$region)]
+patches$region_name <- 
+    oceania$region_name[match(patches$region, oceania$region)]
+ccc_polys$region_name <- 
+    oceania$region_name[match(ccc_polys$region, oceania$region)]
+
+# Remove regions < 300 km^2
+boundary <-
+    filter(boundary,
+           region_area >= 300,
+           # Also remove non-tropical realms
+           realm %in% c("Neotropics",
+                        "Afrotropics",
+                        "Indomalaya",
+                        "Australasia",
+                        "Oceania"),
+           # Also reduce to regions that actually have connectivity data
+           id %in% patches$region)
+vuln_mask <-
+    filter(vuln_mask,
+           # Also reduce to regions that actually have connectivity data
+           id %in% patches$region)
+kba <-
+    filter(kba,
+           # Also reduce to regions that actually have connectivity data
+           id %in% patches$region)
+kba_mask <-
+    filter(kba_mask,
+           # Also reduce to regions that actually have connectivity data
+           id %in% patches$region)
+patches <- 
+    patches %>% 
+    filter(region_area >= 300,
+           !(is.na(realm)))
+ccc_polys <- 
+    ccc_polys %>% 
+    filter(region_area >= 300,
+           !(is.na(realm)))
+
+# Define function to adjust lat/long for Oceania
+adj_oceania <- function(df, 
+                        hawaii_adj = list(),
+                        palau_adj = list()
+){
+    # Adjust Hawaii
+    df[grepl("Hawaii", df[,"region_name"]), "long"] <-
+        df[grepl("Hawaii", df[,"region_name"]), "long"] + hawaii_adj$long
+    df[grepl("Hawaii", df[,"region_name"]), "lat"] <-
+        df[grepl("Hawaii", df[,"region_name"]), "lat"] + hawaii_adj$lat
+    
+    # Adjust Palau
+    df[grepl("Palau", df[,"region_name"]), "long"] <-
+        df[grepl("Palau", df[,"region_name"]), "long"] + palau_adj$long
+    df[grepl("Palau", df[,"region_name"]), "lat"] <-
+        df[grepl("Palau", df[,"region_name"]), "lat"] + palau_adj$lat
+    
+    # Return
+    return(df)
+}
+
+# Shift Hawaii & Palau polygons
+boundary <- 
+    adj_oceania(df = boundary,
+                # Max long (180 degrees) plus extra adjustment
+                hawaii_adj = (list(long = 20037507.067162 + 17900000, 
+                                   lat = - 3700000)),
+                palau_adj = (list(long = 4900000,
+                                  lat = - 2300000)))
+vuln_mask <- 
+    adj_oceania(df = vuln_mask,
+                # Max long (180 degrees) plus extra adjustment
+                hawaii_adj = (list(long = 20037507.067162 + 17900000, 
+                                   lat = - 3700000)),
+                palau_adj = (list(long = 4900000,
+                                  lat = - 2300000)))
+kba <- 
+    adj_oceania(df = kba,
+                # Max long (180 degrees) plus extra adjustment
+                hawaii_adj = (list(long = 20037507.067162 + 17900000, 
+                                   lat = - 3700000)),
+                palau_adj = (list(long = 4900000,
+                                  lat = - 2300000)))
+kba_mask <- 
+    adj_oceania(df = kba_mask,
+                # Max long (180 degrees) plus extra adjustment
+                hawaii_adj = (list(long = 20037507.067162 + 17900000, 
+                                   lat = - 3700000)),
+                palau_adj = (list(long = 4900000,
+                                  lat = - 2300000)))
+patches <- 
+    adj_oceania(df = patches,
+                # Max long (180 degrees) plus extra adjustment
+                hawaii_adj = (list(long = 20037507.067162 + 17900000, 
+                                   lat = - 3700000)),
+                palau_adj = (list(long = 4900000,
+                                  lat = - 2300000)))
+ccc_polys <- 
+    adj_oceania(df = ccc_polys,
+                # Max long (180 degrees) plus extra adjustment
+                hawaii_adj = (list(long = 20037507.067162 + 17900000, 
+                                   lat = - 3700000)),
+                palau_adj = (list(long = 4900000,
+                                  lat = - 2300000)))
+
+# Define extras for Oceania facet
+oceania_labs <- 
+    data.frame(realm = "Oceania",
+               lab = c("Palau",
+                       "Hawaii",
+                       "Fiji"),
+               long = c(19850000,
+                        20450000,
+                        19850000),
+               lat = c(rep(-1600000,2),
+                       -1730000),
+               vline = 20090000,
+               hline = -1680000)
 ```
 
 ```{r median-cc-dat, include = FALSE}
@@ -203,20 +420,57 @@ median_cc_dat_som2 <-
     arrange(df_name, realm, year, median_cc) %>% 
     group_by(df_name, year) %>% 
     mutate(rank = rank(median_cc, ties.method = "first"))
+
+# Different RCPs  --------------------------------------------------
+load("data/ch5/models/rcps/median_cc.Rdata")
+median_cc_dat_som3 <- median_cc_dat
+median_cc_results_som3 <- median_cc_results
+rm(median_cc_dat, median_cc_results)
+
+# Interaction results
+median_cc_interaction_som3 <- 
+    sort_results(dat = median_cc_results_som3, 
+                 RV = "median_cc", 
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
+                 fig_refs = "\\autoref{fig:fig-D-8}a", 
+                 results = "interaction_results")
+
+# Main results
+median_cc_results_som3 <- 
+    sort_results(dat = median_cc_results_som3, 
+                 RV = "median_cc", 
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
+                 fig_refs = "\\autoref{fig:fig-D-8}a")
+
+# Sort predicted values
+median_cc_dat_som3 <-
+    median_cc_dat_som3 %>% 
+    relevel_df() %>% 
+    mutate(median_cc = signif(median_cc,3)) %>% 
+    # Rank by median cc within dataset > realm > year
+    arrange(df_name, realm, year, median_cc) %>% 
+    group_by(df_name, year) %>% 
+    mutate(rank = rank(median_cc, ties.method = "first"))
 ```
 
-```{r prop_success_dat, include = FALSE}
+```{r prop_fail_dat, include = FALSE}
 
 # With/without plantations -----------------------------------------------------
-load("data/ch5/models/plantations/prop_success.Rdata")
-prop_success_dat_som1 <- success_area_dat
-prop_success_results_som1 <- success_area_results
-rm(success_area_dat, success_area_results)
+load("data/ch5/models/plantations/prop_fail.Rdata")
+prop_fail_dat_som1 <- prop_fail_dat
+prop_fail_results_som1 <- prop_fail_results
+rm(prop_fail_dat, prop_fail_results)
 
 # Sort results
-prop_success_results_som1 <- 
-    sort_results(dat = prop_success_results_som1, 
-                 RV = "prop_success_area", 
+prop_fail_results_som1 <- 
+    sort_results(dat = prop_fail_results_som1, 
+                 RV = "prop_fail", 
                  Df = "Df",
                  stat =  "F",
                  stat_val = "F",
@@ -224,21 +478,20 @@ prop_success_results_som1 <-
                  fig_refs = "\\autoref{fig:fig-D-4}b")
 
 # Sort predicted values
-prop_success_dat_som1 <-
-    prop_success_dat_som1 %>% 
-    relevel_df() %>% 
-    mutate(prop_success = signif(prop_success_area * 100,3))
+prop_fail_dat_som1 <-
+    prop_fail_dat_som1 %>% 
+    relevel_df()
 
 # Different patch parameters----------------------------------------------------
-load("data/ch5/models/patch_params/prop-success.Rdata")
-prop_success_dat_som2 <- success_area_dat
-prop_success_results_som2 <- success_area_results
-rm(success_area_dat, success_area_results)
+load("data/ch5/models/patch_params/prop_fail.Rdata")
+prop_fail_dat_som2 <- prop_fail_dat
+prop_fail_results_som2 <- prop_fail_results
+rm(prop_fail_dat, prop_fail_results)
 
 # Interaction results
-prop_success_interaction_som2 <- 
-    sort_results(dat = prop_success_results_som2, 
-                 RV = "prop_success_area", 
+prop_fail_interaction_som2 <- 
+    sort_results(dat = prop_fail_results_som2, 
+                 RV = "prop_fail", 
                  Df = "Df",
                  stat =  "F",
                  stat_val = "F",
@@ -247,9 +500,9 @@ prop_success_interaction_som2 <-
                  results = "interaction_results")
 
 # Main results
-prop_success_results_som2 <- 
-    sort_results(dat = prop_success_results_som2, 
-                 RV = "prop_success_area", 
+prop_fail_results_som2 <- 
+    sort_results(dat = prop_fail_results_som2, 
+                 RV = "prop_fail", 
                  Df = "Df",
                  stat =  "F",
                  stat_val = "F",
@@ -257,32 +510,67 @@ prop_success_results_som2 <-
                  fig_refs = "\\autoref{fig:fig-D-6}b")
 
 # Sort predicted values
-prop_success_dat_som2 <-
-    prop_success_dat_som2 %>% 
-    relevel_df() %>% 
-    mutate(prop_success = signif(prop_success_area * 100,3)) %>% 
+prop_fail_dat_som2 <-
+    prop_fail_dat_som2 %>% 
+    relevel_df() %>%
     # Rank by median cc within dataset > realm > year
-    arrange(df_name, realm, year, prop_success) %>% 
+    arrange(df_name, realm, year, prop_fail) %>% 
     group_by(df_name, year) %>% 
-    mutate(rank = rank(prop_success, ties.method = "first"))
+    mutate(rank = rank(-prop_fail, ties.method = "first"))
+
+# Different RCPs ----------------------------------------------------
+load("data/ch5/models/rcps/prop_fail.Rdata")
+prop_fail_dat_som3 <- prop_fail_dat
+prop_fail_results_som3 <- prop_fail_results
+rm(prop_fail_dat, prop_fail_results)
+
+# Interaction results
+prop_fail_interaction_som3 <- 
+    sort_results(dat = prop_fail_results_som3, 
+                 RV = "prop_fail", 
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
+                 fig_refs = "\\autoref{fig:fig-D-8}b",
+                 results = "interaction_results")
+
+# Main results
+prop_fail_results_som3 <- 
+    sort_results(dat = prop_fail_results_som3, 
+                 RV = "prop_fail", 
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
+                 fig_refs = "\\autoref{fig:fig-D-8}b")
+
+# Sort predicted values
+prop_fail_dat_som3 <-
+    prop_fail_dat_som3 %>% 
+    relevel_df() %>% 
+    # Rank by median cc within dataset > realm > year
+    arrange(df_name, realm, year, prop_fail) %>% 
+    group_by(df_name, year) %>% 
+    mutate(rank = rank(-prop_fail, ties.method = "first"))
 ```
 
 ```{r cc-loss-dat, include = FALSE}
 
 # With/without plantations -----------------------------------------------------
 load("data/ch5/models/plantations/cc_loss.Rdata")
-cc_loss_tc_loss_som1 <- cc_loss_tc_loss
+cc_loss_tc_loss_som1 <- cc_loss_dat
 cc_loss_results_som1 <- cc_loss_results
-rm(cc_loss_results, cc_loss_tc_loss)
+rm(cc_loss_results, cc_loss_dat)
 
 # Sort results
 cc_loss_results_som1 <- 
     sort_results(dat = cc_loss_results_som1, 
                  RV = "cc_loss", 
-                 Df = "df",
-                 stat =  paste("\U03A7", "\U00B2", sep = ""),
-                 stat_val = "chi",
-                 P =  "p.val",
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
                  fig_refs = "\\autoref{fig:fig-D-5}")
 
 # Sort predicted values
@@ -293,18 +581,18 @@ cc_loss_tc_loss_som1 <-
 
 # Different patch parameters ---------------------------------------------------
 load("data/ch5/models/patch_params/cc_loss.Rdata")
-cc_loss_tc_loss_som2 <- cc_loss_tc_loss
+cc_loss_tc_loss_som2 <- cc_loss_dat
 cc_loss_results_som2 <- cc_loss_results
-rm(cc_loss_results, cc_loss_tc_loss)
+rm(cc_loss_results, cc_loss_dat)
 
 # Sort results
 cc_loss_results_som2 <- 
     sort_results(dat = cc_loss_results_som2, 
                  RV = "cc_loss", 
-                 Df = "df",
-                 stat =  paste("\U03A7", "\U00B2", sep = ""),
-                 stat_val = "chi",
-                 P =  "p.val",
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
                  fig_refs = "\\autoref{fig:fig-D-7}")
 
 # Sort predicted values
@@ -313,159 +601,60 @@ cc_loss_tc_loss_som2 <-
     relevel_df() %>% 
     mutate(prop_decrease_cc = signif(prop_decrease_cc,3))
 
+# Different RCPs ---------------------------------------------------
+load("data/ch5/models/rcps/cc_loss.Rdata")
+cc_loss_tc_loss_som3 <- cc_loss_dat
+cc_loss_results_som3 <- cc_loss_results
+rm(cc_loss_results, cc_loss_dat)
 
-# Main dataset -----------------------------------------------------------------
-# Subset to main dataset (only for area 10 km^2 and sep of 2 km)
-region_ccc_main <-
-    region_ccc_som2[region_ccc_som2$df_name == "Min. patch size = 10 km²",]
+# Sort results
+cc_loss_results_som3 <- 
+    sort_results(dat = cc_loss_results_som3, 
+                 RV = "cc_loss", 
+                 Df = "Df",
+                 stat =  "F",
+                 stat_val = "F",
+                 P =  "Pr(>F)",
+                 fig_refs = "\\autoref{fig:fig-D-9}")
+
+# Sort predicted values
+cc_loss_tc_loss_som3 <-
+    cc_loss_tc_loss_som3 %>% 
+    relevel_df() %>% 
+    mutate(prop_decrease_cc = signif(prop_decrease_cc,3))
 ```
+
+```{r write, include = FALSE, eval = FALSE}
+# Write SOM results for inclusion in main text
+save(median_cc_dat_som1, median_cc_dat_som2, median_cc_dat_som3,
+     median_cc_interaction_som2, median_cc_interaction_som3,
+     median_cc_results_som1, median_cc_results_som2, median_cc_results_som3,
+     prop_fail_dat_som1, prop_fail_dat_som2, prop_fail_dat_som3,
+     prop_fail_interaction_som2, prop_fail_interaction_som3,
+     prop_fail_results_som1, prop_fail_results_som2, prop_fail_results_som3,
+     cc_loss_results_som1, cc_loss_results_som2, cc_loss_results_som3,
+     cc_loss_tc_loss_som1, cc_loss_tc_loss_som2, cc_loss_tc_loss_som3, 
+     file = "data/ch5/som_dat.Rdata")
+```
+
 
 # Supporting information for Chapter 5
 
-## Supplementary analysis without tree plantations {#text-D-1}
+## Supplementary analyses for different patch parameters {#text-D-1}
 
 ### Methods
 
-The tree cover layers from @hansen_high-resolution_2013 do not currently distinguish between natural forests and tree plantations. However, boundary polygons for tree plantations are available for seven countries: Brazil, Cambodia, Colombia, Indonesia, Liberia, Malaysia, and Peru [@transparent_world_tree_2015]. We therefore re-ran our analyses (see [Chapter 5: Methods](#ch5-methods)) for these seven countries only, with and without cells inside tree plantations. We buffered country polygons by 100 km to prevent artificial truncation of climate gradients [cf. @mcguire_achieving_2016]. Statistical models were analogous to those in the main text (see [Chapter 5: Methods](#ch5-stats)), except that biogeographic realm was not included as an explanatory variable because of the smaller and more uneven sample sizes in this subset of the data.
+Following @mcguire_achieving_2016 we excluded forest patches less than 10 km^2^. This was based on the assumption that excessively small patches are incapable of sustaining populations for long enough to enable range shifts through differential fitness at the leading and trailing edge of a species' range. However, the critical patch size to enable such demographic processes to occur will depend on the species in question, and indeed some species may shift their ranges via within-generation movement of migrating individuals. We tested the influence of minimum patch size by repeating the analyses for patch sizes of 1, 5, 10, 25 and 100 km^2^. Note that a minimum size of 1 km^2^ corresponds to no exclusions, since this is the resolution of the layers used. To speed up iteration over the different parameters we used a subset of the main data, which excluded land masses less than 10 km^2^ and those with a temperature range less than the predicted temperature change under climate warming, since range shifts are unlikely to be sufficient responses to climate change in these land masses.
 
 ### Results and Discussion
 
-Median climate connectivity in 2012 was `r median_cc_dat_som1$median_cc[median_cc_dat_som1$df_name == "With plantations" & median_cc_dat_som1$year == "2012"]`&deg;C including cells in tree plantations, versus `r median_cc_dat_som1$median_cc[median_cc_dat_som1$df_name == "Without plantations" & median_cc_dat_som1$year == "2012"]`&deg;C excluding tree plantations. Median climate connectivity did not differ by year in either case (p > 0.05; \autoref{fig:fig-D-4}a). Thus, regardless of the year or inclusion of tree plantations, typical tropical forest fails to connect patches to future analogous climates.
+Current climate connectivity was captured by median climate connectivity in 2012, and the proportion of forested area that failed to achieve successful climate connectivity (&ge; 0) in 2012. Median climate connectivity differed by realm for all patch sizes assessed (p < 0.001; \autoref{fig:fig-D-6}a), and was below zero in all cases except where minimum patch size was 1 km^2^. This suggests that for species capable of surviving and reproducing in patch sizes of 1 km^2^ or less, current forest cover is sufficiently well-connected along climate gradients that these species should, on average, be able to shift their range within existing forest cover to avoid climate warming. For species requiring a larger critical patch size, tropical forest cover in all biogeographic realms was, on average, insufficient to facilitate such range shifts. For all patch sizes, median climate connectivity was generally lowest in the Neotropics, followed by the Afrotropics, Indomalaya, Australasia and Oceania (precise ranking depended on the minimum patch size applied; \autoref{fig:fig-D-6}a).
 
-The proportion of forest that achieved successful climate connectivity in 2012 was nearly identical regardless of whether tree plantations were included (`r signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "With plantations" & prop_success_dat_som1$year == "2012"] * 100, 3)`% if including plantations versus `r signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "Without plantations" & prop_success_dat_som1$year == "2012"] * 100, 3)`% excluding plantations), although the trends over time did differ. If cells inside plantations were included, there was a slight increase (+`r signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "With plantations" & prop_success_dat_som1$year == "2012"] * 100, 3) - signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "With plantations" & prop_success_dat_som1$year == "2000"] * 100, 3)`%) from 2000 to 2012 in the proportion of successfully connected forest (`r prop_success_results_som1$ref[prop_success_results_som1$df_name == "With plantations"]`). The opposite was true when cells inside plantations were excluded (`r prop_success_results_som1$ref[prop_success_results_som1$df_name == "Without plantations"]`), with the proportion of forest achieving successful climate connectivity decreasing by `r signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "Without plantations" & prop_success_dat_som1$year == "2000"] * 100, 3) - signif(prop_success_dat_som1$prop_success_area[prop_success_dat_som1$df_name == "Without plantations" & prop_success_dat_som1$year == "2012"] * 100, 3)`% from 2000 to 2012. The discrepancy between datasets in the effect of year is very likely driven by increasing tree cover inside tree plantations. 
+The percentage of forest area with unsuccessful climate connectivity (< 0) in the year 2012 varied by biogeographic realm for all minimum patch sizes (p < 0.001). Precise ranking varied by minimum patch size (\autoref{fig:fig-D-6}b), but generally the Afrotropics and Indomalaya had the highest proportion of forest failing to connect to future climate analogues, while the Neotropics and Australasia had the lowest. We suggest that low average values of climate connectivity in the Neotropics are somewhat compensated for by the large size of forest patches that do achieve successful climate connectivity. Although the proportion of successfully connected tropical forest was generally more than half of total forest area, a substantial portion of forest failed to achieve climate connectivity and the situation was worse for a larger minimum patch size and when including all land masses in the tropics (see [Chapter 5](#ch5)).
 
-(ref:cap-D-4) Climate connectivity in the year 2000 (green) and 2012 (purple), including or excluding cells that fall inside tree plantations. Panel a shows results for median climate connectivity, with the dashed line indicating zero climate connectivity, at which point and above successful climate connectivity is achieved. Panel b shows results for the proportion of total forested area that achieves successful climate connectivity. Solid points are model-predicted values with 95% confidence intervals. Raw data are plotted in the background as semi-transparent points.
+(ref:cap-D-6) Climate connectivity in the year 2000 (green) and 2012 (purple), for different values of minimum patch size (rows). Panel (a) shows results for median climate connectivity, with the dashed line indicating zero climate connectivity, at and above which successful climate connectivity is achieved. Panel (b) shows results for the proportion of total forested area that fails to achieve successful climate connectivity. Hollow circles are model-predicted values with 95% confidence intervals. The small number in the centre indicates rank: 1 corresponds to the realm and dataset with the worst climate connectivity, through to 5 for the best. Raw data are plotted in the background as semi-transparent, filled points. Confidence intervals in panel (b) are plotted with dotted lines where they extend beyond 0 or 100%. 
 
-```{r fig-D-4, fig.cap= "(ref:cap-D-4)"}
-
-pd4a <-
-    ggplot(data = median_cc_dat_som1, 
-           aes(x = year,
-               y = median_cc,
-               colour = year)) +
-    geom_hline(yintercept = 0, linetype = "dashed") +
-    geom_jitter(data = region_cc_som1,
-                alpha = 0.2,
-                shape = 16,
-                size= 1) +
-    geom_point(position = position_dodge(width = 0.5)) +
-    geom_errorbar(aes(ymin = lwr, ymax = upr), 
-                  width = 0.2,
-                  position = position_dodge(width = 0.5)) +
-    facet_wrap(~ df_name, nrow = 1, strip.position="bottom") +
-    ylab(paste("Median climate connectivity (", "\U00B0","C)",sep="")) +
-    theme_bw() +
-    theme(axis.title.x = element_blank(),
-          axis.text.x = element_blank(),
-          axis.ticks.x = element_blank(),
-          axis.title.y = element_text(size = title_size),
-          axis.text.y = element_text(size = text_size),
-          strip.text = element_text(size = lab_size),
-          legend.title = element_blank(),
-          legend.text = element_text(size = lab_size),
-          legend.position = c(0.15, 0.87), 
-          legend.direction = "vertical",
-          legend.key.size = unit(5, units = "mm"),
-          # legend.background = element_rect(fill = "pink"),
-          legend.margin = margin(0,0,0,0),
-          panel.spacing = unit(0, units = "cm"),
-          panel.grid = element_blank()) +
-    scale_y_continuous(breaks = seq(-4,4,0.5)) +
-    scale_colour_manual(values = cbpal1[c(3,1)])
-
-pd4b <-
-    ggplot(data = prop_success_dat_som1, 
-           aes(x = year,
-               y = prop_success,
-               colour = year)) +
-    geom_point(position = position_dodge(width = 0.5)) +
-    geom_errorbar(aes(ymin = lwr * 100, ymax = upr * 100), 
-                  width = 0.2,
-                  position = position_dodge(width = 0.5)) +
-    geom_jitter(data = region_cc_som1,
-                aes(y = (success_patch_area / sum_patch_area) * 100),
-                alpha = 0.2,
-                shape = 16,
-                size= 1) +
-    facet_wrap(~ df_name, nrow = 1, strip.position="bottom") +
-    ylab("Area successful connectivity (%)") +
-    theme_bw() +
-    theme(axis.title.x = element_blank(),
-          axis.text.x = element_blank(),
-          axis.ticks.x = element_blank(),
-          axis.title.y = element_text(size = title_size),
-          axis.text.y = element_text(size = text_size),
-          strip.text = element_text(size = lab_size),
-          legend.title = element_blank(),
-          legend.text = element_text(size = 4),
-          legend.position = "none", 
-          legend.direction = "horizontal",
-          panel.spacing = unit(0, units = "cm"),
-          panel.grid = element_blank()) +
-    scale_y_continuous(breaks = seq(-0,100,10)) +
-    scale_colour_manual(values = cbpal1[c(3,1)])
-
-pd4 <-
-    plot_grid(pd4a, pd4b, 
-              nrow = 1, ncol = 2,
-              align = "hv",
-              labels = c("(a)", "(b)"), 
-              label_size = lab_size)
-pd4
-```
-
-From 2000 to 2012, loss of climate connectivity increased with increasing loss of forest area. This was true whether including tree plantations (`r cc_loss_results_som1$ref[cc_loss_results_som1$df_name == "With plantations" & cc_loss_results_som1$EV == "tc_loss_log1p"]`) or excluding tree plantations (`r cc_loss_results_som1$ref[cc_loss_results_som1$df_name == "Without plantations" & cc_loss_results_som1$EV == "tc_loss_log1p"]`). The relationship for both datasets was much weaker than in the full model([Chapter 5](#ch5)), which may be caused by the smaller sample size and truncation of climate gradients (e.g. from the Amazon to parts of the Andes).
-
-(ref:cap-D-5) The proportion of total forested area in each land mass that lost climate connectivity between 2000 and 2012 with increasing area of forest loss, including versus excluding cells inside tree plantations. Points correspond to raw data. Fitted lines derive from model predictions. Note that confidence intervals are omitted because standard error calculation for new predicted values is not currently supported in the `gamlss` package.
-
-```{r fig-D-5, fig.cap= "(ref:cap-D-5)"}
-pd5 <-
-    ggplot(cc_loss_tc_loss_som1, 
-           aes(x = expm1(tc_loss_log1p),
-               y = prop_decrease_cc * 100)) +
-    geom_point(data = region_ccc_som1,
-               alpha = 0.7) +
-    geom_line()+
-    facet_wrap(~df_name) +
-    xlab(paste("Area of forest loss (km","\U00B2",")",sep="")) +
-    ylab("Proportion area losing connectivity (%)") +
-    theme_bw() +
-    theme(axis.text = element_text(size = text_size),
-          axis.title = element_text(size = title_size),
-          legend.direction = "horizontal", 
-          legend.position = "top",
-          legend.text = element_text(size = text_size),
-          legend.box = "vertical",
-          legend.spacing = unit(0, "cm"),
-          panel.grid = element_blank()) +
-    scale_y_continuous(breaks = seq(0,100,10)) +
-    scale_x_continuous(trans="log1p",
-                       breaks = trans_breaks("log1p", function(x) expm1(x)),
-                       labels = trans_format("log1p", math_format())) +
-    guides(colour = guide_legend(title = NULL),
-           size = guide_legend(title = NULL, nrow = 1)) +
-    scale_colour_manual(values = cbpal2[c(7,6)])
-pd5
-```
-
-\pagebreak
-
-## Supplementary analyses for different patch parameters {#text-D-2}
-
-### Methods
-
-Following @mcguire_achieving_2016 we excluded forest patches less than 10 km^2^. This was based on the assumption that excessively small patches are incapable of sustaining populations for long enough to enable range shifts through differential fitness at the leading and trailing edge of a species' range. However, the critical patch size to enable such demographic processes to occur will depend on the species in question, and indeed some species may shift their ranges via within-generation movement of migrating individuals. We tested the influence of minimum patch size by repeating the analyses for patch sizes of 1, 5, 25 and 100 km^2^. Note that a minimum size of 1 km^2^ corresponds to no exclusions, since this is the resolution of the layers used. 
-
-### Results and Discussion
-
-Current climate connectivity was captured by median climate connectivity in 2012, and the proportion of forested area that achieved successful climate connectivity (&ge; 0) in 2012.
-Median climate connectivity differed by realm for all patch sizes assessed (p < 0.001; \autoref{fig:fig-D-6}a), and was below zero in all cases except where minimum patch size was 1 km^2^ (i.e. no exclusions). This suggests that for species capable of surviving and reproducing in patch sizes of 1 km^2^ or less, current forest cover is sufficiently well-connected along climate gradients that these species should, on average, be able to shift their range within existing forest cover to avoid climate warming. For species requiring a larger critical patch size, tropical forest cover in all biogeographic realms was, on average, insufficient to facilitate such range shifts. For all patch sizes, median climate connectivity was generally lowest in the Neotropics, followed by the Afrotropics, Indomalaya, Australasia and Oceania (precise ranking depended on the minimum patch size applied; \autoref{fig:fig-D-6}a).
-
-Although median climate connectivity across the tropics was low regardless of model parameters, the percentage of forest area achieving successful climate connectivity (&ge; 0) in the year 2012 was reasonably high (\autoref{fig:fig-D-6}b). Values were highest for the least stringent minimum patch size of 1 km^2^, and slightly decreased as minimum patch size increased. Proportion of successfully connected forest varied by biogeographic realm for all minimum patch sizes (p < 0.001); the precise ranking varied by minimum patch size (\autoref{fig:fig-D-6}b), but generally the Afrotropics and Indomalaya had the lowest proportion of forest achieving successful climate connectivity, while the Neotropics and Australasia had the highest. We suggest that low average values of climate connectivity in the Neotropics are somewhat compensated for by the large size of forest patches that do achieve successful climate connectivity. While the proportion of successfully connected tropical forest was generally more than half of total forest area, a substantial portion of forest fails to achieve climate connectivity and the situation is worse for species with a larger critical patch size.
-
-(ref:cap-D-6) Climate connectivity in the year 2000 (green) and 2012 (purple), for different values of minimum patch size (rows). Panel a shows results for median climate connectivity, with the dashed line indicating zero climate connectivity, at which point and above successful climate connectivity is achieved. Panel b shows results for the proportion of total forested area that achieves successful climate connectivity. Hollow circles are model-predicted values with 95% confidence intervals. The small number in the centre indicates rank: 1 corresponds to the smallest y value for that realm and dataset, through to 5 for the highest value. Raw data are plotted in the background as semi-transparent, filled points. Confidence intervals in panel b are plotted with dotted lines where they extend beyond 0 or 100%. 
-
-```{r fig-D-6, fig.cap= "(ref:cap-D-6)", fig.height= 23/2.54}
+```{r fig-D-6, fig.cap= "(ref:cap-D-6)", fig.height= 21/2.54}
 linewidth <- 0.3
 errorwidth <- 0.2
 
@@ -477,6 +666,22 @@ pd6a <-
     geom_hline(yintercept = 0, 
                linetype = "dashed",
                size = 0.5) +
+    geom_point(position = position_dodge(width = 0.5),
+               alpha = 0) +
+    geom_rect(aes(xmin = -Inf,
+                  xmax = Inf,
+                  ymin = -Inf,
+                  ymax = 0,
+                  colour = NULL),
+              fill = cbpal2[6],
+              alpha = 0.05) +
+    geom_rect(aes(xmin = -Inf,
+                  xmax = Inf,
+                  ymin = 0,
+                  ymax = Inf,
+                  colour = NULL),
+              fill = cbpal2[7],
+              alpha = 0.05) +
     geom_jitter(data = region_cc_som2,
                 alpha = 0.2,
                 shape = 16,
@@ -513,25 +718,25 @@ pd6a <-
     scale_colour_manual(values = cbpal1[c(3,1)])
 
 # Add dummy upper/lower for CI that exceed 1 or 0
-prop_success_dat_som2$upr_dummy <-
-    ifelse(prop_success_dat_som2$upr <= 1,
-           prop_success_dat_som2$upr, 1)
-prop_success_dat_som2$upr_line <-
-    ifelse(prop_success_dat_som2$upr <= 1,
+prop_fail_dat_som2$upr_dummy <-
+    ifelse(prop_fail_dat_som2$upr <= 1,
+           prop_fail_dat_som2$upr, 1)
+prop_fail_dat_som2$upr_line <-
+    ifelse(prop_fail_dat_som2$upr <= 1,
            "solid", "dotted")
 
-prop_success_dat_som2$lwr_dummy <-
-    ifelse(prop_success_dat_som2$lwr >= 0,
-           prop_success_dat_som2$lwr, 0)
-prop_success_dat_som2$lwr_line <-
-    ifelse(prop_success_dat_som2$lwr >= 0,
+prop_fail_dat_som2$lwr_dummy <-
+    ifelse(prop_fail_dat_som2$lwr >= 0,
+           prop_fail_dat_som2$lwr, 0)
+prop_fail_dat_som2$lwr_line <-
+    ifelse(prop_fail_dat_som2$lwr >= 0,
            "solid", "dotted")
 
 
 pd6b <-
-    ggplot(data = prop_success_dat_som2, 
+    ggplot(data = prop_fail_dat_som2, 
            aes(x = year,
-               y = prop_success,
+               y = prop_fail * 100,
                colour = year)) +
     # Errorbar to get the horizontal part of the error bars
     geom_errorbar(aes(ymin = lwr * 100, 
@@ -552,7 +757,7 @@ pd6b <-
                  size = linewidth) +
     # Raw data
     geom_jitter(data = region_cc_som2,
-                aes(y = (success_patch_area / sum_patch_area) * 100),
+                aes(y = (fail_patch_area / sum_patch_area) * 100),
                 alpha = 0.2,
                 shape = 16,
                 size= 1) +
@@ -566,7 +771,7 @@ pd6b <-
               show.legend = FALSE) +
     facet_grid(df_name ~ realm, 
                switch = "x") +
-    ylab("Area successful connectivity (%)") +
+    ylab("Area unsuccessful connectivity (%)") +
     theme_bw() +
     theme(axis.title.x = element_blank(),
           axis.text.x = element_blank(),
@@ -600,47 +805,424 @@ pd6 <-
 pd6
 ```
 
-From 2000 to 2012 we found that median climate connectivity did not change regardless of the minimum patch size applied (p > 0.05; \autoref{fig:fig-D-6}a), and this was true regardless of biogeographic realm (p > 0.05; \autoref{fig:fig-D-6}a). The change in proportion of successfully connected forest was, however, more complicated. For extremes of minimum patch size -- either 1 km^2^ of 100 km^2^ -- there was no effect of year (p > 0.05; \autoref{fig:fig-D-6}b). In the former case, it may be that any effect of year is masked by the greater amount of noise associated with an abundance of 1 km^2^ patches. In the latter case it is likely that so few 100 km^2^ patches were present at all that statistical power is lost because of the lower sample size, as well as the fact that patches this large are likely to be more robust to relatively small changes in forest cover. For all other patch sizes, the proportion of successfully connected forest decreased from 2000 to 2012 (p < 0.01; \autoref{fig:fig-D-6}b). Only for a minimum patch size of 5 km^2^ was this relationship affected by realm (`r prop_success_interaction_som2[2, "ref"]`), with a much stronger loss of climate connectivity over time for the Afrotropics. 
+From 2000 to 2012 we found that median climate connectivity did not change regardless of the minimum patch size applied (p > 0.05; \autoref{fig:fig-D-6}a), and this was true regardless of biogeographic realm (p > 0.05; \autoref{fig:fig-D-6}a). The change in proportion of unsuccessfully connected forest was, however, more complicated. For extremes of minimum patch size -- either 1 km^2^ of 100 km^2^ -- there was no effect of year (p > 0.05; \autoref{fig:fig-D-6}b). In the former case, it may be that any effect of year is masked by the greater amount of noise associated with an abundance of 1 km^2^ patches. In the latter case it is likely that so few 100 km^2^ patches were present at all that statistical power is lost, as well as the fact that patches of this size are likely to be more robust to relatively small changes in forest cover. For all other patch sizes, the proportion of successfully connected forest decreased from 2000 to 2012 (p < 0.01; \autoref{fig:fig-D-6}b). Only for a minimum patch size of 5 km^2^ was this relationship affected by realm (`r prop_fail_interaction_som2[2, "ref"]`), with a stronger loss of climate connectivity over time for the Afrotropics than in other realms. 
 
-Loss of climate connectivity was, as expected, strongly driven by loss of tree cover, regardless of minimum patch size (p < 0.01; \autoref{fig:fig-D-7}). This relationship was consistent across biogeographic realms (p > 0.05; \autoref{fig:fig-D-7}). In all cases, climate connectivity was lost at an accelerating rate as the area of forest loss increased. As increasing forest area is lost, it is likely that forest patches become smaller and increasinly isolated, to the point where vital connections are severed and climate connectivity is degraded. 
+Loss of climate connectivity was strongly driven by loss of tree cover, regardless of minimum patch size (p < 0.001; \autoref{fig:fig-D-7}). The proportion of forest area losing connectivity differed by realm for all minimum patch sizes (p < 0.001; \autoref{fig:fig-D-7}), and was generally highest in Indomalaya, the Neotropics and the Afrotropics. In most cases climate connectivity was lost at an accelerating rate as the area of forest loss increased. It is likely that forest patches become smaller and increasingly isolated as more forest area is lost, to the point where vital connections are severed and climate connectivity is degraded. For  minimum patch size of 100 km^2^ there was a hump-shaped relationship with tree cover loss, which is likely an artefact of there being far fewer datapoints for this dataset at high values of tree cover loss.
 
-(ref:cap-D-7) The proportion of total forested area in each land mass that lost climate connectivity between 2000 and 2012, with increasing area of forest loss and across different biogeographic realms (orange = Neotropics, blue = Afrotropics, green = Indomalaya, yellow = Australasia and pink = Oceania). Points correspond to raw data, with point size indicating the number of observations at that location. Fitted lines derive from model predictions. Note that confidence intervals are omitted because standard error calculation for new predicted values is not currently supported in the `gamlss` package.
+(ref:cap-D-7) The proportion of total forested area in each land mass that lost climate connectivity between 2000 and 2012, with increasing area of forest loss and across different biogeographic realms (orange = Neotropics, blue = Afrotropics, green = Indomalaya, yellow = Australasia and pink = Oceania). Points correspond to raw data, with point size indicating the number of observations at that location. Fitted lines derive from model predictions with 95% confidence intervals.
 
-```{r fig-D-7, fig.cap= "(ref:cap-D-7)", fig.width = 12/2.54}
+```{r fig-D-7, fig.cap= "(ref:cap-D-7)", fig.width = 14/2.54}
 pd7 <-
     ggplot(cc_loss_tc_loss_som2, 
-           aes(x = expm1(tc_loss_log1p),
+           aes(x = tc_loss_log1p,
                y = prop_decrease_cc * 100,
                colour = realm)) +
+    geom_ribbon(aes(ymin = lwr,
+                    ymax = upr,
+                    fill = realm,
+                    colour = NULL),
+                alpha = 0.3) +
     geom_count(data = region_ccc_som2,
-               alpha = 0.7) +
+               alpha = 0.5) +
     geom_line()+
     facet_wrap(~ df_name, nrow = 1) +
     xlab(paste("Area of forest loss (km","\U00B2",")",sep="")) +
-    ylab("Proportion area losing connectivity (%)") +
+    ylab("Area losing connectivity (%)") +
     theme_bw() +
-    theme(axis.text = element_text(size = text_size),
+    theme(axis.text.y = element_text(size = text_size),
+          axis.text.x = element_text(size = text_size, 
+                                     angle = 45,
+                                     hjust = 1),
           axis.title = element_text(size = title_size),
           legend.direction = "horizontal", 
           legend.position = "top",
-          legend.text = element_text(size = text_size),
+          legend.text = element_text(size = title_size),
           legend.box = "vertical",
-          legend.spacing = unit(0, "cm"), 
-          panel.spacing = unit(0, units = "mm"),
+          legend.spacing = unit(0, "cm"),
+          legend.margin = margin(0,0,0,0,unit = "mm"),
           panel.grid = element_blank()) +
     scale_y_continuous(breaks = seq(0,100,10)) +
-    scale_x_continuous(trans="log1p",
-                       breaks = trans_breaks("log1p", function(x) expm1(x)),
-                       labels = trans_format("log1p", math_format())) +
-    guides(colour = guide_legend(title = NULL),
+    scale_x_continuous(breaks = log1p(c(0, 10, 100, 1000, 10000, 100000)),
+                       labels = c(0, 10, 100, "1,000", "10,000", "100,000")) +
+    guides(colour = guide_legend(title = NULL,
+                                 nrow=1,byrow=TRUE),
+           fill = guide_legend(title = NULL,
+                               nrow=2,byrow=TRUE),
            size = guide_legend(title = NULL, nrow = 1)) +
-    scale_colour_manual(values = cbpal2)
+    scale_colour_manual(values = cbpal2) +
+    scale_fill_manual(values = cbpal2)
 pd7
 ```
 
 \pagebreak
 
-## Worked example of climate connectivity calculation {#text-D-3}
+## Supplementary analyses without tree plantations {#text-D-2}
+
+### Methods
+
+The tree cover layers from @hansen_high-resolution_2013 do not currently distinguish between natural forests and tree plantations. However, boundary polygons for tree plantations are available for seven countries: Brazil, Cambodia, Colombia, Indonesia, Liberia, Malaysia, and Peru [@transparent_world_tree_2015]. We therefore re-ran our analyses (see Methods in main text) for these seven countries only, with and without cells inside tree plantations. We buffered country polygons by 100 km to prevent artificial truncation of climate gradients [cf. @mcguire_achieving_2016]. Statistical models were analogous to those in the main text (see Methods), except that biogeographic realm was not included as an explanatory variable because of the smaller and more uneven sample sizes in this subset of the data.
+
+### Results and Discussion
+
+Median climate connectivity in 2012 was `r median_cc_dat_som1$median_cc[median_cc_dat_som1$df_name == "With plantations" & median_cc_dat_som1$year == "2012"]`&deg;C including cells in tree plantations, versus `r median_cc_dat_som1$median_cc[median_cc_dat_som1$df_name == "Without plantations" & median_cc_dat_som1$year == "2012"]`&deg;C excluding tree plantations. Median climate connectivity did not differ by year in either case (p > 0.05; \autoref{fig:fig-D-4}a). Thus, regardless of the year or inclusion of tree plantations, typical tropical forest fails to connect patches to future analogous climates.
+
+The percentage of forest that failed to achieve successful climate connectivity in 2012 was nearly identical regardless of whether tree plantations were included (`r signif(prop_fail_dat_som1$prop_fail[prop_fail_dat_som1$df_name == "With plantations" & prop_fail_dat_som1$year == "2012"] * 100, 3)`% if including plantations versus `r signif(prop_fail_dat_som1$prop_fail[prop_fail_dat_som1$df_name == "Without plantations" & prop_fail_dat_som1$year == "2012"] * 100, 3)`% excluding plantations), although the trends over time did differ. If cells inside plantations were included, there was a slight decrease (`r signif(prop_fail_dat_som1$prop_fail[prop_fail_dat_som1$df_name == "With plantations" & prop_fail_dat_som1$year == "2012"] * 100, 3) - signif(prop_fail_dat_som1$prop_fail[prop_fail_dat_som1$df_name == "With plantations" & prop_fail_dat_som1$year == "2000"] * 100, 3)`%) from 2000 to 2012 in the percentage of forest that was unsuccessfully connected (`r prop_fail_results_som1$ref[prop_fail_results_som1$df_name == "With plantations"]`). The opposite was true when cells inside plantations were excluded (`r prop_fail_results_som1$ref[prop_fail_results_som1$df_name == "Without plantations"]`), with the proportion of unsuccessfully connected forest increasing by `r signif(prop_fail_dat_som1$prop_fail[prop_fail_dat_som1$df_name == "Without plantations" & prop_fail_dat_som1$year == "2012"] * 100, 3) - signif(prop_fail_dat_som1$prop_fail[prop_fail_dat_som1$df_name == "Without plantations" & prop_fail_dat_som1$year == "2000"] * 100, 3)`% from 2000 to 2012. The discrepancy between datasets in the effect of year is very likely driven by increasing tree cover inside tree plantations. 
+
+(ref:cap-D-4) Climate connectivity in the year 2000 (green) and 2012 (purple), including or excluding cells that fall inside tree plantations. Panel (a) shows results for median climate connectivity, with the dashed line indicating zero climate connectivity, at and above which successful climate connectivity is achieved. Panel (b) shows results for the proportion of total forested area that fails to achieve successful climate connectivity. Solid points are model-predicted values with 95% confidence intervals. Raw data are plotted in the background as semi-transparent points.
+
+```{r fig-D-4, fig.cap= "(ref:cap-D-4)"}
+
+pd4a <-
+    ggplot(data = median_cc_dat_som1, 
+           aes(x = year,
+               y = median_cc,
+               colour = year)) +
+    geom_hline(yintercept = 0, linetype = "dashed") +
+    geom_point(position = position_dodge(width = 0.5),
+               alpha = 0) +
+    geom_rect(aes(xmin = -Inf,
+                  xmax = Inf,
+                  ymin = -Inf,
+                  ymax = 0,
+                  colour = NULL),
+              fill = cbpal2[6],
+              alpha = 0.05) +
+    geom_rect(aes(xmin = -Inf,
+                  xmax = Inf,
+                  ymin = 0,
+                  ymax = Inf,
+                  colour = NULL),
+              fill = cbpal2[7],
+              alpha = 0.05) +
+    geom_jitter(data = region_cc_som1,
+                alpha = 0.2,
+                shape = 16,
+                size= 1) +
+    geom_point(position = position_dodge(width = 0.5)) +
+    geom_errorbar(aes(ymin = lwr, ymax = upr), 
+                  width = 0.2,
+                  position = position_dodge(width = 0.5)) +
+    facet_wrap(~ df_name, nrow = 1, strip.position="bottom") +
+    ylab(paste("Median climate connectivity (", "\U00B0","C)",sep="")) +
+    theme_bw() +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.text.y = element_text(size = text_size),
+          strip.text = element_text(size = lab_size),
+          legend.title = element_blank(),
+          legend.text = element_text(size = lab_size),
+          legend.position = c(0.15, 0.87), 
+          legend.direction = "vertical",
+          legend.key.size = unit(5, units = "mm"),
+          legend.background = element_rect(fill="transparent"),
+          legend.margin = margin(0,0,0,0),
+          panel.spacing = unit(0, units = "cm"),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(-4,4,0.5)) +
+    scale_colour_manual(values = cbpal1[c(3,1)])
+
+pd4b <-
+    ggplot(data = prop_fail_dat_som1, 
+           aes(x = year,
+               y = prop_fail * 100,
+               colour = year)) +
+    geom_point(position = position_dodge(width = 0.5)) +
+    geom_errorbar(aes(ymin = lwr * 100, ymax = upr * 100), 
+                  width = 0.2,
+                  position = position_dodge(width = 0.5)) +
+    geom_jitter(data = region_cc_som1,
+                aes(y = (fail_patch_area / sum_patch_area) * 100),
+                alpha = 0.2,
+                shape = 16,
+                size= 1) +
+    facet_wrap(~ df_name, nrow = 1, strip.position="bottom") +
+    ylab("Area unsuccessful connectivity (%)") +
+    theme_bw() +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.text.y = element_text(size = text_size),
+          strip.text = element_text(size = lab_size),
+          legend.title = element_blank(),
+          legend.text = element_text(size = 4),
+          legend.position = "none", 
+          legend.direction = "horizontal",
+          panel.spacing = unit(0, units = "cm"),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(-0,100,10)) +
+    scale_colour_manual(values = cbpal1[c(3,1)])
+
+pd4 <-
+    plot_grid(pd4a, pd4b, 
+              nrow = 1, ncol = 2,
+              align = "hv",
+              labels = c("(a)", "(b)"), 
+              label_size = lab_size)
+pd4
+```
+
+From 2000 to 2012, loss of climate connectivity increased with increasing loss of forest area. This was true whether including tree plantations (`r cc_loss_results_som1$ref[cc_loss_results_som1$df_name == "With plantations"]`) or excluding tree plantations (`r cc_loss_results_som1$ref[cc_loss_results_som1$df_name == "Without plantations"]`). The relationship for both datasets was weaker than in the full model(see Results in main text), and when including plantations the relationship appeared to invert for very high loss of forest area. These results may be caused by the smaller sample size and truncation of climate gradients (e.g. from the Amazon to parts of the Andes) when focusing only on countries with tree plantation data. It is also possible that very high loss of forest area is concentrated in places which have already lost climate connectivity, and therefore have little left to lose. 
+
+(ref:cap-D-5) The proportion of total forested area in each land mass that lost climate connectivity between 2000 and 2012 with increasing area of forest loss, including versus excluding cells inside tree plantations. Points correspond to raw data. Fitted lines derive from model predictions with 95% confidence intervals.
+
+```{r fig-D-5, fig.cap= "(ref:cap-D-5)"}
+pd5 <-
+    ggplot(cc_loss_tc_loss_som1, 
+           aes(x = tc_loss_log1p,
+               y = prop_decrease_cc * 100)) +
+    geom_ribbon(aes(ymin = lwr * 100,
+                    ymax = upr * 100),
+                alpha = 0.3) +
+    geom_point(data = region_ccc_som1,
+               alpha = 0.7) +
+    geom_line()+
+    facet_wrap(~df_name) +
+    xlab(paste("Area of forest loss (km","\U00B2",")",sep="")) +
+    ylab("Proportion area losing connectivity (%)") +
+    theme_bw() +
+    theme(axis.text.y = element_text(size = text_size),
+          axis.text.x = element_text(size = text_size, 
+                                     angle = 45,
+                                     hjust = 1),
+          axis.title = element_text(size = title_size),
+          legend.direction = "horizontal", 
+          legend.position = "top",
+          legend.text = element_text(size = text_size),
+          legend.box = "vertical",
+          legend.spacing = unit(0, "cm"),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(0,100,10)) +
+    scale_x_continuous(breaks = log1p(c(0, 10, 100, 1000, 10000, 100000)),
+                       labels = c(0, 10, 100, "1,000", "10,000", "100,000")) +
+    guides(colour = guide_legend(title = NULL),
+           size = guide_legend(title = NULL, nrow = 1)) +
+    scale_colour_manual(values = cbpal2[c(7,6)])
+pd5
+```
+
+\pagebreak
+
+## Supplementary analyses for different RCP scenarios {#text-D-3}
+
+### Methods
+
+In the main text we used Representative Concentration Pathway (RCP) 8.5 to derive Mean Annual Temperature in the year 2070. This is the most severe ('business-as-usual') IPCC scenario [@ipcc_climate_2013], which has thus far been the best predictor of observed climate change [@sanford_climate_2014]. However, it is possible that by 2070 stronger mitigating action is taken. We therefore repeated our analyses using RCP 2.6, which is the least severe warming scenario. All methods were identical to those in the main text, changing only the layer used for future temperature.
+
+### Results and Discussion
+
+For both RCP scenarios, median climate connectivity differed between realms (p < 0.001; \autoref{fig:fig-D-8}a), being highest in the Neotropics, Afrotropics and Indomalaya and lowest in Australasia and Oceania. Median climate connectivity was below zero for both scenarios, but closer to zero for RCP2.6 than RCP8.5. The implication is that forest patches across the tropics will generally fail to facilitate species range shifts to the extent that species could completely avoid climate warming, but with mitigation the amount of warming experienced would be less.
+
+The proportion of forest area that failed to achieve successful climate connectivity (&ge; 0) in the year 2012 was influenced by biogeographic realm in both RCP scenarios (p < 0.001; \autoref{fig:fig-D-8}b). All realms were less  successfully connected using RCP8.5 (percentage area that was unsuccessful ranged from `r min(signif(filter(prop_fail_dat_som3, year == "2012", df_name == "RCP8.5") %>% .[,"prop_fail"] * 100, 2))`-`r max(signif(filter(prop_fail_dat_som3, year == "2012", df_name == "RCP8.5") %>% .[,"prop_fail"] * 100, 2))`% in RCP8.5 vs. `r min(signif(filter(prop_fail_dat_som3, year == "2012", df_name == "RCP2.6") %>% .[,"prop_fail"] * 100, 2))`-`r max(signif(filter(prop_fail_dat_som3, year == "2012", df_name == "RCP2.6") %>% .[,"prop_fail"] * 100, 2))`% in RCP2.6) and the ranking of different realms was also different depending on the RCP scenario. In both scenarios, Indomalaya and Oceania were among the least successfully connected and Australasia the best. The Afrotropics, however, had the lowest proportion of connected forest in 2012 under RCP2.6, but the second highest under RCP8.5. The Neotropics had the second highest proportion of connected forest in 2012 under RCP2.6, versus the second lowest for RCP8.5. Overall, these results suggest that despite the low average climate connectivity in both scenarios of future warming, strong mitigation like that assumed under RCP2.6 could maintain high climate connectivity in large forest patches.
+
+(ref:cap-D-8) Climate connectivity in the year 2000 (green) and 2012 (purple), for RCP2.6 (least severe warming scenario) and RCP8.5 (most severe warming scenario). Panel (a) shows results for median climate connectivity, with the dashed line indicating zero climate connectivity, at and above which successful climate connectivity is achieved. Panel (b) shows results for the proportion of total forested area that fails to achieve successful climate connectivity. Hollow circles are model-predicted values with 95% confidence intervals. The small number in the centre indicates rank: 1 corresponds to the smallest y value for that realm and dataset, through to 5 for the highest value. Raw data are plotted in the background as semi-transparent, filled points. Confidence intervals in panel (b) are plotted with dotted lines where they extend beyond 0 or 100%. 
+
+```{r fig-D-8, fig.cap= "(ref:cap-D-8)", fig.height= 21/2.54}
+linewidth <- 0.3
+errorwidth <- 0.2
+
+pd8a <-
+    ggplot(data = median_cc_dat_som3, 
+           aes(x = year,
+               y = median_cc,
+               colour = year)) +
+    geom_hline(yintercept = 0, 
+               linetype = "dashed",
+               size = 0.5) +
+    geom_point(position = position_dodge(width = 0.5),
+               alpha = 0) +
+    geom_rect(aes(xmin = -Inf,
+                  xmax = Inf,
+                  ymin = -Inf,
+                  ymax = 0,
+                  colour = NULL),
+              fill = cbpal2[6],
+              alpha = 0.05) +
+    geom_rect(aes(xmin = -Inf,
+                  xmax = Inf,
+                  ymin = 0,
+                  ymax = Inf,
+                  colour = NULL),
+              fill = cbpal2[7],
+              alpha = 0.05) +
+    geom_jitter(data = region_cc_som3,
+                alpha = 0.2,
+                shape = 16,
+                size= 1) +
+    geom_errorbar(aes(ymin = lwr, ymax = upr),
+                  width = errorwidth,
+                  size = linewidth,
+                  position = position_dodge(width = 0.5)) +
+    geom_point(position = position_dodge(width = 0.5),
+               fill = "white", shape = 21, size = 2) +
+    geom_text(aes(label = rank),
+              position = position_dodge(width = 0.5),
+              size = 1,
+              show.legend = FALSE) +
+    facet_grid(df_name ~ realm, 
+               switch = "x",
+               scales = "free") +
+    ylab(paste("Median climate connectivity (", "\U00B0","C)",sep="")) +
+    theme_bw() +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.text.y = element_text(size = text_size),
+          strip.text = element_text(size = lab_size),
+          legend.title = element_blank(),
+          legend.text = element_text(size = lab_size),
+          legend.background = element_rect(fill="transparent"),
+          legend.position = "none", 
+          legend.direction = "horizontal",
+          legend.key.size = unit(5, units = "mm"),
+          legend.margin = margin(0,0,0,0, unit = "mm"),
+          panel.spacing = unit(0, units = "cm"),
+          panel.grid = element_blank()) +
+    scale_colour_manual(values = cbpal1[c(3,1)])
+
+# Add dummy upper/lower for CI that exceed 1 or 0
+prop_fail_dat_som3$upr_dummy <-
+    ifelse(prop_fail_dat_som3$upr <= 1,
+           prop_fail_dat_som3$upr, 1)
+prop_fail_dat_som3$upr_line <-
+    ifelse(prop_fail_dat_som3$upr <= 1,
+           "solid", "dotted")
+
+prop_fail_dat_som3$lwr_dummy <-
+    ifelse(prop_fail_dat_som3$lwr >= 0,
+           prop_fail_dat_som3$lwr, 0)
+prop_fail_dat_som3$lwr_line <-
+    ifelse(prop_fail_dat_som3$lwr >= 0,
+           "solid", "dotted")
+
+
+pd8b <-
+    ggplot(data = prop_fail_dat_som3, 
+           aes(x = year,
+               y = prop_fail * 100,
+               colour = year)) +
+    # Errorbar to get the horizontal part of the error bars
+    geom_errorbar(aes(ymin = lwr * 100, 
+                      ymax = upr * 100),
+                  width = errorwidth,
+                  size = linewidth,
+                  position = position_dodge(width = 0.5)) +
+    # Custom error bars
+    geom_segment(aes(xend = year,
+                     yend = lwr_dummy * 100,
+                     linetype = lwr_line),
+                 position = position_dodge(width = 0.5),
+                 size = linewidth) +
+    geom_segment(aes(xend = year,
+                     yend = upr_dummy * 100,
+                     linetype = upr_line),
+                 position = position_dodge(width = 0.5),
+                 size = linewidth) +
+    # Raw data
+    geom_jitter(data = region_cc_som3,
+                aes(y = (fail_patch_area / sum_patch_area) * 100),
+                alpha = 0.2,
+                shape = 16,
+                size= 1) +
+    # Model-predicted values
+    geom_point(position = position_dodge(width = 0.5),
+               fill = "white", shape = 21, size = 2) +
+    # Rank across realms
+    geom_text(aes(label = rank),
+              position = position_dodge(width = 0.5),
+              size = 1,
+              show.legend = FALSE) +
+    facet_grid(df_name ~ realm, 
+               switch = "x") +
+    ylab("Area unsuccessful connectivity (%)") +
+    theme_bw() +
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.text.y = element_text(size = text_size),
+          strip.text = element_text(size = lab_size),
+          legend.title = element_blank(),
+          legend.text = element_text(size = 4),
+          legend.position = "none", 
+          legend.direction = "horizontal",
+          legend.margin = margin(0,0,0,0),
+          panel.spacing = unit(0, units = "cm"),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(0,100,25),
+                       limits = c(-10,110)) +
+    scale_colour_manual(values = cbpal1[c(3,1)]) +
+    scale_linetype_manual(values = c("dotted", "solid"))
+
+pd8_leg <- get_legend(pd8a + theme(legend.position = "top"))
+
+pd8 <-
+    ggdraw() +
+    draw_plot(pd8_leg, x = 0, y = 0.95, height = 0.05) +
+    draw_plot(pd8a, x = 0, y = 0.48, height = 0.48) +
+    draw_plot(pd8b, x = 0, y = 0, height = 0.48) +
+    draw_plot_label(label = c("(a)", "(b)"),
+                    x = rep(0.001, 2),
+                    y = c(0.95,0.47),
+                    size = lab_size)
+pd8
+```
+
+For both RCP scenarios we found that median climate connectivity did not change between 2000 and 2012 (p > 0.05), and this was consistent across biogeographic realms (p > 0.05; \autoref{fig:fig-D-8}b). In contrast, the proportion of forest area that failed to achieve successful climate connectivity was generally higher in 2012 than 2000, for both RCP2.6 (`r filter(prop_fail_results_som3, EV == "year", df_name == "RCP2.6") %>% dplyr::select(ref)`) and RCP8.5 (`r filter(prop_fail_results_som3, EV == "year", df_name == "RCP8.5") %>% dplyr::select(ref)`). Under both scenarios this pattern depended on the biogeographic realm (p < 0.001), with the biggest losses in the Neotropics and Indomalaya compared to a decrease in the Afrotropics (\autoref{fig:fig-D-8}b).
+
+The proportion of forest experiencing a decrease in climate connectivity from 2000 to 2012 was influenced by both the area of forest loss (p < 0.001) and biogeographic realm (p < 0.001; \autoref{fig:fig-D-9}), in both RCP scenarios. Indomalaya and the Neotropics experienced substantial loss of climate connectivity in both scenarios, while the magnitude of change varied between scenarios for the Afrotropics, Oceania and Australasia (\autoref{fig:fig-D-9}). In both scenarios the relationship between connectivity loss and forest loss is non-linear, however under RCP2.6 the steepness of this relationship decreases for very high values of forest loss, while it increases under RCP8.5. This discrepancy should be interpreted with caution since there are only a small number of datapoints at the upper end of the relationship, but the implication is that there is a greater propensity for climate connectivity loss to accelerate under a business-as-usual compared to a strong mitigation scenario.
+
+(ref:cap-D-9) The proportion of total forested area in each land mass that lost climate connectivity between 2000 and 2012, with increasing area of forest loss and across different biogeographic realms (orange = Neotropics, blue = Afrotropics, green = Indomalaya, yellow = Australasia and pink = Oceania). Points correspond to raw data, with point size indicating the number of observations at that location. Fitted lines derive from model predictions with 95% confidence intervals.
+
+```{r fig-D-9, fig.cap= "(ref:cap-D-9)", fig.width = 12/2.54}
+pd9 <-
+    ggplot(cc_loss_tc_loss_som3, 
+           aes(x = tc_loss_log1p,
+               y = prop_decrease_cc * 100,
+               colour = realm)) +
+    geom_ribbon(aes(ymin = lwr * 100,
+                    ymax = upr * 100,
+                    fill = realm,
+                    colour = NULL),
+                alpha = 0.3) +
+    geom_count(data = region_ccc_som3,
+               alpha = 0.5) +
+    geom_line()+
+    facet_wrap(~ df_name, nrow = 1) +
+    xlab(paste("Area of forest loss (km","\U00B2",")",sep="")) +
+    ylab("Area losing connectivity (%)") +
+    theme_bw() +
+    theme(axis.text.y = element_text(size = text_size),
+          axis.text.x = element_text(size = text_size, 
+                                     angle = 45,
+                                     hjust = 1),
+          axis.title = element_text(size = title_size),
+          legend.direction = "horizontal", 
+          legend.position = "top",
+          legend.text = element_text(size = text_size),
+          legend.box = "vertical",
+          legend.spacing = unit(0, "cm"),
+          legend.margin = margin(0,0,0,0,unit = "mm"),
+          panel.grid = element_blank()) +
+    scale_y_continuous(breaks = seq(0,100,10)) +
+    scale_x_continuous(breaks = log1p(c(0, 10, 100, 1000, 10000, 100000)),
+                       labels = c(0, 10, 100, "1,000", "10,000", "100,000")) +
+    guides(colour = guide_legend(title = NULL,
+                                 nrow=1,byrow=TRUE),
+           fill = guide_legend(title = NULL,
+                               nrow=2,byrow=TRUE),
+           size = guide_legend(title = NULL, nrow = 1)) +
+    scale_colour_manual(values = cbpal2) +
+    scale_fill_manual(values = cbpal2)
+pd9
+```
+
+\pagebreak
+
+## Worked example of climate connectivity calculation {#text-D-4}
 
 The following text provides a step-by-step calculation of climate connectivity in the Brazilian states of Rond&ocirc;nia and Mato Grosso.
 
@@ -648,14 +1230,14 @@ The following text provides a step-by-step calculation of climate connectivity i
 
 Climate connectivity is calculated using climate-partitioned patches of natural habitat [@mcguire_achieving_2016]. In this study natural habitat refers to tropical forest, derived from @hansen_high-resolution_2013 for the years 2000 and 2012. For the year 2000, cells were classed as forested if they had > 50% tree cover [\autoref{fig:fig-D-1}a; @hansen_high-resolution_2013]. For the year 2012, cells were classed as forest based on forest loss and forest gain, relative to forest cover in 2000 (\autoref{fig:fig-D-1}b). If a cell experienced forest loss, it had gone from a forested to non-forested state between 2000 and 2012 and was classed as non-forest. If a cell had experienced forest gain, it had gone from a non-forested to forested state between 2000 and 2012; providing there had been no concomitant loss, the cell was classed as forest. All subsequent steps were applied separately to forest cover in 2000 and 2012.
 
-(ref:cap-D-1) Tree cover in the year 2000 (a) ranges from low (beige) to high (darkgreen). Tree cover change from 2000 to 2012 (b) includes: no change (blue), forest loss (purple), forest gain (green) or both loss and gain (yellow). Both layers derive from @hansen_high-resolution_2013, and are used to classify cells into either forest or non-forest in the years 2000 and 2012.
+(ref:cap-D-1) Tree cover in the year 2000 (a) ranges from low (beige) to high (dark green). Tree cover change from 2000 to 2012 (b) includes: no change (blue), forest loss (purple), forest gain (green) or both loss and gain (yellow). Both layers derive from @hansen_high-resolution_2013, and are used to classify cells into either forest or non-forest in the years 2000 and 2012.
 
 ```{r, echo = FALSE, include = FALSE}
 p1a <-
     ggplot()+
     geom_raster(data = tc2000_raw, 
                 aes(x = x, y = y, fill = forest_cover)) +
-    geom_polygon(data = boundary, 
+    geom_polygon(data = sub_boundary, 
                  aes(x = long, y = lat,
                      group = group),
                  colour = "grey40",
@@ -694,7 +1276,7 @@ plot_grid(p1a, p1b,
           label_x = 0.2)
 ```
 
-We used Mean Annual Temperature (MAT) as our climate variable, which is the first bioclimatic variable of the WorldClim database [Version 1.4; @hijmans_very_2005]. All layers (forest cover and climate data) were projected into the World Cylindrical Equal Area projection and resampled to 1 km^2^ resolution. Current climate (~1950-2000) was assigned to forested cells, and rounded to increments of 0.5&deg;C. Adjacent cells with the same temperature were assigned to the same patch (\autoref{fig:fig-D-2}). Patches less than 10 km^2^ in area were removed, and patches within 2 km of each other were assigned to the same patch. Once forest patches had been determined we also calculated their future temperature in the year 2070 (2061-2080), using data from the HadGEM2-AO general circulation model [@ipcc_climate_2013] and Representative Concentration Pathway (RCP) 8.5, which is the most severe ('business-as-usual') IPCC scenario.
+We used Mean Annual Temperature (MAT) as our climate variable, which is the first bioclimatic variable of the WorldClim database [Version 1.4; @hijmans_very_2005]. All layers (forest cover and climate data) were projected into the World Cylindrical Equal Area projection and re-sampled to 1 km^2^ resolution. Current climate (~1950-2000) was assigned to forested cells, and rounded to increments of 0.5&deg;C. Adjacent cells with the same temperature were assigned to the same patch (\autoref{fig:fig-D-2}). Patches less than 10 km^2^ in area were removed, and patches within 2 km of each other were assigned to the same patch. Once forest patches had been determined we also calculated their future temperature in the year 2070 (2061-2080), using data from the HadGEM2-AO general circulation model [@ipcc_climate_2013] and Representative Concentration Pathway (RCP) 8.5, which is the most severe ('business-as-usual') IPCC scenario.
 
 (ref:cap-D-2) Forest patches in 2000 (a) and 2012 (b). Black inset (c) corresponds to magnified view of the subset of patches used below to calculate climate connectivity. Shading indicates unique patches and numbers correspond to patch identities, a sample of which can be found in \autoref{tab:tab-D-1}.
 
@@ -713,7 +1295,7 @@ plot_patches <-
 
 p2a <- 
     plot_patches(patches_poly) +
-    geom_polygon(data = boundary, 
+    geom_polygon(data = sub_boundary, 
                  aes(x = long, y = lat,
                      group = group),
                  colour = "grey40",
@@ -887,7 +1469,7 @@ And subsequently we:
 
 The iterations below were run in a loop, but for illustrative purposes we will iterate over each unique temperature manually.
 
-#### Iteration 1 {#iter-1}
+### Iteration 1 {#iter-1}
 
 We begin by defining the focal unique temperature of this iteration. In this case, it's the first (i.e. coolest) value from our previously defined vector of unique temperatures, `uniquetemps`.
 
@@ -924,7 +1506,7 @@ temp_dat[inds,]
 
 Note that because the origin and destination patch are the same, there are no intermediate patches and so the value for `inter_patch` remains NA.
 
-#### Iteration 2 {#iter-2}
+### Iteration 2 {#iter-2}
 
 Moving onto the next unique temperature. This iteration is more complicated because the origin patch *does* have one or more neighbouring destination patches.
 
@@ -982,7 +1564,7 @@ temp_dat$dest_temp[inds[1]] <- t
 temp_dat$dest[inds[1]] <- running$patch[min_ind]
 ```
 
-We must also update the `running` dataframe so that patch 53 acquires the temperature and identity of patch 12. This step is vital for contructing more complicated pathways. In this example, since the final destination of patch 53 is patch 12, any origin patches in subsequent iterations whose neighbouring destination is patch 53 (see [Iteration 5](#iter-5)) will be assigned the final destination temperature and identity of patch 12, *not* patch 53.
+We must also update the `running` dataframe so that patch 53 acquires the temperature and identity of patch 12. This step is vital for constructing more complicated pathways. In this example, since the final destination of patch 53 is patch 12, any origin patches in subsequent iterations whose neighbouring destination is patch 53 (see [Iteration 5](#iter-5)) will be assigned the final destination temperature and identity of patch 12, *not* patch 53.
 
 ```{r}
 running$temp[inds[1]] <- t
@@ -1055,7 +1637,7 @@ for (k in 1:(length(inds))){
 }
 ```
 
-#### Iteration 5 {#iter-5}
+### Iteration 5 {#iter-5}
 
 We will now skip ahead to the fifth unique temperature, which illustrates the importance of updating the `running` dataframe in each iteration and using this to assign the temperature and identity of the final destination patch.
 
@@ -1074,7 +1656,7 @@ length(connections[[inds[1]]]) > 0
 dest_inds <- which(temp_dat$patch %in%  connections[[inds[1]]])
 ```
 
-Yes. Of the one or more neighbouring destination patches, what is the minimum temperaure and what is the index of the corresponding patch?
+Yes. Of the one or more neighbouring destination patches, what is the minimum temperature and what is the index of the corresponding patch?
 
 ```{r}
 t <- min(running[dest_inds, "temp"])
@@ -1173,7 +1755,7 @@ for (j in 1:length(uniquetemps)){
                 # If there is only one coldest patch, index that destination (colder) patch &
                 minind <- topatchsinds[a]
             }else{
-                # If there is more than one colder patch w/ = temperatures, arbitrarily select the first one
+                # If there is more than one colder patch w/ = temperatures, arbitrarily dplyr::select the first one
                 minind <- topatchsinds[a[1]]
             }
             
@@ -1446,7 +2028,388 @@ plot_grid(p3a, p3b,
           label_size = lab_size)
 ```
 
+\pagebreak
+
+## Supplementary Figures
+
+(ref:cap-D-10) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with areas of high climate vulnerability for mammals derived from @pacifici_framework_2018 (regions outside of these areas are masked in grey). We defined high vulnerability areas as those where more than 50% of mammal species had a negative predicted response to climate change. As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
+
+```{r fig-D-10, fig.cap= "(ref:cap-D-10)", fig.width = 18.3/2.54, fig.height = 8/2.54}
+p1a <-
+    ggplot() +
+    geom_polygon(data = boundary,
+                 aes(x = long,
+                     y = lat,
+                     group = group),
+                 fill = "grey20") +
+    # Line to delineate W/E hemisphere
+    geom_vline(data = oceania_labs,
+               aes(xintercept = vline),
+               linetype = "dashed",
+               size = 0.2,
+               colour = "grey20") +
+    # Line to delineate N/S hemisphere
+    geom_hline(data = oceania_labs,
+               aes(yintercept = hline),
+               linetype = "dashed",
+               size = 0.2,
+               colour = "grey20")+
+    # Oceania labels
+    geom_text(data = oceania_labs,
+              aes(x = long,
+                  y = lat,
+                  label = lab),
+              size = 2) +
+    # Cc polygons
+    geom_polygon(data = patches,
+                 aes(x = long,
+                     y = lat,
+                     group = group,
+                     fill = cc)) +
+    # Vulnerability mask
+    geom_holygon(data = vuln_mask,
+                 aes(x = long,
+                     y = lat,
+                     group = group),
+                 alpha = 0.9,
+                 fill = "grey") +
+    # # Vulnerability overlay
+    # geom_holygon(data = vuln,
+    #              aes(x = long,
+    #                  y = lat,
+    #                  group = group),
+    #              alpha = 0,
+    #              fill = cbpal2[1],
+    #              colour = cbpal2[1],
+    #              size = 0.01) +
+    facet_wrap( ~ realm,
+                scales = "free",
+                nrow = 1) +
+    theme_bw() +
+    ylab("2012") +
+    theme(axis.text = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.ticks = element_blank(),
+          plot.margin = margin(1, 2, 1, 2),
+          panel.background = element_rect(fill = "darkseagreen3"),
+          panel.grid = element_blank(),
+          panel.spacing.x = unit(-0.2, units = "lines"),
+          panel.spacing.y = unit(0, units = "lines"),
+          strip.background = element_blank(),
+          strip.text = element_text(size = title_size,
+                                    hjust = 0.5),
+          legend.text = element_text(size = text_size),
+          legend.title = element_text(size = text_size),
+          legend.box.spacing = unit(0,"cm"),
+          legend.box.margin = margin(0,0,0,2),
+          legend.position = "bottom") +
+    # scale_x_continuous(expand = c(0, 0))+
+    scale_y_continuous(expand = c(0.012, 0))+
+    coord_equal(ratio=1) +
+    scale_fill_gradient2(low = "red4",
+                         mid = "beige",
+                         high = "dodgerblue", 
+                         breaks = seq(-4, 8, 2),
+                         limits = c(-4,8)) +
+    guides(fill = guide_colourbar(raster = FALSE, 
+                                  barheight = unit(3, units = "mm"),
+                                  barwidth = unit(2, units = "cm"),
+                                  direction = "horizontal",
+                                  title.vjust = 1,
+                                  title.position = "left",
+                                  title = paste("Climate\nconnectivity\n(",
+                                                "\U00B0","C)",sep="")))
+
+p1b <-
+    ggplot() +
+    # Realms
+    geom_polygon(data = boundary,
+                 aes(x = long,
+                     y = lat,
+                     group = group),
+                 fill = "grey20") +
+    # Line to delineate W/E hemisphere
+    geom_vline(data = oceania_labs,
+               aes(xintercept = vline),
+               linetype = "dashed",
+               size = 0.2,
+               colour = "grey20") +
+    # Line to delineate N/S hemisphere
+    geom_hline(data = oceania_labs,
+               aes(yintercept = hline),
+               linetype = "dashed",
+               size = 0.2,
+               colour = "grey20")+
+    # Oceania labels
+    geom_text(data = oceania_labs,
+              aes(x = long,
+                  y = lat,
+                  label = lab),
+              size = 2) +
+    # Ccc polygons
+    geom_polygon(data = ccc_polys,
+                 aes(x = long,
+                     y = lat,
+                     group = group,
+                     fill = cc_change)) +
+    # Vulnerability mask
+    geom_polygon(data = vuln_mask,
+                 aes(x = long,
+                     y = lat,
+                     group = group),
+                 alpha = 0.9,
+                 fill = "grey") +
+    # # Vulnerability overlay
+    # geom_polygon(data = vuln,
+    #              aes(x = long,
+    #                  y = lat,
+    #                  group = group),
+    #              alpha = 0,
+    #              fill = cbpal2[1],
+    #              colour = cbpal2[1],
+    #              size = 0.01) +
+    facet_wrap( ~ realm,
+                scales = "free",
+                nrow = 1) +
+    theme_bw() +
+    ylab("2012 - 2000") +
+    theme(axis.text = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.ticks = element_blank(),
+          plot.margin = margin(1, 2, 1, 2),
+          panel.background = element_rect(fill = "darkseagreen3"),
+          panel.grid = element_blank(),
+          panel.spacing.x = unit(-0.2, units = "lines"),
+          panel.spacing.y = unit(0, units = "lines"),
+          strip.background = element_blank(),
+          strip.text = element_text(size = title_size,
+                                    hjust = 0.5),
+          legend.text = element_text(size = text_size),
+          legend.title = element_text(size = text_size),
+          legend.box.spacing = unit(0,"cm"),
+          legend.box.margin = margin(0,0,0,0),
+          legend.position = "bottom") +
+    # scale_x_continuous(expand = c(0, 0))+
+    scale_y_continuous(expand = c(0.012, 0))+
+    coord_equal(ratio=1) +
+    scale_fill_gradient2(low = "red4",
+                         mid = "beige",
+                         high = "dodgerblue",
+                         breaks = seq(-10, 10, 5),
+                         limits = c(-10,10)) +
+    guides(fill = guide_colourbar(raster = FALSE, 
+                                  barheight = unit(3, units = "mm"),
+                                  barwidth = unit(2, units = "cm"),
+                                  direction = "horizontal",
+                                  title.vjust = 1,
+                                  title.position = "left",
+                                  title = paste(
+                                      "\U0394 ",
+                                      "Climate\nconnectivity\n(",
+                                      "\U00B0","C)",sep="")))
+p1 <-
+    plot_grid(p1a, p1b, 
+              nrow = 2, ncol = 1,
+              align = "hv", 
+              labels = c("(a)", "(b)"), 
+              label_size = lab_size)
+p1
+ggsave(plot = p1,
+       filename = "figs/fig5.1.pdf",
+       width = 16.6, height = 8, units = "cm")
+```
+
+(ref:cap-D-11) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with Key Biodiversity Areas from BirdLife International (regions outside of these areas are masked in grey). As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
+
+```{r fig-D-11, fig.cap= "(ref:cap-D-11)", fig.width = 18.3/2.54, fig.height = 8/2.54}
+p2a <-
+    ggplot() +
+    geom_polygon(data = boundary,
+                 aes(x = long,
+                     y = lat,
+                     group = group),
+                 fill = "grey20") +
+    # Line to delineate W/E hemisphere
+    geom_vline(data = oceania_labs,
+               aes(xintercept = vline),
+               linetype = "dashed",
+               size = 0.2,
+               colour = "grey20") +
+    # Line to delineate N/S hemisphere
+    geom_hline(data = oceania_labs,
+               aes(yintercept = hline),
+               linetype = "dashed",
+               size = 0.2,
+               colour = "grey20")+
+    # Oceania labels
+    geom_text(data = oceania_labs,
+              aes(x = long,
+                  y = lat,
+                  label = lab),
+              size = 2) +
+    # Cc polygons
+    geom_polygon(data = patches,
+                 aes(x = long,
+                     y = lat,
+                     group = group,
+                     fill = cc)) +
+    # KBA mask
+    geom_holygon(data = kba_mask,
+                 aes(x = long,
+                     y = lat,
+                     group = group),
+                 alpha = 0.9,
+                 fill = "grey") +
+    # # KBA overlay
+    # geom_holygon(data = kba,
+    #              aes(x = long,
+    #                  y = lat,
+    #                  group = group),
+    #              alpha = 0,
+    #              fill = cbpal2[1],
+    #              colour = cbpal2[1],
+    #              size = 0.01) +
+    facet_wrap( ~ realm,
+                scales = "free",
+                nrow = 1) +
+    theme_bw() +
+    ylab("2012") +
+    theme(axis.text = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.ticks = element_blank(),
+          plot.margin = margin(1, 2, 1, 2),
+          panel.background = element_rect(fill = "darkseagreen3"),
+          panel.grid = element_blank(),
+          panel.spacing.x = unit(-0.2, units = "lines"),
+          panel.spacing.y = unit(0, units = "lines"),
+          strip.background = element_blank(),
+          strip.text = element_text(size = title_size,
+                                    hjust = 0.5),
+          legend.text = element_text(size = text_size),
+          legend.title = element_text(size = text_size),
+          legend.box.spacing = unit(0,"cm"),
+          legend.box.margin = margin(0,0,0,2),
+          legend.position = "bottom") +
+    # scale_x_continuous(expand = c(0, 0))+
+    scale_y_continuous(expand = c(0.012, 0))+
+    coord_equal(ratio=1) +
+    scale_fill_gradient2(low = "red4",
+                         mid = "beige",
+                         high = "dodgerblue", 
+                         breaks = seq(-4, 8, 2),
+                         limits = c(-4,8)) +
+    guides(fill = guide_colourbar(raster = FALSE, 
+                                  barheight = unit(3, units = "mm"),
+                                  barwidth = unit(2, units = "cm"),
+                                  direction = "horizontal",
+                                  title.vjust = 1,
+                                  title.position = "left",
+                                  title = paste("Climate\nconnectivity\n(",
+                                                "\U00B0","C)",sep="")))
+
+p2b <-
+    ggplot() +
+    # Realms
+    geom_polygon(data = boundary,
+                 aes(x = long,
+                     y = lat,
+                     group = group),
+                 fill = "grey20") +
+    # Line to delineate W/E hemisphere
+    geom_vline(data = oceania_labs,
+               aes(xintercept = vline),
+               linetype = "dashed",
+               size = 0.2,
+               colour = "grey20") +
+    # Line to delineate N/S hemisphere
+    geom_hline(data = oceania_labs,
+               aes(yintercept = hline),
+               linetype = "dashed",
+               size = 0.2,
+               colour = "grey20")+
+    # Oceania labels
+    geom_text(data = oceania_labs,
+              aes(x = long,
+                  y = lat,
+                  label = lab),
+              size = 2) +
+    # Ccc polygons
+    geom_polygon(data = ccc_polys,
+                 aes(x = long,
+                     y = lat,
+                     group = group,
+                     fill = cc_change)) +
+    # KBA mask
+    geom_holygon(data = kba_mask,
+                 aes(x = long,
+                     y = lat,
+                     group = group),
+                 alpha = 0.9,
+                 fill = "grey") +
+    # # KBA overlay
+    # geom_holygon(data = kba,
+    #              aes(x = long,
+    #                  y = lat,
+    #                  group = group),
+    #              alpha = 0,
+    #              fill = cbpal2[1],
+    #              colour = cbpal2[1],
+    #              size = 0.01) +
+    facet_wrap( ~ realm,
+                scales = "free",
+                nrow = 1) +
+    theme_bw() +
+    ylab("2012 - 2000") +
+    theme(axis.text = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(size = title_size),
+          axis.ticks = element_blank(),
+          plot.margin = margin(1, 2, 1, 2),
+          panel.background = element_rect(fill = "darkseagreen3"),
+          panel.grid = element_blank(),
+          panel.spacing.x = unit(-0.2, units = "lines"),
+          panel.spacing.y = unit(0, units = "lines"),
+          strip.background = element_blank(),
+          strip.text = element_text(size = title_size,
+                                    hjust = 0.5),
+          legend.text = element_text(size = text_size),
+          legend.title = element_text(size = text_size),
+          legend.box.spacing = unit(0,"cm"),
+          legend.box.margin = margin(0,0,0,0),
+          legend.position = "bottom") +
+    # scale_x_continuous(expand = c(0, 0))+
+    scale_y_continuous(expand = c(0.012, 0))+
+    coord_equal(ratio=1) +
+    scale_fill_gradient2(low = "red4",
+                         mid = "beige",
+                         high = "dodgerblue",
+                         breaks = seq(-10, 10, 5),
+                         limits = c(-10,10)) +
+    guides(fill = guide_colourbar(raster = FALSE, 
+                                  barheight = unit(3, units = "mm"),
+                                  barwidth = unit(2, units = "cm"),
+                                  direction = "horizontal",
+                                  title.vjust = 1,
+                                  title.position = "left",
+                                  title = paste(
+                                      "\U0394 ",
+                                      "Climate\nconnectivity\n(",
+                                      "\U00B0","C)",sep="")))
+p2 <-
+    plot_grid(p2a, p2b, 
+              nrow = 2, ncol = 1,
+              align = "hv", 
+              labels = c("(a)", "(b)"), 
+              label_size = lab_size)
+p2
+# ggsave(plot = p2,
+#        filename = "figs/fig5.2.pdf",
+#        width = 16.6, height = 8, units = "cm")
+```
+
 \clearpage
 \fancyhead[R]{Bibliography}
 \addcontentsline{toc}{chapter}{Bibliography}
-
