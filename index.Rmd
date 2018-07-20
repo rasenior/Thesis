@@ -50,9 +50,9 @@ Throughout my PhD I was humbled to receive data, advice and code freely from var
 
 Many people (and some animals!) supported me on a personal level, without which I would have probably been in a perpetual, chocolate-laden slump. Thanks to the Mynas for listening to my rants and keeping the snack table topped up. Thanks to Cindy Cosset and Chloe Walker-Trivett for general laughs and amazing food. Thanks to my brother, Thomas, for being a source of entertainment and for helping me with mathsy stuff, and to my Grandparents -- Charles and Marylyn Marchington -- for remaining interested in the strange activities of your wayward granddaughter. 
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 \centering
-\includegraphics[angle=270,origin=c]{pics/doggies.jpg}
+\includegraphics[angle=270,origin=c, height=10cm]{pics/doggies.jpg}
 \caption*{For unconditional love and the best cuddles a human could ask for, I am grateful to my beautiful doggies: Ruby (left) and Teddy (right).}
 \end{figure}
 
