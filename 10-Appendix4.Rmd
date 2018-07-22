@@ -1802,7 +1802,7 @@ Finally, we calculate climate connectivity. Conceptually, climate connectivity i
 temp_dat$clim_conn <- temp_dat$temp - temp_dat$dest_ftemp
 ```
 
-Final results can be seen in \autoref{fig:fig-D-3} and \autoref{tab:tab-D-2}. Table \@ref(tab:tab-D-3) demonstrates what the `running` dataframe looks like after having updated for each iteration. 
+Final results can be seen in \autoref{fig:fig-D-3} and \autoref{tab:tab-D-2}. \autoref{tab:tab-D-3} demonstrates what the `running` dataframe looks like after having updated for each iteration. 
 
 ```{r tab-D-2, echo = FALSE}
 kable(
@@ -2118,8 +2118,7 @@ p1a <-
                                   direction = "horizontal",
                                   title.vjust = 1,
                                   title.position = "left",
-                                  title = paste("Climate\nconnectivity\n(",
-                                                "\U00B0","C)",sep="")))
+                                  title = expression("Climate connectivity ("*degree*"C)")))
 
 p1b <-
     ggplot() +
@@ -2205,10 +2204,7 @@ p1b <-
                                   direction = "horizontal",
                                   title.vjust = 1,
                                   title.position = "left",
-                                  title = paste(
-                                      "\U0394 ",
-                                      "Climate\nconnectivity\n(",
-                                      "\U00B0","C)",sep="")))
+                                  title = expression(Delta~"Climate connectivity ("*degree*"C)")))
 p1 <-
     plot_grid(p1a, p1b, 
               nrow = 2, ncol = 1,
@@ -2307,8 +2303,7 @@ p2a <-
                                   direction = "horizontal",
                                   title.vjust = 1,
                                   title.position = "left",
-                                  title = paste("Climate\nconnectivity\n(",
-                                                "\U00B0","C)",sep="")))
+                                  title = expression("Climate connectivity ("*degree*"C)")))
 
 p2b <-
     ggplot() +
@@ -2394,10 +2389,7 @@ p2b <-
                                   direction = "horizontal",
                                   title.vjust = 1,
                                   title.position = "left",
-                                  title = paste(
-                                      "\U0394 ",
-                                      "Climate\nconnectivity\n(",
-                                      "\U00B0","C)",sep="")))
+                                  title = expression(Delta~"Climate connectivity ("*degree*"C)")))
 p2 <-
     plot_grid(p2a, p2b, 
               nrow = 2, ncol = 1,

@@ -480,10 +480,9 @@ p1a <-
                                   barheight = unit(3, units = "mm"),
                                   barwidth = unit(2, units = "cm"),
                                   direction = "horizontal",
-                                  title.vjust = 1,
+                                  title.vjust = 0,
                                   title.position = "left",
-                                  title = paste("Climate\nconnectivity\n(",
-                                                "\U00B0","C)",sep="")))
+                                  title = expression("Climate connectivity ("*degree*"C)")))
 
 
 p1b <-
@@ -552,12 +551,9 @@ p1b <-
                                   barheight = unit(3, units = "mm"),
                                   barwidth = unit(2, units = "cm"),
                                   direction = "horizontal",
-                                  title.vjust = 1,
+                                  title.vjust = 0,
                                   title.position = "left",
-                                  title = paste(
-                                      "\U0394 ",
-                                      "Climate\nconnectivity\n(",
-                                      "\U00B0","C)",sep="")))
+                                  title = expression(Delta~"Climate connectivity ("*degree*"C)")))
 
 p1 <-
     plot_grid(p1a, p1b, 
