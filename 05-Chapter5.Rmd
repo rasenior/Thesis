@@ -480,7 +480,7 @@ p1a <-
                                   barheight = unit(3, units = "mm"),
                                   barwidth = unit(2, units = "cm"),
                                   direction = "horizontal",
-                                  title.vjust = 0,
+                                  title.vjust = 1,
                                   title.position = "left",
                                   title = expression("Climate connectivity ("*degree*"C)")))
 
@@ -551,7 +551,7 @@ p1b <-
                                   barheight = unit(3, units = "mm"),
                                   barwidth = unit(2, units = "cm"),
                                   direction = "horizontal",
-                                  title.vjust = 0,
+                                  title.vjust = 1,
                                   title.position = "left",
                                   title = expression(Delta~"Climate connectivity ("*degree*"C)")))
 
