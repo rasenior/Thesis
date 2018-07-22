@@ -136,8 +136,8 @@ The final models of (1) night-time temperature, and temperature extremes (minimu
 \begin{tabular}{p{6.5cm}p{2.5cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.5cm}p{1.1cm}p{1.1cm}p{1.13cm}p{1.13cm}}\toprule \hiderowcolors
 \bfseries Study & \bfseries Country & \multicolumn{5}{l}{\bfseries Land-use type} & \multicolumn{2}{l}{\bfseries Position} & \multicolumn{2}{l}{\bfseries Season}\\ 
 \cmidrule(l{2pt}r{2pt}){3-7} \cmidrule(l{2pt}r{2pt}){8-9} \cmidrule(l{2pt}r{2pt}){10-11}
-    & & \bfseries Primary forest & \bfseries Degraded forest & \bfseries Plantation & \bfseries Pasture & \bfseries Cropland & \bfseries Above-ground &
-    \bfseries Below-ground & \bfseries Dry season & \bfseries Wet season \\ \midrule \showrowcolors
+    & & \bfseries Primary forest & \bfseries Degraded forest & \bfseries Plantation & \bfseries Pasture & \bfseries Cropland & \bfseries Above- ground &
+    \bfseries Below- ground & \bfseries Dry season & \bfseries Wet season \\ \midrule \showrowcolors
     1. \citet{gonzalez_del_pliego_unpublished}       & Colombia      & X & X &   &   &  & X &   & X & \\
     2. \citet{gonzalez-di_pierro_effects_2011}       & Mexico        & X & X &   &   &  & X &   &  & X \\
     3. \citet{goode_unpublished}                     & Mexico        & X & X &   &   &  & X &   &X & X \\
