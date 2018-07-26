@@ -248,9 +248,13 @@ By collating site-level data reported from the literature, we were able to achie
 
 Our study confirms that tropical land-use change leads to warming at a local scale (< 1 ha) across the tropics, of a magnitude comparable to that predicted from global climate change. We find pantropical evidence that the effects of land-use change on temperature are ameliorated below-ground, and absent in degraded forests. Many studies collect site-level climate data, and through sharing of these data and collaboration between scientific disciplines, there is much that can be done to integrate theoretical and empirical understanding of the processes that govern climate at different scales. This will greatly advance our knowledge of potential synergies between two of the greatest drivers of biodiversity loss -- land-use change and climate change -- and highlight mitigating factors, such as thermal microrefugia, which could be a pragmatic focus for conservation management.
 
+## Code availability
+
+R functions used to estimate time of sunset and sunrise can be downloaded from GitHub (https://github.com/rasenior/SolarCalc).
+
 ## Data availability and R code
 
-The collated dataset can be found on Dryad (https://doi.org/10.5061/dryad.g4000). Note that in many cases these data were aggregated for analyses. For finer resolution data please refer to the original data sources. R functions used to estimate time of sunset and sunrise can be downloaded from GitHub (https://github.com/rasenior/SolarCalc).
+The collated dataset can be found on Dryad (https://doi.org/10.5061/dryad.g4000). Note that in many cases these data were aggregated for analyses. For finer resolution data please refer to the original data sources.
 
 ## Acknowledgements
 
