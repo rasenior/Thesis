@@ -764,15 +764,15 @@ Change of climate connectivity from 2000 to 2012 was first calculated at the lev
 
 Area of connectivity loss was modelled as a binary variable (area losing connectivity versus area not losing connectivity), against the explanatory variables: biogeographic realm and area of forest lost between 2000 and 2012. We used a Generalized Additive Model (GAM) implemented in the mgcv package [@wood_generalized_2017], with a quasi-binomial error distribution to account for overdispersion. 
 
-### Code Availability
+## Code Availability
 
 Custom Python code to calculate climate connectivity can be downloaded from GitHub (https://github.com/rasenior/ClimateConnectivity). These scripts have been directly adapted from the methods in @mcguire_achieving_2016, and the R code therein (https://github.com/JennyMcGuire/ClimateConnectivity).
 
-### Data Availability
+## Data Availability
 
-pantropical climate connectivity data that support the findings of this study have been deposited in The Environmental Information Data Centre (EIDC) and are accessible at [PENDING REF]. 
+Pantropical climate connectivity data that support the findings of this study have been deposited in The Environmental Information Data Centre (EIDC) and are accessible at [PENDING REF]. 
 
-### Acknowledgements
+## Acknowledgements
 
 We thank Jenny L. McGuire for making her code publicly available, and for providing us with additional help and guidance. We thank Michela Pacifici for providing maps of climate vulnerability, and BirdLife International for providing maps of Key Biodiversity Areas. Thanks also to Felix K. S. Lim, Philip J. Platts and Sarah A. Scriven for helpful discussions. R.A.S. was funded by a NERC studentship through the ACCE (Adapting to the Challenges of a Changing Environment) Doctoral Training Partnership (Grant No. NE/L002450/1).
 
