@@ -94,7 +94,7 @@ worldclim_stars <-
 
 This chapter is currently in preparation for submission to *Ecography* as:
 
-**Senior RA, Hill JK, Edwards DP. A framework for quantifying fine-scale thermal heterogeneity in the field. In prep.**
+**Senior RA, Hill JK, Edwards DP. A framework for quantifying fine-scale thermal heterogeneity using thermography. In prep.**
 
 \pagebreak
 
@@ -136,41 +136,108 @@ The raw values embedded in a FLIR thermal image can be converted to temperature 
 
 ### Step 4: Calculate metrics of thermal hetereogeneity
 
-The most relevant metrics to quantify thermal heterogeneity depend on the particular research questions. The function 'get_stats' takes a single thermal dataset, in the form of a matrix or raster, and calculates user-defined summary statistics across all pixels. Standard summary statistics could include measures such as mean and standard deviation, but may also include metrics like thermal richness (the number of unique temperature values) and thermal diversity indices [cf. @faye_toolbox_2016]. Several helper functions are available to implement less standard summary statistics. Based on discussions in @faye_toolbox_2016 and @shi_framework_2016, we recommend some suitable statistics in Table \@ref(tab:tab-3-1).
+The most relevant metrics to quantify thermal heterogeneity depend on the particular research questions. The function 'get_stats' takes a single thermal dataset, in the form of a matrix or raster, and calculates user-defined summary statistics across all pixels. Standard summary statistics could include measures such as mean and standard deviation, but may also include metrics like thermal richness (the number of unique temperature values) and thermal diversity indices [cf. @faye_toolbox_2016]. Several helper functions are available to implement less standard summary statistics. Based on discussions in @faye_toolbox_2016 and @shi_framework_2016, we recommend some suitable statistics in \autoref{tab:tab-3-1}.
 
-The function 'get_stats' identifies hot and cold spots in thermal images using a standalone function 'get_patches'. Hot and cold spots are based on the Getis-Ord local statistic [@getis_local_1996], implemented in the spdep package [@bivand_comparing_2015]. The statistic is calculated for individual pixels by comparing its value to that of neighbouring pixels. The size of the neighbourhood and style of spatial weighting are specified by the user (these arguments are passed directly to the relevant functions in the spdep package). High positive values exceeding the Z-value threshold [defined according to the sample size; @getis_local_1996] are classified as hot spots, and low negative values as cold spots. Several spatial statistics are then calculated to characterise the hot and cold spots [Table \@ref(tab:tab-3-2); cf. @faye_toolbox_2016]. There is an option to return patch outlines as a 'SpatialPolygonsDataFrame', which can be plotted on the raw temperature raster using 'plot_patches' alongside an (optional) histogram of the temperature distribution (Figure \@ref(fig:fig-3-1)).
+The function 'get_stats' identifies hot and cold spots in thermal images using a standalone function 'get_patches'. Hot and cold spots are based on the Getis-Ord local statistic [@getis_local_1996], implemented in the spdep package [@bivand_comparing_2015]. The statistic is calculated for individual pixels by comparing its value to that of neighbouring pixels. The size of the neighbourhood and style of spatial weighting are specified by the user (these arguments are passed directly to the relevant functions in the spdep package). High positive values exceeding the Z-value threshold [defined according to the sample size; @getis_local_1996] are classified as hot spots, and low negative values as cold spots. Several spatial statistics are then calculated to characterise the hot and cold spots [\autoref{tab:tab-3-2}; cf. @faye_toolbox_2016]. There is an option to return patch outlines as a 'SpatialPolygonsDataFrame', which can be plotted on the raw temperature raster using 'plot_patches' alongside an (optional) histogram of the temperature distribution (\autoref{fig:fig-3-1}).
 
-```{r tab-3-1, results='asis'}
-tabl <- "
-Table: (\\#tab:tab-3-1) Suggested summary statistics that can be applid by 'get_stats'.
-
-| Summary statistic         | Description
-|---------------------------|---------------------------------------------------------------------------------------------------------|
-| Average temperature       | Provides context for all other statistics, and could be used as a measure of the macroclimate for small, surface-dwelling organisms. The median is more robust than the mean to spurious extreme values that can sometimes arise in thermal images.|
-| Temperature extremes      | While more rarely encountered, extreme values can be more significant to organisms, for example by exceeding upper thermal limits or by providing cool refugia from average conditions. The difference between extremes provides a measure of thermal diversity/stability [@shi_framework_2016], while the difference between extremes and average temperature provides a measure of the potential for thermal buffering. Again, we suggest the 5^th^ and 95^th^ percentiles are more robust to spurious extreme values than the minimum and maximum (respectively).|
-| Temperature variability   | Over space and time, the standard deviation or coefficient of variation of temperature represents another measure of thermal stability [@shi_framework_2016], which may be particularly significant for organisms requiring constant temperatures, e.g. juveniles with a lower capacity for thermoregulatory behaviours. In contrast, for other mobile organisms -- particularly ectotherms -- high thermal diversity is likely to maximise opportunities for thermoregulation.|
-| Thermal diversity indices | Captures both the richness and evenness of different temperatures. Similar to temperature variability, the biological relevance of this measure is through its influence on the necessity and potential fof thermoregulation. As discussed by @faye_toolbox_2016, Shannon\'s thermal diversity index quantifies \"the uncertainty in predicting the temperature of one pixel that is taken at random in the thermal landscape\", and Simpson’s thermal diversity index captures the \"probability that two pixels selected at random would be different temperature classes\".|
-"
-
-cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
+```{r tab-3-1}
 ```
 
-```{r tab-3-2, results='asis'}
-tabl <- "
-Table: (\\#tab:tab-3-2) Patch statistics calculated for hot and cold spots by the function 'get_stats'.
+\begin{table}[!htb]
+\begin{center}
+\renewcommand{\arraystretch}{1.5} % reduce space between rows
+\setlength{\tabcolsep}{5pt} % reduce space between columns
+    \begin{tabular}{p{3cm}p{11cm}}
+    \toprule 
+    \bfseries Summary statistic & \bfseries Description \\ \midrule
+    Average temperature       & Provides context for all other statistics, and could be 
+                                used as a measure of the macroclimate for small, 
+                                surface-dwelling organisms. The median is more robust 
+                                than the mean to spurious extreme values that can 
+                                sometimes arise in thermal images.\\
+    Temperature extremes      & While more rarely encountered, extreme values can be 
+                                more significant to organisms, for example by exceeding 
+                                upper thermal limits or by providing cool refugia from 
+                                average conditions. The difference between extremes 
+                                provides a measure of thermal diversity/stability 
+                                \citep{shi_framework_2016}, while the difference between
+                                extremes and average temperature provides a measure of 
+                                the potential for thermal buffering. Again, we suggest 
+                                the 5\textsuperscript{th} and 95\textsuperscript{th} 
+                                percentiles are more robust to spurious extreme values 
+                                than the minimum and maximum (respectively).\\
+    Temperature variability   & Over space and time, the standard deviation or 
+                                coefficient of variation of temperature represents 
+                                another measure of thermal stability 
+                                \citep{shi_framework_2016}, which may be particularly 
+                                significant for organisms requiring constant 
+                                temperatures, e.g. juveniles with a lower capacity for 
+                                thermoregulatory behaviours. In contrast, for other 
+                                mobile organisms -- particularly ectotherms -- high 
+                                thermal diversity is likely to maximise opportunities 
+                                for thermoregulation.\\
+    Thermal diversity indices & Captures both the richness and evenness of different 
+                                temperatures. Similar to temperature variability, the 
+                                biological relevance of this measure is through its 
+                                influence on the necessity and potential fof 
+                                thermoregulation. As discussed by 
+                                \citet{faye_toolbox_2016}, Shannon's thermal diversity 
+                                index quantifies "the uncertainty in predicting the 
+                                temperature of one pixel that is taken at random in the 
+                                thermal landscape", and Simpson's thermal diversity index 
+                                captures the "probability that two pixels selected at 
+                                random would be different temperature classes".\\
+    \bottomrule
+    \end{tabular}
+\end{center}
+\caption{(\#tab:tab-3-1) Suggested summary statistics that can be applied by 'get\_stats'.}
+\end{table}
 
-| Patch statistic      | Description                                              | Biological relevance                             |
-|----------------------|----------------------------------------------------------|--------------------------------------------------|
-| Area (absolute)      | Total number of pixels   | Larger or more numerous microclimates increase opportunities for thermoregulation.|
-| Area (proportion)    | Proportion of all pixels which are inside hot/cold spots | Where a greater proportion of pixels fall inside microclimates there is likely to be higher thermal diversity.|
-| Abundance            | Number of distinct hot/cold spots                        | More numerous microclimates increase opportunities for thermoregulation.|
-| Density              | Number of hot/cold spots per unit area                   | Larger microclimates increase opportunities for thermoregulation.|
-| Shape Index          | Irregularity in shape of hot/cold spots, with 1 being perfectly regular [a square; @fragstats_2012] | More irregular microclimates may be less thermally stable but easier to locate, because of the greater proportion of edge.|
-| Aggregation Index    | Degree of clustering in space of hot/cold spots, with zero representing no clustering [@he_aggregation_2000] | Dispersed, non-clustered microclimates are easier for animals to locate [@sears_configuration_2016].|
-| Patch Cohesion Index | Physical connectedness of hot/cold spots [@schumaker_using_1996]| More connected microclimates may facilitate more efficient travel.|
-"
-cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
+```{r tab-3-2}
 ```
+
+\begin{sidewaystable}
+\begin{center}
+\renewcommand{\arraystretch}{1.5} % reduce space between rows
+\setlength{\tabcolsep}{5pt} % reduce space between columns
+    \begin{tabular}{ lp{6cm}p{12cm}}
+    \toprule
+    \bfseries Patch statistic & \bfseries Description & \bfseries Biological relevance \\ 
+    \midrule
+    Area (absolute)      & Total number of pixels            & Larger or more numerous microclimates 
+                                                               increase opportunities for 
+                                                               thermoregulation. \\
+    Area (proportion)    & Proportion of all pixels which 
+                           are inside hot/cold spots         & Where a greater proportion of pixels 
+                                                               fall inside microclimates there is 
+                                                               likely to be higher thermal diversity. \\
+    Abundance            & Number of distinct hot/cold spots & More numerous microclimates increase 
+                                                               opportunities for thermoregulation. \\
+    Density              & Number of hot/cold spots per unit
+                           area                              & Larger microclimates increase 
+                                                               opportunities for thermoregulation. \\
+    Shape Index          & Irregularity in shape of hot/cold 
+                           spots, with 1 being perfectly 
+                           regular i.e. a square 
+                           \citep{fragstats_2012}            & More irregular microclimates may be 
+                                                               less thermally stable but easier to 
+                                                               locate, because of the greater 
+                                                               proportion of edge. \\
+    Aggregation Index    & Degree of clustering in space of 
+                           hot/cold spots, with zero 
+                           representing no clustering 
+                           \citep{he_aggregation_2000}       & Dispersed, non-clustered microclimates 
+                                                               are easier for animals to locate 
+                                                               \citep{sears_configuration_2016}. \\
+    Patch Cohesion Index & Physical connectedness of 
+                           hot/cold spots 
+                           \citep{schumaker_using_1996}      & More connected microclimates may 
+                                                               facilitate more efficient travel. \\
+    \bottomrule
+    \end{tabular}
+\end{center}
+\caption{(\#tab:tab-3-2) Patch statistics calculated for hot and cold spots by the function 'get\_stats'.}
+\end{sidewaystable}
 
 We assume that for most users the spatial unit of replication will comprise multiple thermal images. In this case, the user can specify a grouping variable in 'stats_by_group'. Matrices from each group will be bound together and 'get_stats' applied over the combined matrix. We assume the images are not adjacent in space, and therefore pad matrices with NA values before binding. Table S2 gives an example of the output from 'stats_by_group'.
 
@@ -179,13 +246,13 @@ We assume that for most users the spatial unit of replication will comprise mult
 ```{r fig-3-1, fig.cap= "(ref:cap-3-1)", fig.width = 16.6/2.54, fig.height=20/2.54, fig.align='center'}
 p1a <-
     plot_patches(flir_example$df, flir_example$patches,
-                 val_pal = viridis::viridis(10, option = "C"), 
+                 val_pal = viridis::viridis(10, option = "A"), 
                  print_plot = FALSE, return_plot = TRUE, 
                  lab_size = title_size, text_size = text_size, outline_size = 0.3)
 p1b <-
     plot_patches(worldclim_patches$January$df, 
                  worldclim_patches$January$patches, 
-                 val_pal = viridis(10, option = "C"),
+                 val_pal = viridis(10, option = "A"),
                  print_plot = FALSE, return_plot = TRUE,
                  lab_size = title_size, text_size = text_size, outline_size = 0.3)
 p1 <-
@@ -199,19 +266,19 @@ p1 <-
 p1
 ```
 
-#### Case studies
+### Case studies
 
 We demonstrate our framework and R package using two case studies from Borneo: the first using fine-scale data collected in the field using a FLIR thermal camera, the other using coarse-scale temperature data from WorldClim2 [@fick_worldclim_2017]. In both, we investigate how thermal heterogeneity varies over time. For the fine-scale data, we also test whether temporal patterns differ between logged and unlogged forest. 
 
-##### Field study {-}
+#### __Field study__ {-}
 
 We sampled surface temperature in a large area of contiguous forest in Malaysian Borneo in the years 2014 and 2015, using a FLIR Systems model E40 thermal camera. In both years, photos were taken at the centre of plots spaced along existing transects, with six transects in undisturbed, protected primary forest (Danum Valley Conservation Area; 4&deg;57045.2"N, 117&deg;48010.4"E), and six transects in adjacent forest that had been commercially selectively logged twice between 1987 and 2007 (Ulu Segama-Malua Forest Reserve, 4&deg;57042.8"N, 117&deg;56051.7"E). Plots were sampled repeatedly from the coolest to the hottest part of the day (05:00-14:30 h). In each sampling event, thermal images were taken at the centre of the plot in four orthogonal directions, with the camera held at breast height and pointing 45&deg; downwards (relative to the ground). A single pixel represents roughly `r signif((99 * 110) / 19200, 2)`cm^2^. In total we collected 2,972 photos across 144 plots. For full details see @scheffers_extreme_2017 and @senior_tropical_2018.
 
-For all analyses, each metric of thermal heterogeneity was calcuated across all four photos taken each time a plot was sampled. We focused on the following summary statistics from Table \@ref(tab:tab-3-1): median temperature; Shannon Diversity Index; upper temperature range (95^th^ percentile - median); and lower temperature range (median - 5^th^ percentile). We identified hot and cold spots using a neighbourhood size of eight pixels (k = 8 in 'spdep::localG'), with row standardised neighbour weights (style = "W" in 'spdep::nb2listw'). For hot and cold spots separately, we calculated the following spatial statistics (Table \@ref(tab:tab-3-2)): average area per patch (total area divided by number of patches, to correct for plots with missing photos); average number of patches per unit area (density); Shape Index; and Aggregation Index. Overall we expected forests to be more thermally homogenous early in the day and to increase in heterogeneity towards the hottest part of the day, around noon, as microclimates increasingly deviate from the average temperature. Forest structure strongly influences thermal regimes through differential absorption and reflection of incident radiation, and through evapotranspiration [@oke_boundary_1987]. However, we found previously that thermal recovery of these logged forests is rapid [@senior_tropical_2018], and therefore expect that temporal patterns of thermal heterogeneity are also comparable between unlogged forests and recovering logged forest.
+For all analyses, each metric of thermal heterogeneity was calcuated across all four photos taken each time a plot was sampled. We focused on the following summary statistics from \autoref{tab:tab-3-1}: median temperature; Shannon Diversity Index; upper temperature range (95^th^ percentile - median); and lower temperature range (median - 5^th^ percentile). We identified hot and cold spots using a neighbourhood size of eight pixels (k = 8 in 'spdep::localG'), with row standardised neighbour weights (style = "W" in 'spdep::nb2listw'). For hot and cold spots separately, we calculated the following spatial statistics (\autoref{tab:tab-3-2}): average area per patch (total area divided by number of patches, to correct for plots with missing photos); average number of patches per unit area (density); Shape Index; and Aggregation Index. Overall we expected forests to be more thermally homogenous early in the day and to increase in heterogeneity towards the hottest part of the day, around noon, as microclimates increasingly deviate from the average temperature. Forest structure strongly influences thermal regimes through differential absorption and reflection of incident radiation, and through evapotranspiration [@oke_boundary_1987]. However, we found previously that thermal recovery of these logged forests is rapid [@senior_tropical_2018], and therefore expect that temporal patterns of thermal heterogeneity are also comparable between unlogged forests and recovering logged forest.
 
 We used Generalized Additive Mixed Effects Models (GAMMs) to model the various thermal heterogeneity metrics against forest type (categorical: primary or logged) and time of day, smoothed with a cubic regression spline. All models were fit using the 'gamm4' package [@gamm4_2017] in R [version 3.5.0; @r_core_team_2018]. We included a random intercept term for 'year', and for 'plot' nested in 'transect' to account for spatial pseudoreplication. All metrics were modelled with a gaussian error distribution, except for Aggregation Index which is proportion data [number of edges shared by pixels of the same class divided by the maximum number that could be shared; @he_aggregation_2000], and was therefore modelled using a binomial error distribution. Statistical significance was inspected using likelihood ratio tests, dropping each fixed effect in turn and comparing it to the full model [@zuur_mixed_2009]. 
 
-##### Remote study {-}
+#### __Remote study__ {-}
 
 To investigate patterns in thermal heterogeneity at coarser scales we used average monthly temperature (hereafter: temperature) from WorldClim2 [@fick_worldclim_2017] for the island of Borneo at 30 arc-second resolution (approximately 1 km^2^ at the equator).  We captured thermal heterogeneity using the same metrics as in the field study, but focusing only on cold spots (because there were very few hot spots). Seasonality is limited on Borneo so we expected that thermal heterogeneity would not change markedly over the year, but may be higher in the dry season -- roughly July to October [@mcalpine_forest_2018] -- when average temperatures are higher and there is less buffering by high water availability.
 
@@ -221,7 +288,7 @@ Using Generalized Additive Models (GAMs) we modelled thermal heterogeneity again
 
 ### Field study
 
-All measures of thermal heterogeneity were comparable between primary and unlogged forest (P > 0.05; Figure \@ref(fig:fig-3-2)). The frequency distribution of temperature showed clear patterns over the day. Median temperature was lowest around dawn (~0600 hr) and increased steeply thereafter until reaching a plateau around noon (`r filter(flir_results_sum, RV == "median" & grepl("s[(]day_mins", dropped_EV))$ref`). The thermal Shannon Diversity Index showed a similar pattern, reaching maximum diversity at noon (`r filter(flir_results_sum, RV == "SHDI" & grepl("s[(]day_mins", dropped_EV))$ref`). Although less pronounced, noon peaks were also observed for the upper temperature range (95^th^ percentile minus median; `r filter(flir_results_sum, RV == "upr_range" & grepl("s[(]day_mins", dropped_EV))$ref`) and lower temperature range (median minus 5^th^ percentile; `r filter(flir_results_sum, RV == "lwr_range" & grepl("s[(]day_mins", dropped_EV))$ref`). Together these measures suggest that overall variation in temperature and the deviation of extreme values from the average all increase from dawn to noon.
+All measures of thermal heterogeneity were comparable between primary and unlogged forest (P > 0.05; \autoref{fig:fig-3-2}). The frequency distribution of temperature showed clear patterns over the day. Median temperature was lowest around dawn (~0600 hr) and increased steeply thereafter until reaching a plateau around noon (`r filter(flir_results_sum, RV == "median" & grepl("s[(]day_mins", dropped_EV))$ref`). The thermal Shannon Diversity Index showed a similar pattern, reaching maximum diversity at noon (`r filter(flir_results_sum, RV == "SHDI" & grepl("s[(]day_mins", dropped_EV))$ref`). Although less pronounced, noon peaks were also observed for the upper temperature range (95^th^ percentile minus median; `r filter(flir_results_sum, RV == "upr_range" & grepl("s[(]day_mins", dropped_EV))$ref`) and lower temperature range (median minus 5^th^ percentile; `r filter(flir_results_sum, RV == "lwr_range" & grepl("s[(]day_mins", dropped_EV))$ref`). Together these measures suggest that overall variation in temperature and the deviation of extreme values from the average all increase from dawn to noon.
 
 The spatial distribution of hot and cold spots is less intuitive, but did also vary temporally. For hot spots, the average area peaked around noon (`r filter(flir_results_sum, RV == "hot_area" & grepl("s[(]day_mins", dropped_EV))$ref`) when their density (`r filter(flir_results_sum, RV == "hot_density" & grepl("s[(]day_mins", dropped_EV))$ref`), and Shape Index (`r filter(flir_results_sum, RV == "hot_shape_index" & grepl("s[(]day_mins", dropped_EV))$ref`) were near their minimum values. The Aggregation Index of hot spots reached its lowest value after dawn and increased thereafter (`r filter(flir_results_sum, RV == "hot_aggregation" & grepl("s[(]day_mins", dropped_EV))$ref`). Thus, throughout the morning hot spots became larger but fewer in number, with a more irregular shape and increased spatial clustering. 
 
@@ -348,9 +415,9 @@ Our R package presents users with a simple protocol for processing and analysing
 
 ### Case studies
 
-We found a strong effect of time on nearly all metrics in both the field study and the remote study. In the former, average temperature was lowest around dawn (~0600 hrs) and peaked around noon (~1200 hrs). Organisms are most likely to be seeking above-average temperatures for basking after sunrise, at which point hot spots were smaller in area but more numerous, more irregular in shape and less clustered, thus potentially easier to locate [@sears_configuration_2016]. Conversely, cold spots are necessary to buffer organisms against extremes of heat, which are most likely encountered at noon. At this time there was the greatest difference between minimum and average temperature, and cold spots were likely to be easier to locate because of a more irregular shape and lack of spatial clustering. Temperature variation in both time and space was comparable between forest types (Figure \@ref(fig:fig-3-2)), confirming previous findings that within only a few years of recovery, intensively logged forest can have an equal capacity for thermal buffering as nearby unlogged forest [@senior_tropical_2018].
+We found a strong effect of time on nearly all metrics in both the field study and the remote study. In the former, average temperature was lowest around dawn (~0600 hrs) and peaked around noon (~1200 hrs). Organisms are most likely to be seeking above-average temperatures for basking after sunrise, at which point hot spots were smaller in area but more numerous, more irregular in shape and less clustered, thus potentially easier to locate [@sears_configuration_2016]. Conversely, cold spots are necessary to buffer organisms against extremes of heat, which are most likely encountered at noon. At this time there was the greatest difference between minimum and average temperature, and cold spots were likely to be easier to locate because of a more irregular shape and lack of spatial clustering. Temperature variation in both time and space was comparable between forest types (\autoref{fig:fig-3-2}), confirming previous findings that within only a few years of recovery, intensively logged forest can have an equal capacity for thermal buffering as nearby unlogged forest [@senior_tropical_2018].
 
-Despite the coarseness of the data from WorldClim2 and general lack of seasonality on Borneo [e.g. @walsh_ecoclimatology_1999], some clear temporal patterns were apparent. Namely, thermal diversity and clustering of cold spots were highest in September and October when the regularity of cold spot shape was lowest (Figure \@ref(fig:fig-3-3)). This marks the end of the dry season [@mcalpine_forest_2018], at which point lower water availability may decrease heat loss through evaporation [@oke_boundary_1987], causing some locations to deviate more from the regional average temperature and thereby increasing overall thermal diversity.
+Despite the coarseness of the data from WorldClim2 and general lack of seasonality on Borneo [e.g. @walsh_ecoclimatology_1999], some clear temporal patterns were apparent. Namely, thermal diversity and clustering of cold spots were highest in September and October when the regularity of cold spot shape was lowest (\autoref{fig:fig-3-3}). This marks the end of the dry season [@mcalpine_forest_2018], at which point lower water availability may decrease heat loss through evaporation [@oke_boundary_1987], causing some locations to deviate more from the regional average temperature and thereby increasing overall thermal diversity.
 
 ### Caveats and considerations
 
@@ -359,3 +426,13 @@ It is important to consider the strengths and weaknesses of thermography when de
 ### Summary
 
 Fine-scale temperature variation across space and time has a huge influence on species' ecology, which will become increasingly pertinent as average temperatures rise under global climate warming. We showcase how our R package and framework can be used to quantify thermal heterogeneity in tropical forests using data at a fine spatial scale, collected using a FLIR thermal camera. We also show how our metrics can be calculated for other kinds of thermal data, such as coarser remotely sensed data. Our approach therefore enables researchers to more readily address key global issues using increasingly available thermal imagery.
+
+## Code availability
+
+The R package 'ThermStats' can be downloaded from GitHub: https://github.com/rasenior/ThermStats. Bug reports and suggested enhancements can be submitted to: https://github.com/rasenior/ThermStats/issues. 
+
+## Acknowledgements
+
+Thanks to Manoela S. Machado Mollinari for helpful discussions. R.A.S. was funded by a NERC studentship through the ACCE (Adapting to the Challenges of a Changing Environment) Doctoral Training Partnership (Grant No. NE/L002450/1).
+
+
