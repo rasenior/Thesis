@@ -9,7 +9,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 # Supporting information for Chapter 3
 
-## Text S1: Package vignette
+## Package vignette {#text-B-1}
 
 ### Summary
 
