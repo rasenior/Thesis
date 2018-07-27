@@ -177,16 +177,18 @@ The function 'get_stats' identifies hot and cold spots in thermal images using a
                                 thermal diversity is likely to maximise opportunities 
                                 for thermoregulation.\\
     Thermal diversity indices & Captures both the richness and evenness of different 
-                                temperatures. Similar to temperature variability, the 
-                                biological relevance of this measure is through its 
-                                influence on the necessity and potential fof 
+                                temperatures. Similar to temperature variability, 
+                                the biological relevance of this measure is through 
+                                its influence on the necessity and potential for 
                                 thermoregulation. As discussed by 
-                                \citet{faye_toolbox_2016}, Shannon's thermal diversity 
-                                index quantifies "the uncertainty in predicting the 
-                                temperature of one pixel that is taken at random in the 
-                                thermal landscape", and Simpson's thermal diversity index 
-                                captures the "probability that two pixels selected at 
-                                random would be different temperature classes".\\
+                                \citet{faye_toolbox_2016}, Shannon's thermal 
+                                diversity index quantifies how reliably one can 
+                                predict the temperature of a pixel sampled at random 
+                                from the temperature data. Simpson's thermal diversity 
+                                index is similar, but instead captures the likelihood 
+                                of two pixels being the same temperature (or 
+                                temperature class) when taken at random from the 
+                                thermal landscape.\\
     \bottomrule
     \end{tabular}
 \end{center}
