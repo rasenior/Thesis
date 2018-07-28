@@ -469,8 +469,8 @@ p1a <-
           legend.box.margin = margin(0,0,0,2),
           legend.position = "bottom") +
     # scale_x_continuous(expand = c(0, 0))+
-    scale_y_continuous(expand = c(0.012, 0))+
-    coord_equal(ratio=1) +
+    scale_y_continuous(expand = c(0.012, 0)) +
+    # coord_equal(ratio=1) +
     scale_fill_gradient2(low = "red4",
                          mid = "beige",
                          high = "dodgerblue", 
@@ -541,7 +541,7 @@ p1b <-
           legend.position = "bottom") +
     # scale_x_continuous(expand = c(0, 0))+
     scale_y_continuous(expand = c(0.012, 0))+
-    coord_equal(ratio=1) +
+    # coord_equal(ratio=1) +
     scale_fill_gradient2(low = "red4",
                          mid = "beige",
                          high = "dodgerblue",
@@ -562,7 +562,7 @@ p1 <-
               labels = c("(a)", "(b)"), 
               label_size = lab_size)
 
-ggsave(plot = p1, filename = "figs/fig5.1.pdf", width = 16.6, height = 8, units = "cm")
+# ggsave(plot = p1, filename = "figs/fig5.1.pdf", width = 16.6, height = 8, units = "cm")
 ```
 
 (ref:cap-5-1) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b). Positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
