@@ -3,7 +3,7 @@ rm(list=ls())
 user<-Sys.info()[7]
 
 #Define working directory
-baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
+baseDir<-file.path("D:/GoogleDrive/PhD/Ch2/Data")
 
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
@@ -15,6 +15,7 @@ title_size <- 10
 
 # Load libraries
 library(ggplot2)
+library(cowplot)
 library(dplyr)
 library(gridExtra)
 library(grid)
