@@ -87,5 +87,5 @@ p1<-ggplot()+
   guides(shape=FALSE)
 
 # Save this separately for SOM
-saveRDS(p1,file = "figs/figB.1.Rds")
+saveRDS(p1,file = "figs/figC.1.Rds")
 
