@@ -1,12 +1,6 @@
-rm(list=ls())
-
-user<-Sys.info()[7]
-
-#Define working directory
-baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
 
 # Read in data
-sources<-read.csv(file.path(baseDir,"sourceInfo_day_2016-06-08.csv"))
+sources<-read.csv("data/Ch2/sourceInfo_day_2016-06-08.csv")
 
 # Define colourblind-friendly palette
 cbPalette_light <- c("#009E73","#F0E442", "#0072B2", "#D55E00", "#CC79A7",
@@ -33,11 +27,11 @@ g_legend<-function(a.gplot){
       legend <- tmp$grobs[[leg]]
       return(legend)}
 
-mapDir<-"C:/Users/Rebecca/Google Drive/Spatial-data/Country outlines"
-tropics<-readOGR(file.path(mapDir, "Tropics"),"tropics") 
-tropicsExtent<-readOGR(file.path(mapDir, "Tropics"),"tropics_extent") 
-tropicsCountries<-readOGR(file.path(mapDir, "Tropics"),"tropics_byCountry") 
-world<-readOGR(file.path(mapDir,"World"),"world_wo_Antarctica") 
+mapDir<- "data/ch2"
+tropics <- readOGR(mapDir, "tropics")
+tropicsExtent<-readOGR(mapDir,"tropics_extent") 
+tropicsCountries<-readOGR(mapDir,"tropics_byCountry") 
+world<-readOGR(mapDir,"world_wo_Antarctica") 
 
 # Want to display combinations of LUT
 # 1 = PF + DF
@@ -66,7 +60,7 @@ sources$labLon<-sources$longitude_site
 
 
 # Source geom_holygo function
-source(file.path("C:/Users",user,"Google Drive/Programming/R/functions/geom_holygon.R"))
+source("scripts/geom_holygon.R")
 
 p1<-ggplot() +
       geom_holygon(data=world, aes(x=long, y=lat, group=group),
