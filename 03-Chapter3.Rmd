@@ -38,6 +38,7 @@ load("data/ch3/models/flir.Rdata")
 load("data/ch3/models/worldclim.Rdata")
 flir_example <- readRDS("data/ch3/flir_patch_example.Rds")
 worldclim_patches <- readRDS("data/ch3/all_stats.Rds")
+worldclim_bg <- readRDS("data/ch3/borneo_outline.Rds")
 ```
 
 ```{r prep-results}
@@ -147,50 +148,50 @@ The function `get_stats` identifies hot and cold spots in thermal images using a
 \begin{center}
 \renewcommand{\arraystretch}{1.5} % reduce space between rows
 \setlength{\tabcolsep}{5pt} % reduce space between columns
-    \begin{tabular}{p{3cm}p{11cm}}
-    \toprule 
-    \bfseries Summary statistic & \bfseries Description \\ \midrule
-    Average temperature       & Provides context for all other statistics, and could be 
-                                used as a measure of the macroclimate for small, 
-                                surface-dwelling organisms. The median is more robust 
-                                than the mean to spurious extreme values that can 
-                                sometimes arise in thermal images.\\
-    Temperature extremes      & While more rarely encountered, extreme values can be 
-                                more significant to organisms, for example by exceeding 
-                                upper thermal limits or by providing cool refugia from 
-                                average conditions. The difference between extremes 
-                                provides a measure of thermal diversity/stability 
-                                \citep{shi_framework_2016}, while the difference between
-                                extremes and average temperature provides a measure of 
-                                the potential for thermal buffering. Again, we suggest 
-                                the 5\textsuperscript{th} and 95\textsuperscript{th} 
-                                percentiles are more robust to spurious extreme values 
-                                than the minimum and maximum (respectively).\\
-    Temperature variability   & Over space and time, the standard deviation or 
-                                coefficient of variation of temperature represents 
-                                another measure of thermal stability 
-                                \citep{shi_framework_2016}, which may be particularly 
-                                significant for organisms requiring constant 
-                                temperatures, e.g. juveniles with a lower capacity for 
-                                thermoregulatory behaviours. In contrast, for other 
-                                mobile organisms -- particularly ectotherms -- high 
-                                thermal diversity is likely to maximise opportunities 
-                                for thermoregulation.\\
-    Thermal diversity indices & Captures both the richness and evenness of different 
-                                temperatures. Similar to temperature variability, 
-                                the biological relevance of this measure is through 
-                                its influence on the necessity and potential for 
-                                thermoregulation. As discussed by 
-                                \citet{faye_toolbox_2016}, Shannon's thermal 
-                                diversity index quantifies how reliably one can 
-                                predict the temperature of a pixel sampled at random 
-                                from the temperature data. Simpson's thermal diversity 
-                                index is similar, but instead captures the likelihood 
-                                of two pixels being the same temperature (or 
-                                temperature class) when taken at random from the 
-                                thermal landscape.\\
-    \bottomrule
-    \end{tabular}
+\begin{tabular}{p{3cm}p{11cm}}
+\toprule 
+\bfseries Summary statistic & \bfseries Description \\ \midrule
+Average temperature       & Provides context for all other statistics, and could be 
+used as a measure of the macroclimate for small, 
+surface-dwelling organisms. The median is more robust 
+than the mean to spurious extreme values that can 
+sometimes arise in thermal images.\\
+Temperature extremes      & While more rarely encountered, extreme values can be 
+more significant to organisms, for example by exceeding 
+upper thermal limits or by providing cool refugia from 
+average conditions. The difference between extremes 
+provides a measure of thermal diversity/stability 
+\citep{shi_framework_2016}, while the difference between
+extremes and average temperature provides a measure of 
+the potential for thermal buffering. Again, we suggest 
+the 5\textsuperscript{th} and 95\textsuperscript{th} 
+percentiles are more robust to spurious extreme values 
+than the minimum and maximum (respectively).\\
+Temperature variability   & Over space and time, the standard deviation or 
+coefficient of variation of temperature represents 
+another measure of thermal stability 
+\citep{shi_framework_2016}, which may be particularly 
+significant for organisms requiring constant 
+temperatures, e.g. juveniles with a lower capacity for 
+thermoregulatory behaviours. In contrast, for other 
+mobile organisms -- particularly ectotherms -- high 
+thermal diversity is likely to maximise opportunities 
+for thermoregulation.\\
+Thermal diversity indices & Captures both the richness and evenness of different 
+temperatures. Similar to temperature variability, 
+the biological relevance of this measure is through 
+its influence on the necessity and potential for 
+thermoregulation. As discussed by 
+\citet{faye_toolbox_2016}, Shannon's thermal 
+diversity index quantifies how reliably one can 
+predict the temperature of a pixel sampled at random 
+from the temperature data. Simpson's thermal diversity 
+index is similar, but instead captures the likelihood 
+of two pixels being the same temperature (or 
+temperature class) when taken at random from the 
+thermal landscape.\\
+\bottomrule
+\end{tabular}
 \end{center}
 \caption{(\#tab:tab-3-1) Suggested summary statistics that can be applied by 'get\_stats'.}
 \end{table}
@@ -202,41 +203,41 @@ The function `get_stats` identifies hot and cold spots in thermal images using a
 \begin{center}
 \renewcommand{\arraystretch}{1.5} % reduce space between rows
 \setlength{\tabcolsep}{5pt} % reduce space between columns
-    \begin{tabular}{ lp{6cm}p{12cm}}
-    \toprule
-    \bfseries Patch statistic & \bfseries Description & \bfseries Biological relevance \\ 
-    \midrule
-    Area (absolute)      & Total number of pixels            & Larger or more numerous microclimates 
-                                                               increase opportunities for 
-                                                               thermoregulation. \\
-    Area (proportion)    & Proportion of all pixels which 
-                           are inside hot/cold spots         & Where a greater proportion of pixels 
-                                                               fall inside microclimates there is 
-                                                               likely to be higher thermal diversity. \\
-    Abundance            & Number of distinct hot/cold spots & More numerous microclimates increase 
-                                                               opportunities for thermoregulation. \\
-    Density              & Number of hot/cold spots per unit
-                           area                              & Larger microclimates increase 
-                                                               opportunities for thermoregulation. \\
-    Shape Index          & Irregularity in shape of hot/cold 
-                           spots, with 1 being perfectly 
-                           regular i.e. a square 
-                           \citep{fragstats_2012}            & More irregular microclimates may be 
-                                                               less thermally stable but easier to 
-                                                               locate, because of the greater 
-                                                               proportion of edge. \\
-    Aggregation Index    & Degree of clustering in space of 
-                           hot/cold spots, with zero 
-                           representing no clustering 
-                           \citep{he_aggregation_2000}       & Dispersed, non-clustered microclimates 
-                                                               are easier for animals to locate 
-                                                               \citep{sears_configuration_2016}. \\
-    Patch Cohesion Index & Physical connectedness of 
-                           hot/cold spots 
-                           \citep{schumaker_using_1996}      & More connected microclimates may 
-                                                               facilitate more efficient travel. \\
-    \bottomrule
-    \end{tabular}
+\begin{tabular}{ lp{6cm}p{12cm}}
+\toprule
+\bfseries Patch statistic & \bfseries Description & \bfseries Biological relevance \\ 
+\midrule
+Area (absolute)      & Total number of pixels            & Larger or more numerous microclimates 
+increase opportunities for 
+thermoregulation. \\
+Area (proportion)    & Proportion of all pixels which 
+are inside hot/cold spots         & Where a greater proportion of pixels 
+fall inside microclimates there is 
+likely to be higher thermal diversity. \\
+Abundance            & Number of distinct hot/cold spots & More numerous microclimates increase 
+opportunities for thermoregulation. \\
+Density              & Number of hot/cold spots per unit
+area                              & Larger microclimates increase 
+opportunities for thermoregulation. \\
+Shape Index          & Irregularity in shape of hot/cold 
+spots, with 1 being perfectly 
+regular i.e. a square 
+\citep{fragstats_2012}            & More irregular microclimates may be 
+less thermally stable but easier to 
+locate, because of the greater 
+proportion of edge. \\
+Aggregation Index    & Degree of clustering in space of 
+hot/cold spots, with zero 
+representing no clustering 
+\citep{he_aggregation_2000}       & Dispersed, non-clustered microclimates 
+are easier for animals to locate 
+\citep{sears_configuration_2016}. \\
+Patch Cohesion Index & Physical connectedness of 
+hot/cold spots 
+\citep{schumaker_using_1996}      & More connected microclimates may 
+facilitate more efficient travel. \\
+\bottomrule
+\end{tabular}
 \end{center}
 \caption{(\#tab:tab-3-2) Patch statistics calculated for hot and cold spots by the function 'get\_stats'.}
 \end{sidewaystable}
@@ -254,7 +255,8 @@ p1a <-
 p1b <-
     plot_patches(worldclim_patches$January$df, 
                  worldclim_patches$January$patches, 
-                by_poly = 
+                 bg_poly = worldclim_bg,
+                 bg_colour = "grey",
                  val_pal = viridis(10, option = "A"),
                  print_plot = FALSE, return_plot = TRUE,
                  lab_size = title_size, text_size = text_size, outline_size = 0.3)
@@ -368,7 +370,7 @@ p3 <-
                   xmax = 10,
                   ymin = -Inf,
                   ymax = Inf),
-                fill = "grey90") +
+              fill = "grey90") +
     geom_point(data = worldclim_raw) +
     geom_ribbon(aes(ymin = lwr,
                     ymax = upr),
