@@ -13,7 +13,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 ### Summary
 
-`ThermStats` is designed for biologists using thermography to quantify thermal heteorgeneity. It uses the `Thermimage` package [@tattersall_thermimage:_2017] to batch process data from FLIR thermal cameras, and takes inspiration from FRAGSTATS [@fragstats_2012], `SDMTools` [@sdmtools_2014], @faye_toolbox_2016 and @shi_framework_2016 to facilitate the calculation of various metrics of thermal heterogeneity for any gridded temperature data.
+`ThermStats` is designed for biologists using thermography to quantify thermal heterogeneity. It uses the `Thermimage` package [@tattersall_thermimage:_2017] to batch process data from FLIR thermal cameras, and takes inspiration from FRAGSTATS [@fragstats_2012], `SDMTools` [@sdmtools_2014], @faye_toolbox_2016 and @shi_framework_2016 to facilitate the calculation of various metrics of thermal heterogeneity for any gridded temperature data.
 
 The package is available to download from GitHub using `devtools`:
 
@@ -40,7 +40,7 @@ flir_raw <-
 
 Raw data are encoded in each thermal image as a 16 bit analog-to-digital signal, which represents the radiance received by the infrared sensor. The function `batch_convert` converts these raw data to temperature values using equations from infrared thermography, via a batch implementation of the function `raw2temp` in `Thermimage`. It uses environmental parameters defined by the user, and the calibration constants extracted in `batch_extract`. See [Chapter 3: Methods](#ch3-methods) for a full discussion of the different environmental parameters. In brief: 
 
-* Emissivity = the amount of radiation emmitted by a particular object, for a given temperature.
+* Emissivity = the amount of radiation emitted by a particular object, for a given temperature.
 * Object distance = the distance between the camera and the object of interest.
 * Reflected apparent temperature = the temperature resulting from radiation that originates from the atmosphere and is reflected by the object.
 * Atmospheric temperature = the temperature of the atmosphere.
