@@ -1,7 +1,3 @@
-rm(list=ls())
-
-user<-Sys.info()[7]
-
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
                "#0072B2", "#D55E00", "#CC79A7")
@@ -113,4 +109,4 @@ p1<-ggplot()+
                       guide=guide_legend(order=1))+
   facet_wrap(~studyID)
 
-# save(p1, shades, textCol, file = "figs/figA.1.Rdata")
+# save(p1, shades, textCol, file = "figs/figA.4.Rdata")

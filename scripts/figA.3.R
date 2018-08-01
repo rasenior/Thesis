@@ -1,9 +1,3 @@
-rm(list=ls())
-
-user<-Sys.info()[7]
-
-#Define working directory
-baseDir<-file.path("D:/GoogleDrive/PhD/Ch2/Data")
 
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
@@ -27,24 +21,24 @@ library(grid)
 date<-Sys.Date()
 
 # Read in data
-load(file.path(baseDir,"modelOutputs_dayMax_2016-10-15.Rd"))
-load(file.path(baseDir,"sampleSizes_dayMax_2016-10-22.Rds"))
+load("data/ch2/modelOutputs_dayMax_2016-10-15.Rd")
+load("data/ch2/sampleSizes_dayMax_2016-10-22.Rds")
 sumDat_day<-sumDat
 sumLUT_day<-sumLUT
 sumStats_dayMax<-sumStats
 
-load(file.path(baseDir,"modelOutputs_nightMax_2016-10-15.Rd"))
-load(file.path(baseDir,"sampleSizes_nightMax_2016-10-22.Rds"))
+load("data/ch2/modelOutputs_nightMax_2016-10-15.Rd")
+load("data/ch2/sampleSizes_nightMax_2016-10-22.Rds")
 sumDat_night<-sumDat
 sumLUT_night<-sumLUT
 sumStats_nightMax<-sumStats
 
-load(file.path(baseDir,"modelOutputs_dayMin_2016-10-15.Rd"))
-load(file.path(baseDir,"sampleSizes_dayMin_2016-10-15.Rds"))
+load("data/ch2/modelOutputs_dayMin_2016-10-15.Rd")
+load("data/ch2/sampleSizes_dayMin_2016-10-15.Rds")
 sumStats_dayMin<-sumStats
 
-load(file.path(baseDir,"modelOutputs_nightMin_2016-10-15.Rd"))
-load(file.path(baseDir,"sampleSizes_nightMin_2016-10-15.Rds"))
+load("data/ch2/modelOutputs_nightMin_2016-10-15.Rd")
+load("data/ch2/sampleSizes_nightMin_2016-10-15.Rds")
 sumStats_nightMin<-sumStats
 
 # load("modelOutputs_dayRange_2016-10-22.Rd")
@@ -55,8 +49,8 @@ sumStats_nightMin<-sumStats
 # load("sampleSizes_nightRange_2016-10-22.Rds")
 # sumStats_nightRange<-sumStats
 
-load(file.path(baseDir,"modelOutputs_range_2016-10-23.Rd"))
-load(file.path(baseDir,"sampleSizes_tempRange_2016-10-23.Rds"))
+load("data/ch2/modelOutputs_range_2016-10-23.Rd")
+load("data/ch2/sampleSizes_tempRange_2016-10-23.Rds")
 sumStats_range<-sumStats
 sumLUT_range<-sumLUT
 
@@ -202,6 +196,6 @@ combi <-
                     y = rep(c(0.905, 0.475), each = 2),
                     size = lab_size)
 combi
-saveRDS(combi, file = "figs/figA.5.Rds")
+saveRDS(combi, file = "figs/figA.3.Rds")
 
 

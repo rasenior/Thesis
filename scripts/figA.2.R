@@ -1,9 +1,3 @@
-rm(list=ls())
-
-user<-Sys.info()[7]
-
-#Define working directory
-baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
 
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
@@ -26,10 +20,10 @@ library(grid)
 date<-Sys.Date()
 
 # Read in data
-load(file.path(baseDir,"modelOutputs_night_2016-05-26.Rd"))
-load(file.path(baseDir,"sampleSizes_night_2016-05-25.Rds"))
+load("data/ch2/modelOutputs_night_2016-05-26.Rd")
+load("data/ch2/sampleSizes_night_2016-05-25.Rds")
 
-projections<-read.csv(file.path(baseDir,"ipcc_projections.csv"))
+projections<-read.csv("data/ch2/ipcc_projections.csv")
 projections<-projections[projections$region=="tropics" &
                            projections$RCP %in% c("RCP2.6","RCP8.5"),]
 projections$posCI<-projections$mean_tempChange+
@@ -88,5 +82,5 @@ p1<-ggplot(sumStats, aes(x=LUT, y=mean_temp_st))+
   scale_x_discrete(labels=labs)+
   scale_y_continuous(breaks=seq(-10,20,1))
 
-saveRDS(p1, file = "figs/figA.4.Rds")
+saveRDS(p1, file = "figs/figA.2.Rds")
 

@@ -1,9 +1,3 @@
-rm(list=ls())
-
-user<-Sys.info()[7]
-
-#Define working directory
-baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
 
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
@@ -26,8 +20,8 @@ cbPalette <- c("#009E73","#F0E442", "#0072B2", "#D55E00", "#CC79A7",
                "#E69F00", "#56B4E9")
 
 # Read in data
-load(file.path(baseDir,"sampleSizes_day_2016-05-27.Rds"))
-load(file.path(baseDir,"dayDat_2016-06-08.Rds"))
+load("data/ch2/sampleSizes_day_2016-05-27.Rds")
+load("data/ch2/dayDat_2016-06-08.Rds")
 
 # Reduce to unique sites
 dayDat<-dayDat[which(!(duplicated(dayDat$SS))),]
@@ -120,4 +114,4 @@ p1<-ggplot()+
       facet_wrap(~studyID)
 p1
 
-saveRDS(p1, file = "figs/figA.2.Rds")
+saveRDS(p1, file = "figs/figA.5.Rds")

@@ -1,9 +1,3 @@
-rm(list=ls())
-
-user<-Sys.info()[7]
-
-#Define working directory
-baseDir<-file.path("C:/Users",user,"Google Drive/PhD/Ch2/Data")
 
 # Define colourblind-friendly palette
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", 
@@ -18,6 +12,7 @@ library(ggplot2)
 library(dplyr)
 library(gridExtra)
 library(grid)
+library(cowplot)
 
 # ggplot(mtcars, aes(disp, mpg)) + geom_point() + 
   # theme(axis.ticks.length=unit(-0.25, "cm"), axis.ticks.margin=unit(0.5, "cm"))
@@ -26,10 +21,10 @@ library(grid)
 date<-Sys.Date()
 
 # Read in data
-load(file.path(baseDir,"modelOutputs_day_sampleTest2017-05-18.Rd"))
-load(file.path(baseDir,"sampleSizes_day_2016-05-27.Rds"))
+load("data/ch2/modelOutputs_day_sampleTest2017-05-18.Rd")
+load("data/ch2/sampleSizes_day_2016-05-27.Rds")
 
-projections<-read.csv(file.path(baseDir, "ipcc_projections.csv"))
+projections<-read.csv("data/ch2/ipcc_projections.csv")
 projections<-projections[projections$region=="tropics" &
                            projections$RCP %in% c("RCP2.6","RCP8.5"),]
 projections$posCI<-projections$mean_tempChange+
@@ -146,7 +141,7 @@ p2<-ggplot(season, aes(x=LUT, y=mean_temp_st,
         axis.title.y = element_text(size= title_size,vjust=1),
         axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
         axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'),
-        legend.position=c(0.094,0.8),
+        legend.position=c(0.095,0.8),
         legend.text.align	= 0,
         legend.text = element_text(size=text_size),
         legend.title=element_blank(),
@@ -177,5 +172,5 @@ p3<- ggdraw() +
                     y = c(0.99, 0.5),
                     size = lab_size)
 p3
-saveRDS(p3, file = "figs/figA.3.Rds")
+saveRDS(p3, file = "figs/figA.1.Rds")
 
