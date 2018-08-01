@@ -565,11 +565,15 @@ p1 <-
 # ggsave(plot = p1, filename = "figs/fig5.1.pdf", width = 16.6, height = 8, units = "cm")
 ```
 
+\newpage
+\blandscape
 (ref:cap-5-1) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b). Positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
 
-```{r fig-5-1, fig.cap= "(ref:cap-5-1)", fig.width = 18.3/2.54, fig.height = 8/2.54}
+```{r fig-5-1, fig.cap= "(ref:cap-5-1)", fig.width = 22/2.54, fig.height = 12/2.54}
 p1
 ```
+\elandscape
+\newpage
 
 Overall, `r median(prop_fail_dat %>% filter(year == "2012") %>%  .[,"prop_fail"])`% of tropical forest area failed to achieve successful climate connectivity (&ge; 0; median value across realms), whereby species' range shifts within existing forest cover could circumvent climate warming. This is comparable to the 59% observed in the continental United States by @mcguire_achieving_2016, and is all the more concerning because of the greater numbers of climate-vulnerable species with narrow thermal limits. Variation across biogeographic realms (`r prop_fail_results$ref[prop_fail_results$EV == "realm"]`) showed slightly different patterns than for average climate connectivity. Indomalaya was the least successful realm with `r prop_fail_dat %>% filter(year == "2012", realm == "Indomalaya") %>%  .[,"prop_fail"]`% of its forested area failing to connect to climate analogues, followed by the Neotropics (`r prop_fail_dat %>% filter(year == "2012", realm == "Neotropics") %>%  .[,"prop_fail"]`%), Oceania (`r prop_fail_dat %>% filter(year == "2012", realm == "Oceania") %>%  .[,"prop_fail"]`%), Afrotropics (`r prop_fail_dat %>% filter(year == "2012", realm == "Afrotropics") %>%  .[,"prop_fail"]`%), and Australasia (`r prop_fail_dat %>% filter(year == "2012", realm == "Australasia") %>%  .[,"prop_fail"]`%). As found in previous studies [@lawler_projected_2013; @littlefield_connecting_2017], regions with large, contiguous forest patches connecting warmer lowland regions to cool uplands, such as the western Amazon, Congo Basin and parts of New Guinea (\autoref{fig:fig-5-1}a), can compensate somewhat for low average climate connectivity. That said, in these locations the total path distance from source to target patch was often substantial -- up to `r format(round(max(region_cc$max_dist),0), big.mark = ",")` km for one source patch in the Neotropics -- and this does not account for biogeographic barriers such as major rivers. Climate connectivity was consistently low for regions with severe and extensive loss of lowland rainforests, such as Indochina, Brazilian Atlantic forest and West Africa [@lewis_increasing_2015; @haddad_habitat_2015]. 
 

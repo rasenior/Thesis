@@ -2032,9 +2032,7 @@ plot_grid(p3a, p3b,
 
 ## Supplementary Figures
 
-(ref:cap-D-10) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with areas of high climate vulnerability for mammals derived from @pacifici_framework_2018 (regions outside of these areas are masked in grey). We defined high vulnerability areas as those where more than 50% of mammal species had a negative predicted response to climate change. As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
-
-```{r fig-D-10, fig.cap= "(ref:cap-D-10)", fig.width = 18.3/2.54, fig.height = 8/2.54}
+```{r fig-D-10-prep}
 p1a <-
     ggplot() +
     geom_polygon(data = boundary,
@@ -2211,15 +2209,20 @@ p1 <-
               align = "hv", 
               labels = c("(a)", "(b)"), 
               label_size = lab_size)
-p1
-ggsave(plot = p1,
-       filename = "figs/fig5.1.pdf",
-       width = 16.6, height = 8, units = "cm")
 ```
 
-(ref:cap-D-11) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with Key Biodiversity Areas from BirdLife International (regions outside of these areas are masked in grey). As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
+\newpage
+\blandscape
 
-```{r fig-D-11, fig.cap= "(ref:cap-D-11)", fig.width = 18.3/2.54, fig.height = 8/2.54}
+(ref:cap-D-10) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with areas of high climate vulnerability for mammals derived from @pacifici_framework_2018 (regions outside of these areas are masked in grey). We defined high vulnerability areas as those where more than 50% of mammal species had a negative predicted response to climate change. As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
+
+```{r fig-D-10, fig.cap= "(ref:cap-D-10)", fig.width = 22/2.54, fig.height = 12/2.54}
+p1
+```
+
+\newpage
+
+```{r fig-D-11-prep}
 p2a <-
     ggplot() +
     geom_polygon(data = boundary,
@@ -2396,12 +2399,16 @@ p2 <-
               align = "hv", 
               labels = c("(a)", "(b)"), 
               label_size = lab_size)
-p2
-# ggsave(plot = p2,
-#        filename = "figs/fig5.2.pdf",
-#        width = 16.6, height = 8, units = "cm")
 ```
 
+(ref:cap-D-11) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with Key Biodiversity Areas from BirdLife International (regions outside of these areas are masked in grey). As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
+
+```{r fig-D-11, fig.cap= "(ref:cap-D-11)", fig.width = 22/2.54, fig.height = 12/2.54}
+p2
+```
+
+\elandscape
+\newpage
 \clearpage
 \fancyhead[R]{Bibliography}
 \addcontentsline{toc}{chapter}{Bibliography}
