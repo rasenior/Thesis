@@ -2028,7 +2028,8 @@ plot_grid(p3a, p3b,
           label_size = lab_size)
 ```
 
-\pagebreak
+\newpage
+\blandscape
 
 ## Supplementary Figures
 
@@ -2098,7 +2099,7 @@ p1a <-
           strip.text = element_text(size = title_size,
                                     hjust = 0.5),
           legend.text = element_text(size = text_size),
-          legend.title = element_text(size = text_size),
+          legend.title = element_text(size = title_size),
           legend.box.spacing = unit(0,"cm"),
           legend.box.margin = margin(0,0,0,2),
           legend.position = "bottom") +
@@ -2114,8 +2115,8 @@ p1a <-
                                   barheight = unit(3, units = "mm"),
                                   barwidth = unit(2, units = "cm"),
                                   direction = "horizontal",
-                                  title.vjust = 1,
-                                  title.position = "left",
+                                  # title.vjust = 1,
+                                  title.position = "top",
                                   title = expression("Climate connectivity ("*degree*"C)")))
 
 p1b <-
@@ -2184,7 +2185,7 @@ p1b <-
           strip.text = element_text(size = title_size,
                                     hjust = 0.5),
           legend.text = element_text(size = text_size),
-          legend.title = element_text(size = text_size),
+          legend.title = element_text(size = title_size),
           legend.box.spacing = unit(0,"cm"),
           legend.box.margin = margin(0,0,0,0),
           legend.position = "bottom") +
@@ -2200,8 +2201,8 @@ p1b <-
                                   barheight = unit(3, units = "mm"),
                                   barwidth = unit(2, units = "cm"),
                                   direction = "horizontal",
-                                  title.vjust = 1,
-                                  title.position = "left",
+                                  # title.vjust = 1,
+                                  title.position = "top",
                                   title = expression(Delta~"Climate connectivity ("*degree*"C)")))
 p1 <-
     plot_grid(p1a, p1b, 
@@ -2211,12 +2212,10 @@ p1 <-
               label_size = lab_size)
 ```
 
-\newpage
-\blandscape
 
 (ref:cap-D-10) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with areas of high climate vulnerability for mammals derived from @pacifici_framework_2018 (regions outside of these areas are masked in grey). We defined high vulnerability areas as those where more than 50% of mammal species had a negative predicted response to climate change. As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
 
-```{r fig-D-10, fig.cap= "(ref:cap-D-10)", fig.width = 22/2.54, fig.height = 12/2.54}
+```{r fig-D-10, fig.cap= "(ref:cap-D-10)", fig.width = 25/2.54, fig.height = 10/2.54}
 p1
 ```
 
@@ -2288,7 +2287,7 @@ p2a <-
           strip.text = element_text(size = title_size,
                                     hjust = 0.5),
           legend.text = element_text(size = text_size),
-          legend.title = element_text(size = text_size),
+          legend.title = element_text(size = title_size),
           legend.box.spacing = unit(0,"cm"),
           legend.box.margin = margin(0,0,0,2),
           legend.position = "bottom") +
@@ -2304,8 +2303,8 @@ p2a <-
                                   barheight = unit(3, units = "mm"),
                                   barwidth = unit(2, units = "cm"),
                                   direction = "horizontal",
-                                  title.vjust = 1,
-                                  title.position = "left",
+                                  # title.vjust = 1,
+                                  title.position = "top",
                                   title = expression("Climate connectivity ("*degree*"C)")))
 
 p2b <-
@@ -2374,7 +2373,7 @@ p2b <-
           strip.text = element_text(size = title_size,
                                     hjust = 0.5),
           legend.text = element_text(size = text_size),
-          legend.title = element_text(size = text_size),
+          legend.title = element_text(size = title_size),
           legend.box.spacing = unit(0,"cm"),
           legend.box.margin = margin(0,0,0,0),
           legend.position = "bottom") +
@@ -2390,8 +2389,8 @@ p2b <-
                                   barheight = unit(3, units = "mm"),
                                   barwidth = unit(2, units = "cm"),
                                   direction = "horizontal",
-                                  title.vjust = 1,
-                                  title.position = "left",
+                                  # title.vjust = 1,
+                                  title.position = "top",
                                   title = expression(Delta~"Climate connectivity ("*degree*"C)")))
 p2 <-
     plot_grid(p2a, p2b, 
@@ -2403,7 +2402,7 @@ p2 <-
 
 (ref:cap-D-11) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with Key Biodiversity Areas from BirdLife International (regions outside of these areas are masked in grey). As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
 
-```{r fig-D-11, fig.cap= "(ref:cap-D-11)", fig.width = 22/2.54, fig.height = 12/2.54}
+```{r fig-D-11, fig.cap= "(ref:cap-D-11)", fig.width = 25/2.54, fig.height = 10/2.54}
 p2
 ```
 

@@ -464,7 +464,7 @@ p1a <-
           strip.text = element_text(size = title_size,
                                     hjust = 0.5),
           legend.text = element_text(size = text_size),
-          legend.title = element_text(size = text_size),
+          legend.title = element_text(size = title_size),
           legend.box.spacing = unit(0,"cm"),
           legend.box.margin = margin(0,0,0,2),
           legend.position = "bottom") +
@@ -480,8 +480,8 @@ p1a <-
                                   barheight = unit(3, units = "mm"),
                                   barwidth = unit(2, units = "cm"),
                                   direction = "horizontal",
-                                  title.vjust = 1,
-                                  title.position = "left",
+                                  # title.vjust = 1,
+                                  title.position = "top",
                                   title = expression("Climate connectivity ("*degree*"C)")))
 
 
@@ -535,7 +535,7 @@ p1b <-
           strip.text = element_text(size = title_size,
                                     hjust = 0.5),
           legend.text = element_text(size = text_size),
-          legend.title = element_text(size = text_size),
+          legend.title = element_text(size = title_size),
           legend.box.spacing = unit(0,"cm"),
           legend.box.margin = margin(0,0,0,0),
           legend.position = "bottom") +
@@ -551,8 +551,8 @@ p1b <-
                                   barheight = unit(3, units = "mm"),
                                   barwidth = unit(2, units = "cm"),
                                   direction = "horizontal",
-                                  title.vjust = 1,
-                                  title.position = "left",
+                                  # title.vjust = 1,
+                                  title.position = "top",
                                   title = expression(Delta~"Climate connectivity ("*degree*"C)")))
 
 p1 <-
@@ -569,7 +569,7 @@ p1 <-
 \blandscape
 (ref:cap-5-1) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b). Positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
 
-```{r fig-5-1, fig.cap= "(ref:cap-5-1)", fig.width = 22/2.54, fig.height = 12/2.54}
+```{r fig-5-1, fig.cap= "(ref:cap-5-1)", fig.width = 25/2.54, fig.height = 10/2.54}
 p1
 ```
 \elandscape
