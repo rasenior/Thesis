@@ -193,7 +193,7 @@ thermal landscape.\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{(\#tab:tab-3-1) Suggested summary statistics that can be applied by 'get\_stats'.}
+\caption{(\#tab:tab-3-1) Suggested summary statistics that can be applied by \textmyfont{get\_stats}.}
 \end{table}
 
 ```{r tab-3-2}

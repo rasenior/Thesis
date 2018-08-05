@@ -26,8 +26,9 @@
 
 % Manual syntax highlighting --------------------------------------------------
 
-\usepackage[T1]{fontenc}
-\newcommand*{\myfont}{\fontfamily{lmtt}\selectfont}
+\usepackage{fontspec}
+\setmainfont{Calibri} % Calibri is main font
+\newcommand*{\myfont}{\fontfamily{lmtt}\selectfont} % Latin Modern typewriter for syntax
 \DeclareTextFontCommand{\textmyfont}{\myfont}
 
 % General formatting ----------------------------------------------------------

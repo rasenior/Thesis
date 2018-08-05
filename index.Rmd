@@ -12,7 +12,7 @@ output:
         # reference_docx: C:/Users/Rebecca/Google Drive/Referencing/Word templates/ms_general.docx
     bookdown::pdf_book:
         keep_tex: yes
-mainfont: Calibri
+# mainfont: Calibri
 papersize: a4
 geometry: left=4cm,right=2.5cm,top=2.5cm,bottom=2.5cm
 fontsize: 12pt
