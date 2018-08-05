@@ -12,6 +12,7 @@ library(rgdal)
 library(rgeos)
 library(knitr)
 library(ggplot2)
+library(ggrepel)
 library(scales)
 library(dplyr)
 library(cowplot)
@@ -1354,13 +1355,22 @@ p2b <-
               linetype = "solid",
               size = 0.1,
               alpha = 0) +
-    geom_text(data = centroids, 
+    geom_text_repel(data = centroids, 
               aes(x = long, y = lat, 
                   label = patch,
                   group = group),
               size = 1.8,
-              position = 
-                  position_jitter(width = 1000, height = 0)) +
+              force=1.5,
+              segment.size=0.1,
+              min.segment.length = unit(0, "lines"),
+              point.padding = unit(0, "lines"))+
+    # geom_text(data = centroids, 
+    #           aes(x = long, y = lat, 
+    #               label = patch,
+    #               group = group),
+    #           size = 1.8,
+    #           position = 
+    #               position_jitter(width = 1000, height = 0)) +
     theme_void() +
     theme(legend.text = element_text(size = text_size),
           legend.title = element_text(size = text_size)) +
