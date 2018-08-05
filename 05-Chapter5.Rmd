@@ -465,22 +465,23 @@ p1a <-
                                     hjust = 0.5),
           legend.text = element_text(size = text_size),
           legend.title = element_text(size = title_size),
+          legend.title.align=0.5,
           legend.box.spacing = unit(0,"cm"),
-          legend.box.margin = margin(0,0,0,2),
           legend.position = "bottom") +
     # scale_x_continuous(expand = c(0, 0))+
-    scale_y_continuous(expand = c(0.012, 0)) +
+    scale_y_continuous(expand = c(0.010, 0)) +
     # coord_equal(ratio=1) +
     scale_fill_gradient2(low = "red4",
                          mid = "beige",
                          high = "dodgerblue", 
-                         breaks = seq(-4, 8, 2),
-                         limits = c(-4,8)) +
-    guides(fill = guide_colourbar(raster = FALSE, 
+                         breaks = seq(-6, 6, 2),
+                         # limits = c(-4,8)
+                         NULL) +
+    guides(fill = guide_colourbar(raster = FALSE,
                                   barheight = unit(3, units = "mm"),
-                                  barwidth = unit(2, units = "cm"),
-                                  direction = "horizontal",
-                                  # title.vjust = 1,
+                                  barwidth = unit(4, units = "cm"),
+                                  # direction = "horizontal",
+                                  # title.hjust = 0.5,
                                   title.position = "top",
                                   title = expression("Climate connectivity ("*degree*"C)")))
 
@@ -536,22 +537,23 @@ p1b <-
                                     hjust = 0.5),
           legend.text = element_text(size = text_size),
           legend.title = element_text(size = title_size),
+          legend.title.align=0.5,
           legend.box.spacing = unit(0,"cm"),
-          legend.box.margin = margin(0,0,0,0),
           legend.position = "bottom") +
     # scale_x_continuous(expand = c(0, 0))+
-    scale_y_continuous(expand = c(0.012, 0))+
+    scale_y_continuous(expand = c(0.010, 0)) +
     # coord_equal(ratio=1) +
     scale_fill_gradient2(low = "red4",
                          mid = "beige",
                          high = "dodgerblue",
                          breaks = seq(-10, 10, 5),
-                         limits = c(-10,10)) +
-    guides(fill = guide_colourbar(raster = FALSE, 
+                         limits = c(-10,10),
+                         NULL) +
+    guides(fill = guide_colourbar(raster = FALSE,
                                   barheight = unit(3, units = "mm"),
-                                  barwidth = unit(2, units = "cm"),
-                                  direction = "horizontal",
-                                  # title.vjust = 1,
+                                  barwidth = unit(4, units = "cm"),
+                                  # direction = "horizontal",
+                                  # title.hjust = 0.5,
                                   title.position = "top",
                                   title = expression(Delta~"Climate connectivity ("*degree*"C)")))
 
@@ -569,7 +571,7 @@ p1 <-
 \blandscape
 (ref:cap-5-1) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b). Positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted and magnified land masses in Oceania.
 
-```{r fig-5-1, fig.cap= "(ref:cap-5-1)", fig.width = 25/2.54, fig.height = 10/2.54}
+```{r fig-5-1, fig.cap= "(ref:cap-5-1)", fig.width = 25/2.54, fig.height = 11/2.54}
 p1
 ```
 \elandscape
@@ -584,38 +586,39 @@ Overall, `r median(prop_fail_dat %>% filter(year == "2012") %>%  .[,"prop_fail"]
 p2a <-
     ggplot(data = median_cc_dat, 
            aes(x = year,
-               y = median_cc,
-               colour = year)) +
+               y = median_cc)) +
     geom_hline(yintercept = 0, 
                linetype = "dashed",
                size = 0.8) +
-    geom_point(position = position_dodge(width = 0.5),
-               alpha = 0) +
+    geom_blank() +
     geom_rect(aes(xmin = -Inf,
                   xmax = Inf,
                   ymin = -Inf,
-                  ymax = 0,
-                  colour = NULL),
+                  ymax = 0),
               fill = cbpal2[5],
-              alpha = 0.05) +
+              alpha = 0.2) +
     geom_rect(aes(xmin = -Inf,
                   xmax = Inf,
                   ymin = 0,
-                  ymax = Inf,
-                  colour = NULL),
+                  ymax = Inf),
               fill = cbpal2[7],
-              alpha = 0.05) +
+              alpha = 0.2) +
     geom_jitter(data = region_cc,
                 aes(x = year,
                     y = median_cc,
-                    colour = year),
+                    colour = year,
+                    fill = year),
                 alpha = 0.2,
-                shape = 16,
-                size= 1) +
-    geom_point(position = position_dodge(width = 0.5)) +
-    geom_errorbar(aes(ymin = lwr, ymax = upr), 
+                shape = 21,
+                size= 0.5) +
+    geom_errorbar(aes(ymin = lwr, 
+                      ymax = upr), 
                   width = 0.2,
                   position = position_dodge(width = 0.5)) +
+    geom_point(aes(fill = year),
+               shape = 21,
+               position = position_dodge(width = 0.5),
+               size = 1.5) +
     facet_wrap(~ realm, nrow = 1, strip.position="bottom") +
     ylab(paste("Median climate connectivity (", "\U00B0","C)",sep="")) +
     theme_bw() +
@@ -625,20 +628,20 @@ p2a <-
           axis.title.y = element_text(size = title_size),
           axis.text.y = element_text(size = text_size),
           strip.text = element_text(size = lab_size),
-          legend.title = element_blank(),
           legend.text = element_text(size = lab_size),
-          legend.position = c(0.1, 0.92), 
-          legend.direction = "vertical",
-          legend.key.size = unit(5, units = "mm"),
+          legend.position = c(0.1, 0.94),
+          legend.key.size = unit(4, units = "mm"),
+          legend.key = element_rect(fill="transparent"),
           legend.background = element_rect(fill="transparent"),
           legend.margin = margin(0,0,0,0),
           panel.spacing = unit(0, units = "cm"),
           panel.grid = element_blank()) +
     scale_y_continuous(breaks = seq(-4,4,0.5),
-                       limits = c(-3,0.5)) +
+                       limits = c(NA, 0.5)) +
     scale_colour_manual(values = cbpal1[c(3,1)]) +
-    guides(color=guide_legend(override.aes=list(fill=NA)),
-           fill = FALSE)
+    scale_fill_manual(values = cbpal1[c(3,1)]) +
+    guides(fill=guide_legend(title = NULL),
+           colour=guide_legend(title = NULL))
 
 p2b <-
     ggplot(data = prop_fail_dat, 
@@ -652,7 +655,7 @@ p2b <-
     geom_jitter(data = region_cc,
                 alpha = 0.2,
                 shape = 16,
-                size= 1) +
+                size= 0.5) +
     facet_wrap(~ realm, nrow = 1, strip.position="bottom") +
     ylab("Area unsuccessful connectivity (%)") +
     theme_bw() +
