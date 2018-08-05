@@ -239,7 +239,7 @@ facilitate more efficient travel. \\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{(\#tab:tab-3-2) Patch statistics calculated for hot and cold spots by the function 'get\_stats'.}
+\caption{(\#tab:tab-3-2) Patch statistics calculated for hot and cold spots by the function \textmyfont{get\_stats}.}
 \end{sidewaystable}
 
 We assume that for most users the spatial unit of replication will comprise multiple thermal images. In this case, the user can specify a grouping variable in `stats_by_group`. Matrices from each group will be bound together and `get_stats` applied over the combined matrix. We assume the images are not adjacent in space, and therefore pad matrices with NA values before binding. Table S2 gives an example of the output from `stats_by_group`.
