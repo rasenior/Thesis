@@ -1,30 +1,12 @@
+
+% Table stuff -----------------------------------------------------------------
+
 \usepackage{booktabs}
-
-\usepackage{url}
-
-\usepackage{hyperref}
 
 \usepackage[table]{xcolor}
 \definecolor{lightgrey}{gray}{0.85}
 
-\usepackage{pdfpages}
-
 \usepackage{rotating}
-
-\usepackage{multirow}
-
-\usepackage{array}
-
-\usepackage{setspace}
-\onehalfspacing
-
-\usepackage{gensymb}
-
-\usepackage{chngcntr}
-
-\usepackage{appendix}
-
-\usepackage{fancyhdr}
 
 \usepackage{caption}
 
@@ -32,12 +14,46 @@
 
 \usepackage{float}
 
-\pagenumbering{roman}
+\usepackage{multirow}
 
-\usepackage[none]{hyphenat}
+\usepackage{array}
 
-\raggedbottom
+% Hyperlink stuff  ------------------------------------------------------------
 
-\usepackage{lscape}
+\usepackage{url}
+
+\usepackage{hyperref}
+
+% Manual syntax highlighting --------------------------------------------------
+
+\usepackage[T1]{fontenc}
+\newcommand*{\myfont}{\fontfamily{lmtt}\selectfont}
+\DeclareTextFontCommand{\textmyfont}{\myfont}
+
+% General formatting ----------------------------------------------------------
+
+\usepackage{lscape} % for manual landscape pages
 \newcommand{\blandscape}{\begin{landscape}}
 \newcommand{\elandscape}{\end{landscape}}
+
+\usepackage{listings} % for manual syntax highlighting
+
+\usepackage[none]{hyphenat} % to turn off hyphenation of words across lines
+
+\usepackage{setspace} % set line spacing
+\onehalfspacing
+
+\usepackage{fancyhdr} % header & footer formatting
+
+\usepackage{pdfpages} % something about adding pdf page
+
+\usepackage{gensymb} % something about using symbols
+
+\usepackage{chngcntr} % something about resetting counter
+
+\usepackage{appendix} % special appendix formatting
+
+\pagenumbering{roman} % begin page number as Roman
+
+\raggedbottom % pages don't need to have equal height
+
