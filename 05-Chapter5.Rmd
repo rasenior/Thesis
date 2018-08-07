@@ -602,13 +602,13 @@ p2a <-
                   ymin = 0,
                   ymax = Inf),
               fill = cbpal2[7],
-              alpha = 0.2) +
+              alpha = 0.1) +
     geom_jitter(data = region_cc,
                 aes(x = year,
                     y = median_cc,
                     colour = year,
                     fill = year),
-                alpha = 0.2,
+                alpha = 0.3,
                 shape = 21,
                 size= 0.5) +
     geom_errorbar(aes(ymin = lwr, 
@@ -642,6 +642,7 @@ p2a <-
     scale_fill_manual(values = cbpal1[c(3,1)]) +
     guides(fill=guide_legend(title = NULL),
            colour=guide_legend(title = NULL))
+    
 
 p2b <-
     ggplot(data = prop_fail_dat, 
