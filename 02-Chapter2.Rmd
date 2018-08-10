@@ -110,8 +110,14 @@ ggdraw() +
 
 (ref:cap-2-2) Raw day-time temperature against land-use type, across all studies contributing data to the analyses (plotted by study in \autoref{fig:fig-A-4}). Point shading indicates temperatures measured above-ground (orange) or below-ground (blue), and different symbols indicate temperatures measured during the dry season (circles) or wet season (triangles).
 
-```{r fig-2-2, fig.cap= "(ref:cap-2-2)"}
-readRDS("figs/fig2.2.Rds")
+```{r fig-2-2, fig.cap= "(ref:cap-2-2)", fig.width = 5, fig.height = 1}
+ggplot(data = data.frame(x = 1,
+                         y = 1),
+       aes(x = x, y = y)) + 
+  geom_point(alpha = 0) +
+  geom_text(aes(label = "Removed to reduce file size."),
+            fontface = "italic")+
+  theme_void()
 ```
 
 ## Results

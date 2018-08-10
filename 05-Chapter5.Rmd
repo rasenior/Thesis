@@ -571,9 +571,16 @@ p1 <-
 \blandscape
 (ref:cap-5-1) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b). Positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted land masses in Oceania.
 
-```{r fig-5-1, fig.cap= "(ref:cap-5-1)", fig.width = 25/2.54, fig.height = 11/2.54}
-p1
+```{r fig-5-1, fig.cap= "(ref:cap-5-1)", fig.width = 5, fig.height = 1}
+ggplot(data = data.frame(x = 1,
+                         y = 1),
+       aes(x = x, y = y)) + 
+  geom_point(alpha = 0) +
+  geom_text(aes(label = "Removed to reduce file size."),
+            fontface = "italic")+
+  theme_void()
 ```
+
 \elandscape
 \newpage
 

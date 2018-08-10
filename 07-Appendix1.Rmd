@@ -61,9 +61,14 @@ readRDS("figs/figA.3.Rds")
 source("scripts/figA.4.R")
 ```
 
-```{r fig-A-4, fig.cap= "(ref:cap-A-4)",fig.height=22/2.54, fig.align='center'}
-p1
-
+```{r fig-A-4, fig.cap= "(ref:cap-A-4)", fig.width = 5, fig.height = 1}
+ggplot(data = data.frame(x = 1,
+                         y = 1),
+       aes(x = x, y = y)) + 
+  geom_point(alpha = 0) +
+  geom_text(aes(label = "Removed to reduce file size."),
+            fontface = "italic")+
+  theme_void()
 ```
 
 \pagebreak
