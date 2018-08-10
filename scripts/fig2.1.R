@@ -113,10 +113,13 @@ dummy<-ggplot(df,aes(x=LUT,y=2,colour=LUT,size=LUT))+
       theme(legend.text=element_text(size= text_size),
             legend.key.size=unit(text_size,"pt"),
             legend.position="bottom",
-            legend.key=element_blank(),
-            legend.title=element_blank())+
+            legend.key=element_blank())+
       scale_size_manual(values=sizeList)+
-      scale_colour_manual(values=cbPalette_dark[1:5])
+      scale_colour_manual(values=cbPalette_dark[1:5])+
+    guides(fill=guide_legend(title = NULL),
+           colour=guide_legend(title = NULL),
+           shape=guide_legend(title = NULL),
+           size=guide_legend(title = NULL))
 # dummy
 
 # extract the legend from one of the plots
