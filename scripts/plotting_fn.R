@@ -187,7 +187,6 @@ plot_continuous <- function(pred_df,
               axis.text.y=element_text(size=text_size),
               strip.text=element_text(size=title_size),
               panel.spacing = unit(panel.spacing, unit = "cm"), 
-              legend.title=element_blank(),
               legend.text=element_text(size=leg_size),
               legend.position= leg_pos,
               legend.key=element_blank(),
@@ -195,7 +194,10 @@ plot_continuous <- function(pred_df,
               panel.grid=element_blank())+
         scale_x_continuous(breaks=seq(x_min, x_max, x_incr))+ 
         scale_colour_manual(values=c(cbPalette[6],cbPalette[7]))+
-        scale_fill_manual(values=c(cbPalette[6],cbPalette[7]))
+        scale_fill_manual(values=c(cbPalette[6],cbPalette[7]))+
+        guides(fill=guide_legend(title = NULL),
+               colour=guide_legend(title = NULL),
+               shape=guide_legend(title = NULL))
     
     # If variable held constant is treeBA, there are two vals so 
     # plotted differently
