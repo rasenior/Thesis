@@ -26,12 +26,12 @@ rm(list = ls()[!(ls() %in% c(all_dat, "all_dat","q2_results","base_dir",
                              "dat_dir","fig_dir","mod_dir","user"))])
 
 # Source local functions
-source(file.path("C:/Users",user,
-                 "Google Drive/Programming/R/functions/mround.R"))
+source("scripts/mround.R")
 source("scripts/plotting_fn.R")
 # Define font sizes
 lab_size <- 7
-
+text_size <- 7
+title_size <- 9
 # Prepare data ------------------------------------------------------------
 
 # Check dimensions
@@ -108,12 +108,16 @@ p1 <- plot_continuous(pred_df = fig4,
                       x_lab = paste("Tree stand basal area (m","\U00B2","/ha)",sep=""),
                       y_lab = paste("Microclimate temp. range (", "\U00B0","C)",sep=""), 
                       panel_labs = "",
-                      text_size = 8,
+                      text_size = text_size,
+                      title_size = title_size,
                       facet_scale = "fixed",
                       point_alpha = 0.5,
                       leg_pos = "top", 
                       lab_hjust = 1.67,
                       lab_vjust = 1.45)
+p1$p <-
+    p1$p + 
+    scale_x_continuous(breaks = seq(0,100,20))
 
 # Write -------------------------------------------------------------------
 
@@ -124,6 +128,9 @@ combi <-
                     x = c(0.25, 0.485, 0.72, 0.95),
                     y = rep(0.69, each = 4),
                     size = lab_size)
+
+ggsave(plot = combi, filename = "old/fig4.4.png",
+       width = 16.6/2.54, height = 10/2.54)
 
 saveRDS(combi, file = "figs/fig4.4.Rds")
 

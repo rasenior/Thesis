@@ -1,18 +1,5 @@
 # Setup -------------------------------------------------------------------
 
-rm(list=ls())
-
-# Get the current user (Rebecca or Becc, if work or home)
-user<-Sys.info()[7]
-
-# Set working directory
-base_dir <-
-    file.path("C:/Users",user,
-              "Google Drive/PhD/Ch4/Resubmission")
-dat_dir <- file.path(base_dir,"Data/FINAL")
-mod_dir <- file.path(dat_dir, "models")
-fig_dir <- file.path(base_dir,"Figures/results")
-
 # Load libraries
 library(tidyr)
 library(lme4)
@@ -20,20 +7,21 @@ library(ggplot2)
 library(cowplot)
 
 # Load raw data
-flir <- readRDS(file.path(dat_dir,"flir_rep_2017-07-27.Rds"))
-plot_info <- readRDS(file.path(dat_dir,"plot_info_2017-07-27.Rds"))
-load(file.path(dat_dir,"logger_vol_2017-07-27.Rdata"))
-treeBA_median <- readRDS(file.path(dat_dir,"treeBA_median.rds"))
+flir <- readRDS("data/ch4/flir_rep_2017-07-27.Rds")
+plot_info <- readRDS("data/ch4/plot_info_2017-07-27.Rds")
+load("data/ch4/logger_vol_2017-07-27.Rdata")
+treeBA_median <- readRDS("data/ch4/treeBA_median.rds")
 
 # Load models
-load(file.path(mod_dir, "q3_main_results.Rdata"))
+load("data/ch4/models/q3_main_results.Rdata")
 
 # Source local functions
-source(file.path("C:/Users",user,
-                 "Google Drive/Programming/R/functions/mround.R"))
+source("scripts/mround.R")
 source("scripts/plotting_fn.R")
 # Define font sizes
 lab_size <- 7
+text_size <- 7
+title_size <- 9
 # options(scipen = 999)
 
 # Prepare data ------------------------------------------------------------
@@ -72,7 +60,8 @@ p5a <- plot_continuous(pred_df = fig5_a,
                        x_lab = "",
                        y_lab = paste("Patch temperature range (", "\U00B0","C)\n",sep=""), 
                        facet_scale =  "free",
-                       text_size = 6,
+                       text_size = text_size,
+                       title_size = title_size,
                        panel_labs = "",
                        point_alpha = 0.5,
                        leg_pos = "return", 
@@ -99,7 +88,8 @@ p5b <- plot_continuous(pred_df = fig5_b,
                        RV = "cold.patch.area", 
                        vary_EV = "tree_stand_BA",
                        constant_EV = "none",
-                       text_size = 6,
+                       text_size = text_size,
+                       title_size = title_size,
                        x_lab = "",
                        y_lab = paste("Cool patch area (cm", "\U00B2",")",sep=""),
                        facet_scale =  "free",
@@ -137,7 +127,8 @@ p5c <- plot_continuous(pred_df = fig5_c,
                        constant_EV = "none",
                        x_lab = "",
                        y_lab = "Cool patch AI (%)",
-                       text_size = 6,
+                       text_size = text_size,
+                       title_size = title_size,
                        facet_scale = "free", 
                        panel_labs = "",
                        point_alpha = 0.5,
@@ -208,7 +199,8 @@ p5_bottom <- plot_continuous(pred_df = fig5_bottom,
                              y_lab = paste("Microhabitat volume (cm", "\U00B3",")",sep=""), 
                              panel.spacing = 0.5,
                              panel_labs = "",
-                             text_size = 6,
+                             text_size = text_size,
+                             title_size = title_size,
                              point_alpha = 0.8,
                              facet_scale = "free_y",
                              leg_pos = "none", 

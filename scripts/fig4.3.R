@@ -1,31 +1,31 @@
   # Setup -------------------------------------------------------------------
 
-rm(list=ls())
-
-# Get the current user (Rebecca or Becc, if work or home)
-user<-Sys.info()[7]
-
-# Set working directory
-base_dir <-
-  file.path("C:/Users",user,
-            "Google Drive/PhD/Ch4/Resubmission")
-dat_dir <- file.path(base_dir,"Data/FINAL")
-mod_dir <- file.path(dat_dir, "models")
-fig_dir <- file.path(base_dir,"Figures/results")
+# rm(list=ls())
+# 
+# # Get the current user (Rebecca or Becc, if work or home)
+# user<-Sys.info()[7]
+# 
+# # Set working directory
+# base_dir <-
+#   file.path("C:/Users",user,
+#             "Google Drive/PhD/Ch4/Resubmission")
+# dat_dir <- file.path(base_dir,"Data/FINAL")
+# mod_dir <- file.path(dat_dir, "models")
+# fig_dir <- file.path(base_dir,"Figures/results")
 
 # Load libraries
 library(ggplot2)
 library(cowplot)
 
 # Load raw data
-flir <- readRDS(file.path(dat_dir,"flir_rep_2017-07-27.Rds"))
-load(file.path(dat_dir,"deadwood_2017-07-27.Rds"))
-load(file.path(dat_dir,"hole_2017-07-27.Rds"))
-load(file.path(dat_dir,"litter_2017-07-27.Rds"))
-treeBA_median <- readRDS(file.path(dat_dir,"treeBA_median.rds"))
+flir <- readRDS("data/ch4/flir_rep_2017-07-27.Rds")
+load("data/ch4/deadwood_2017-07-27.Rds")
+load("data/ch4/hole_2017-07-27.Rds")
+load("data/ch4/litter_2017-07-27.Rds")
+treeBA_median <- readRDS("data/ch4/treeBA_median.rds")
 
 # Load models
-q1_results <- readRDS(file.path(mod_dir, "q1_main_results.Rds"))
+q1_results <- readRDS("data/ch4/models/q1_main_results.Rds")
 
 all_dat <- c("flir",
              "deadwood_rep", "hole_rep","litter_rep")
@@ -38,11 +38,12 @@ q1_results <-
   q1_results[which(gsub(".results","",names(q1_results)) %in% all_dat)]
 
 # Source local functions
-source(file.path("C:/Users",user,
-                 "Google Drive/Programming/R/functions/mround.R"))
-source(file.path(base_dir, "Code/Plotting/plotting_fn.R"))
+source("scripts/mround.R")
+source("scripts/plotting_fn.R")
 
 # Define font sizes
+text_size <- 8
+title_size <- 10
 lab_size <- 7
 
 # Prepare data ------------------------------------------------------------
@@ -138,12 +139,15 @@ p1 <- plot_continuous(pred_df = fig3_top,
                       x_lab = paste("Macroclimate temperature (", "\U00B0","C)",sep=""),
                       y_lab = "", 
                       panel_labs = "",
-                      scale.y = "fixed",
+                      facet_scale = "fixed",
                       point_alpha = 0.2,
                       leg_pos = "return",
                       lab_hjust = 1.02,
                       lab_vjust = 1.45)
-
+p1$p$p <-
+    p1$p$p + 
+    scale_x_continuous(breaks = seq(20,40,5),
+                       limits = c(20,40))
 
 # Plot against tree BA ----------------------------------------------------
 
@@ -188,13 +192,15 @@ p2 <- plot_continuous(pred_df = fig3_bottom,
                       constant_EV = "ambient",
                       x_lab = paste("Tree stand basal area (m","\U00B2","/ha)",sep=""),
                       panel_labs = "",
-                      scale.y = "fixed",
+                      facet_scale = "fixed",
                       y_lab = "", 
                       point_alpha = 0.2,
                       leg_pos = "none",
                       lab_hjust = 1.67,
                       lab_vjust = 1.45)
-
+p2$p <-
+    p2$p + 
+    scale_x_continuous(breaks = seq(0,100,20))
 
 # Combine and save --------------------------------------------------------
 
@@ -208,10 +214,18 @@ combi_colour <-
             x = 0.01, y= 0.5,size = title_size,angle=90) +
     draw_plot_label(label = c("(a)", "(b)", "(c)", "(d)",
                               "(e)","(f)", "(g)", "(h)"),
-                    x = c(0.25, 0.485, 0.72, 0.95,
-                          0.25, 0.49, 0.72, 0.95),
-                    y = rep(c(0.87, 0.395), each = 4),
+                    x = c(0.26, 0.490, 0.724, 0.955,
+                          0.26, 0.495, 0.724, 0.955),
+                    y = rep(c(0.86, 0.390), each = 4),
                     size = lab_size)
 
+# ggsave(plot = combi_colour, filename = "old/fig4.3.png",
+#        width = 16.6/2.54, height = 10/2.54)
+
+
 saveRDS(combi_colour, file = "figs/fig4.3.Rds")
+
+
+
+
 
