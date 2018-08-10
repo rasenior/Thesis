@@ -26,7 +26,7 @@ Once loaded, the code below can be followed step-by-step.
 
 ### Extracting raw data
 
-Data are extracted from FLIR images using `batch_extract`. This is a batch implementation of the `readflirJPG` function from `Thermimage`. It requires only the path to the directory of FLIR thermal images, and the freely available external software ['Exiftool'](https://www.sno.phy.queensu.ca/~phil/exiftool/ "Exiftool"). Besides raw data, this step also retrieves camera-specific calibration parameters which are required later to convert raw data to temperature values.
+Data are extracted from FLIR images using `batch_extract`. This is a batch implementation of the `readflirJPG` function from `Thermimage`. It requires only the path to the directory of FLIR thermal images, and the freely available external software 'Exiftool' (https://www.sno.phy.queensu.ca/~phil/exiftool/). Besides raw data, this step also retrieves camera-specific calibration parameters which are required later to convert raw data to temperature values.
 
 ```{r batch-extract, echo= TRUE, results = "hide"}
 # Batch extract images included in ThermStats installation
@@ -38,7 +38,7 @@ flir_raw <-
 
 ### Converting raw data to temperature
 
-Raw data are encoded in each thermal image as a 16 bit analog-to-digital signal, which represents the radiance received by the infrared sensor. The function `batch_convert` converts these raw data to temperature values using equations from infrared thermography, via a batch implementation of the function `raw2temp` in `Thermimage`. It uses environmental parameters defined by the user, and the calibration constants extracted in `batch_extract`. See [Chapter 3: Methods](#ch3-methods) for a full discussion of the different environmental parameters. In brief: 
+Raw data are encoded in each thermal image as a 16 bit analog-to-digital signal, which represents the radiance received by the infrared sensor. The function `batch_convert` converts these raw data to temperature values using equations from infrared thermography, via a batch implementation of the function `raw2temp` in `Thermimage`. It uses environmental parameters defined by the user, and the calibration constants extracted in `batch_extract`. See [Chapter 3: 'Methods'](#ch3-methods) for a full discussion of the different environmental parameters. In brief: 
 
 * Emissivity = the amount of radiation emitted by a particular object, for a given temperature.
 * Object distance = the distance between the camera and the object of interest.
@@ -91,7 +91,7 @@ flir_converted <-
 
 ### Calculating thermal statistics
 
-Statistics can be calculated for individual temperature matrices, or across multiple matrices within a specified grouping. The latter is useful for sampling designs where multiple images are collected at each sampling event to capture temperature across a wider sampling unit, such as a plot. In either case, statistics include summary statistics specified by the user -- for example, mean, minimum and maximum -- as well as spatial statistics for hot and cold spots, identified using the Getis-Ord local statistic [@getis_local_1996].
+Statistics can be calculated for individual temperature matrices, or across multiple matrices within a specified grouping. The latter is useful for sampling designs where multiple images are collected at each sampling event to capture temperature across a wider sampling unit, such as a plot. In either case, statistics include summary statistics specified by the user -- for example, median, 5^th^ and 95^th^ percentiles and Shannon Diversity Index (SHDI) -- as well as spatial statistics for hot and cold spots, identified using the Getis-Ord local statistic [@getis_local_1996].
 
 For an individual matrix, `get_stats` requires the user to specify the matrix and the desired statistics. Statistics can be calculated for geographic temperature data (in a matrix or raster format), in which case the user should also define the extent and projection of the data.
 
@@ -104,9 +104,9 @@ flir_stats <-
         matrix_id = "8565",
         # Whether or not to identify hot and cold spots
         get_patches = TRUE,
-        # Size of the neighourhood
+        # Size of the neighourhood (for calculating Getis-Ord stat)
         k = 8,
-        # Neighbour weighting style
+        # Neighbour weighting style (for calculating Getis-Ord stat)
         style = "W",
         # Matrix projection (only relevant for geographic data)
         mat_proj = NULL,
@@ -130,20 +130,28 @@ flir_stats <-
 
 For grouped matrices, `stats_by_group` requires the user to supply a list of matrices along with metadata and the name of the variable in the metadata that defines the matrix grouping. \autoref{tab:tab-B-1} shows the metadata used in the code snippet, where photo number ('photo_no') defines individual temperature matrices, and the replicate identity ('rep_id') defines the grouping of photos. There are two replicates, 'T7P1' and 'T7P2', and each has two associated photos.
 
-```{r tab-B-1, results='asis'}
-tab1 <- "
-Table: (\\#tab:tab-B-1) Example metadata denoting the grouping ('rep_id') of different temperature matrices. Statistics can be calculated over multiple matrices within a group, using the function `stats_by_group`.
-
-| photo_no|rep_id | atm_temp| rel_humidity|
-|--------:|:------|--------:|------------:|
-|     8565|T7P1   |    24.00|           96|
-|     8583|T7P1   |    24.00|           96|
-|     8589|T7P2   |    23.25|           98|
-|     8613|T7P2   |    23.50|           96|
-"
-
-cat(tab1) # output the table in a format good for HTML/PDF/docx conversion
+```{r tab-B-1, tidy = FALSE, echo = FALSE}
+ # knitr::kable(
+ #     metadata, booktabs = TRUE,
+ #     format = "latex"
+ # )
 ```
+
+\begin{table}[!htb] 
+\begin{center}
+\begin{tabular}{rlrr}
+\toprule
+photo\_no & rep\_id & atm\_temp & rel\_humidity\\
+\midrule
+8565 & T7P1 & 24.00 & 96\\
+8583 & T7P1 & 24.00 & 96\\
+8589 & T7P2 & 23.25 & 98\\
+8613 & T7P2 & 23.50 & 96\\
+\bottomrule
+\end{tabular}
+\caption{(\#tab:tab-B-1) Example metadata denoting the grouping ('rep\_id') of different temperature matrices. Statistics can be calculated over multiple matrices within a group, using the function \textmyfont{stats\_by\_group}.}
+\end{center}
+\end{table}
 
 ```{r stats-by-group, results = "hide"}
 flir_stats_group <-
@@ -169,25 +177,26 @@ flir_stats_group <-
 
 By default, both `get_stats` and `stats_by_group` return a dataframe with patch statistics (\autoref{tab:tab-B-2}) for each matrix or matrix group, respectively. 
 
-```{r tab-B-2, results='asis'}
-tab2 <- "
-Table: (\\#tab:tab-B-2) A snippet of hot spot patch statistics returned by `stats_by_group`, which implements `get_stats` within groups.
-
-| median| perc_5| perc_95|     SHDI| hot_shape_index| hot_aggregation|
-|------:|------:|-------:|--------:|---------------:|---------------:|
-|   23.5|     23|    24.5|     1.16|            7.54|           0.895|
-|   24.0|     23|    25.0|     1.68|            7.80|           0.855|
-"
-
-cat(tab2) # output the table in a format good for HTML/PDF/docx conversion
+```{r tab-B-2, tidy = FALSE, echo = FALSE}
+ # knitr::kable(
+ #     head(flir_stats_group[, c(1:5,8,13:17)], 10), booktabs = TRUE,
+ #     format = "latex"
+ # )
 ```
 
-<!-- # ```{r tab-B-2, tidy = FALSE, echo = FALSE} -->
-<!-- # knitr::kable( -->
-<!-- #     head(flir_stats_group[, c(1:5,8,13:17)], 10), booktabs = TRUE  -->
-<!-- # ) -->
-<!-- #  -->
-<!-- # ``` -->
+\begin{table}[!htb]
+\begin{center}
+\begin{tabular}{rrrrrrrrrrr}
+\toprule
+median & perc\_5 & perc\_95 & SHDI & hot\_shape\_index & hot\_aggregation\\
+\midrule
+23.5 & 23 & 24.5 & 1.16 & 7.54 & 0.895\\
+24.0 & 23 & 25.0 & 1.68 & 7.80 & 0.855\\
+\bottomrule
+\end{tabular}
+\caption{(\#tab:tab-B-2) A snippet of hot spot patch statistics returned by \textmyfont{stats\_by\_group}, which implements \textmyfont{get\_stats} within groups.}
+\end{center}
+\end{table}
 
 ### Plotting
 
