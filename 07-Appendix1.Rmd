@@ -18,7 +18,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 ### Methods
 
-Some studies contributed substantially more temperature observations than others. To test whether these studies were unduly influencing our results, we established a threshold over which a given land-use type, in a given study, was deemed to have a disproportionate number of associated temperature observations. The threshold used –- 2,071 observations –- was the mean number of observations across all unique combinations of land-use type and study identity (55 in total). The same number of observations (2,071) was then randomly re-sampled from each of the land-use type and study combinations that exceeded the threshold. With this reduced and more balanced dataset we repeated the main analysis (see [Chapter 2: Statistical analyses](#ch2-stats) for more details), modelling local day-time temperature ('temp_day') against land-use type ('LUT'), position relative to ground-level ('position') and season. The final model structure was unchanged, and included a random slope for land-use type and random intercept with respect to the identity of the study ('studyID') from which data originated:
+Some studies contributed substantially more temperature observations than others. To test whether these studies were unduly influencing our results, we established a threshold over which a given land-use type, in a given study, was deemed to have a disproportionate number of associated temperature observations. The threshold used –- 2,071 observations –- was the mean number of observations across all unique combinations of land-use type and study identity (55 in total). The same number of observations (2,071) was then randomly re-sampled from each of the land-use type and study combinations that exceeded the threshold. With this reduced and more balanced dataset we repeated the main analysis (see [Chapter 2: 'Statistical analyses'](#ch2-stats) for more details), modelling local day-time temperature ('temp_day') against land-use type ('LUT'), position relative to ground-level ('position') and season. The final model structure was unchanged, and included a random slope for land-use type and random intercept with respect to the identity of the study ('studyID') from which data originated:
 
 `lmer(temp_day  ~ LUT*position + LUT*season + (LUT|studyID))`
 
@@ -46,7 +46,7 @@ readRDS("figs/figA.2.Rds")
 
 ```
 
-(ref:cap-A-3) Model estimates of the difference between altered land-use types and primary forest in terms of temperature extremes. Day-time results are depicted in panels A and B, and night-time results in panels C and D. Panels A and C indicate the effect of land-use change on maximum temperature, and panels B and D indicate the same for minimum temperature. Note that data for cropland and pasture are absent from this analysis because data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals. The grey numbers next to points represent the number of studies providing the underlying data.
+(ref:cap-A-3) Model estimates of the difference between altered land-use types and primary forest in terms of temperature extremes. Day-time results are depicted in panels (a) and (b), and night-time results in panels (c) and (d). Panels (a) and (c) indicate the effect of land-use change on maximum temperature, and panels (b) and (d) indicate the same for minimum temperature. Note that data for cropland and pasture are absent from this analysis because data for these land-use types were not available. Parameter estimates are standardised against the estimate for primary forest, which is represented by the dotted line. Error bars are 95% confidence intervals. The grey numbers next to points represent the number of studies providing the underlying data.
 
 ```{r fig-A-3, fig.cap= "(ref:cap-A-3)", fig.align='center'}
 readRDS("figs/figA.3.Rds")
@@ -55,7 +55,7 @@ readRDS("figs/figA.3.Rds")
 
 \pagebreak
 
-(ref:cap-A-4) Day-time temperature against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Shading of points indicates temperatures measured above-ground (orange) or below-ground (blue), and point symbol indicates temperatures measured during the dry season (circles) or wet season (triangles).
+(ref:cap-A-4) Day-time temperature against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list of \autoref{tab:tab-2-2}. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Shading of points indicates temperatures measured above-ground (orange) or below-ground (blue), and point symbol indicates temperatures measured during the dry season (circles) or wet season (triangles).
 
 ```{r, include = FALSE}
 source("scripts/figA.4.R")
@@ -68,7 +68,7 @@ p1
 
 \pagebreak
 
-(ref:cap-A-5) Site elevation against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list below. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Dotted black lines connect the mean elevation of all the sites within each land-use type.
+(ref:cap-A-5) Site elevation against land-use type for each study contributing data to the analyses. Panel numbers refer to the study number in the reference list of \autoref{tab:tab-2-2}. Land-use types are: primary forest (PF), degraded forest (DF), plantation (Pl), pasture (Pa) and cropland (Cr). Panels are ordered by the combination of land-use types for which data was available: (1-12) PF + DF; (13-15) PF + DF + Pl; (16-18) DF + Pl; (19-20) PF + Pa; (21) DF + Pa; (22-23) PF + Pa + Cr; and (24-25) DF + Cr. Dotted black lines connect the mean elevation of all the sites within each land-use type.
 
 ```{r fig-A-5, fig.cap= "(ref:cap-A-5)",fig.height=22/2.54, fig.align='center'}
 
