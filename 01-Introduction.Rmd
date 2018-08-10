@@ -1,8 +1,12 @@
+\pagebreak
+\phantom
+\pagebreak
+\clearpage
+\pagenumbering{arabic}
 \pagestyle{fancyplain}
 \fancyhf{}
 \fancyhead[R]{\nouppercase\chaptername \space \thechapter}
 \fancyfoot[R]{\thepage}
-\pagenumbering{arabic}
 
 ```{r knitr-setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE,message = FALSE,error = FALSE, warning = FALSE, 

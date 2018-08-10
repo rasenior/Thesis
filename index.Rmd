@@ -23,6 +23,7 @@ lof: True
 lot: True
 site: bookdown::bookdown_site
 documentclass: report
+classoption: twoside
 bibliography: [refs.bib, funky-refs.bib]
 csl: elsevier-harvard.csl
 biblio-style: myapalike
@@ -99,6 +100,4 @@ This chapter is currently in preparation for submission to *Nature* as:
 **Senior RA, Hill JK, Edwards DP. Global loss of climate connectivity in tropical forests.**
 
 The manuscript is reproduced in full in this thesis, with minor formatting alterations. The overall contribution of authors was as follows: R.A.S. and D.P.E conceived the study. R.A.S., D.P.E., and J.K.H developed the methods, with R.A.S. writing scripts to calculate climate connectivity and performing statistical analyses. R.A.S. wrote the first draft of the manuscript, with contributions from D.P.E. and J.K.H.
-
-\pagebreak
 
