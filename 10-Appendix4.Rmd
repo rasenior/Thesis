@@ -1393,22 +1393,22 @@ nbr <- arrange(nbr, patch1, patch2)
 t1a <- head(nbr)
 ```
 
-```{r}
+```{r, echo = TRUE}
 nbr$origin <- NA
 nbr$dest <- NA
 nbr$origin_temp <- NA
 nbr$dest_temp <- NA
 
 for (i in 1:nrow(nbr)){
-    # If temp1 is more than temp2, patch1 is the origin and patch 2 is 
-    # the destination
+    # If temp1 is more than temp2, patch1 is the origin and 
+    # patch 2 is the destination
     if(nbr$temp1[i] > nbr$temp2[i]){
         nbr$origin[i] <- nbr$patch1[i]
         nbr$origin_temp[i] <- nbr$temp1[i]
         nbr$dest[i] <-nbr$patch2[i]
         nbr$dest_temp[i] <- nbr$temp2[i]
-        # If temp2 is more than temp1, patch2 is the origin and patch 1 
-        # is the destination
+        # If temp2 is more than temp1, patch2 is the origin and 
+        # patch 1 is the destination
     }else{
         nbr$origin[i]<- nbr$patch2[i]
         nbr$origin_temp[i] <- nbr$temp2[i]
