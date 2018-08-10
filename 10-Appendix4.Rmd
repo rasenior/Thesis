@@ -1407,8 +1407,8 @@ for (i in 1:nrow(nbr)){
         nbr$origin_temp[i] <- nbr$temp1[i]
         nbr$dest[i] <-nbr$patch2[i]
         nbr$dest_temp[i] <- nbr$temp2[i]
-        # If temp2 is more than temp1, patch2 is the origin and 
-        # patch 1 is the destination
+    # If temp2 is more than temp1, patch2 is the origin and 
+    # patch 1 is the destination
     }else{
         nbr$origin[i]<- nbr$patch2[i]
         nbr$origin_temp[i] <- nbr$temp2[i]
