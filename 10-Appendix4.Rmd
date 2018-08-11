@@ -2367,8 +2367,6 @@ p1 <-
 ```
 
 
-__Figure D.10 removed to reduce file size.__
-
 (ref:cap-D-10) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with areas of high climate vulnerability for mammals derived from @pacifici_framework_2018 (regions outside of these areas are masked in grey). We defined high vulnerability areas as those where more than 50% of mammal species had a negative predicted response to climate change. As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted land masses in Oceania.
 
 ```{r fig-D-10, fig.cap= "(ref:cap-D-10)", fig.width = 5, fig.height = 1}
