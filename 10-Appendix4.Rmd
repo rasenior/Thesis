@@ -1386,47 +1386,6 @@ ggdraw() +
 
 Climate connectivity for a given patch depends on the difference between the current temperature of that patch, and the future temperature of the coolest patch that can be reached by traversing a gradient of hotter to cooler adjacent patches [@mcguire_achieving_2016]. The aim of this next step, therefore, was to determine the coolest destination patch for each origin patch.
 
-We first identified, for each pair of neighbouring patches, which of the two was the hotter 'origin' patch and which was the cooler 'destination' patch. In the code snippets below, `nbr` refers to a dataframe of patch neighbours, and `temp_dat` is a dataframe of the current and future temperature for all patches.
-
-```{r, echo = FALSE}
-nbr <- arrange(nbr, patch1, patch2)
-t1a <- head(nbr)
-```
-
-```{r, echo = TRUE}
-nbr$origin <- NA
-nbr$dest <- NA
-nbr$origin_temp <- NA
-nbr$dest_temp <- NA
-
-for (i in 1:nrow(nbr)){
-    # If temp1 is more than temp2, patch1 is the origin and 
-    # patch 2 is the destination
-    if(nbr$temp1[i] > nbr$temp2[i]){
-        nbr$origin[i] <- nbr$patch1[i]
-        nbr$origin_temp[i] <- nbr$temp1[i]
-        nbr$dest[i] <-nbr$patch2[i]
-        nbr$dest_temp[i] <- nbr$temp2[i]
-    # If temp2 is more than temp1, patch2 is the origin and 
-    # patch 1 is the destination
-    }else{
-        nbr$origin[i]<- nbr$patch2[i]
-        nbr$origin_temp[i] <- nbr$temp2[i]
-        nbr$dest[i]<-nbr$patch1[i]
-        nbr$dest_temp[i] <- nbr$temp1[i]
-    }
-}
-```
-
-```{r, echo = FALSE}
-# Merge cdat and fdat
-temp_dat <- merge(cdat, fdat, by = "patch")
-rm(cdat, fdat)
-# Remove unnecessary variables
-nbr <- nbr[,c("origin", "dest", "origin_temp", "dest_temp")]
-nbr <- arrange(nbr, dest, origin)
-```
-
 ```{r tab-D-1, echo=FALSE, results='asis'}
 # t1a <- kable(t1a, format = "latex", booktabs = TRUE)
 # t1b <- kable(head(nbr), format = "latex", booktabs = TRUE)
@@ -1480,6 +1439,47 @@ origin & dest & origin\_temp & dest\_temp\\
 \end{subtable} 
 \caption{(\#tab:tab-D-1) Dataframe of patch neighbours before (a) and after (b) sorting neighbours into either the hotter origin patch or cooler destination patch.}
 \end{table}
+
+We first identified, for each pair of neighbouring patches, which of the two was the hotter 'origin' patch and which was the cooler 'destination' patch (\autoref{tab:tab-D-1}). In the code snippets below, `nbr` refers to a dataframe of patch neighbours, and `temp_dat` is a dataframe of the current and future temperature for all patches.
+
+```{r, echo = FALSE}
+nbr <- arrange(nbr, patch1, patch2)
+t1a <- head(nbr)
+```
+
+```{r, echo = TRUE}
+nbr$origin <- NA
+nbr$dest <- NA
+nbr$origin_temp <- NA
+nbr$dest_temp <- NA
+
+for (i in 1:nrow(nbr)){
+    # If temp1 is more than temp2, patch1 is the origin and 
+    # patch 2 is the destination
+    if(nbr$temp1[i] > nbr$temp2[i]){
+        nbr$origin[i] <- nbr$patch1[i]
+        nbr$origin_temp[i] <- nbr$temp1[i]
+        nbr$dest[i] <-nbr$patch2[i]
+        nbr$dest_temp[i] <- nbr$temp2[i]
+    # If temp2 is more than temp1, patch2 is the origin and 
+    # patch 1 is the destination
+    }else{
+        nbr$origin[i]<- nbr$patch2[i]
+        nbr$origin_temp[i] <- nbr$temp2[i]
+        nbr$dest[i]<-nbr$patch1[i]
+        nbr$dest_temp[i] <- nbr$temp1[i]
+    }
+}
+```
+
+```{r, echo = FALSE}
+# Merge cdat and fdat
+temp_dat <- merge(cdat, fdat, by = "patch")
+rm(cdat, fdat)
+# Remove unnecessary variables
+nbr <- nbr[,c("origin", "dest", "origin_temp", "dest_temp")]
+nbr <- arrange(nbr, dest, origin)
+```
 
 Most patches have multiple neighbours, so we next identified *all* the neighbours for each origin patch (assigned to: `connections`). For example, we can see below that origin patch 135 has only one neighbour: patch 53. Patch 231 has no neighbours, and patch 224 has many.
 
@@ -1753,7 +1753,7 @@ inter_patch <- temp_dat[min_ind, "inter_patch"]
 is.na(inter_patch)
 ```
 
-In this case of course there *is* an intermediate patch between the origin and the destination -- patch 53. We paste this patch together with the final destination to construct the full pathway from origin to destination.
+In this case, of course, there *is* an intermediate patch between the origin and the destination -- patch 53. We paste this patch together with the final destination to construct the full pathway from origin to destination.
 
 ```{r, echo = TRUE}
 temp_dat$inter_patch[inds[1]] <-
@@ -2150,21 +2150,25 @@ patch & temp\\
 45 & 22.6\\
 46 & 22.6\\
 48 & 22.6\\
+\addlinespace
 51 & 22.7\\
 52 & 22.6\\
 12 & 22.0\\
 55 & 22.6\\
 58 & 22.5\\
+\addlinespace
 12 & 22.0\\
 12 & 22.0\\
 107 & 22.9\\
 43 & 22.7\\
 45 & 22.6\\
+\addlinespace
 48 & 22.6\\
 116 & 23.1\\
 119 & 23.0\\
 12 & 22.0\\
 12 & 22.0\\
+\addlinespace
 12 & 22.0\\
 231 & 23.6\\
 12 & 22.0\\
