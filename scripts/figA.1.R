@@ -63,7 +63,7 @@ p1<-ggplot(height, aes(x=LUT, y=mean_temp_st,
   geom_hline(data=projections,
              aes(yintercept=mean_tempChange,
                  colour=RCP),
-             alpha=0.6)+
+             alpha=1)+
   geom_rect(data=projections,
             aes(ymin=range_tempChange_0.05,
                 ymax=range_tempChange_0.95,
@@ -88,10 +88,10 @@ p1<-ggplot(height, aes(x=LUT, y=mean_temp_st,
         axis.title.y = element_text(size=8,vjust=1), 
         axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
         axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'),
-        legend.position=c(0.200,0.85),
+        legend.position=c(0.220,0.85),
         legend.text.align	= 0,
         legend.text = element_text(size=8),
-        legend.title=element_blank(),
+        # legend.title=element_blank(),
         legend.key=element_blank(),
         legend.box = "horizontal",
         legend.box.just = "left",
@@ -101,11 +101,11 @@ p1<-ggplot(height, aes(x=LUT, y=mean_temp_st,
         panel.background = element_blank())+
   scale_y_continuous(breaks=seq(-4,20,2))+
   scale_x_discrete(labels=labs)+
-  scale_shape_discrete(guide=guide_legend(order=1))+
-  scale_fill_manual(values=cbPalette[c(4,7)],
-                    guide=guide_legend(order=2))+
-  scale_colour_manual(values=cbPalette[c(4,7)],
-                      guide=guide_legend(order=2))
+  scale_fill_manual(values=cbPalette[c(4,7)])+
+  scale_colour_manual(values=cbPalette[c(4,7)])+
+    guides(fill=guide_legend(title = NULL, order = 2),
+           colour=guide_legend(title = NULL, order = 2),
+           shape=guide_legend(title = NULL, order = 1))
 
 ### Season next
 season<-sumStats[sumStats$forest_stratum=="Above-ground",]

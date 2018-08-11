@@ -148,7 +148,7 @@ The function `get_stats` identifies hot and cold spots in thermal images using a
 \begin{center}
 \renewcommand{\arraystretch}{1.5} % reduce space between rows
 \setlength{\tabcolsep}{5pt} % reduce space between columns
-\begin{tabular}{p{3cm}p{11cm}}
+\begin{tabular}{p{2.5cm}p{11cm}}
 \toprule 
 \bfseries Summary statistic & \bfseries Description \\ \midrule
 Average temperature       & Provides context for all other statistics, and could be 
