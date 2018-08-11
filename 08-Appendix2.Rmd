@@ -128,7 +128,7 @@ flir_stats <-
     )
 ```
 
-For grouped matrices, `stats_by_group` requires the user to supply a list of matrices along with metadata and the name of the variable in the metadata that defines the matrix grouping. \autoref{tab:tab-B-1} shows the metadata used in the code snippet, where photo number ('photo_no') defines individual temperature matrices, and the replicate identity ('rep_id') defines the grouping of photos. There are two replicates, 'T7P1' and 'T7P2', and each has two associated photos.
+For grouped matrices, `stats_by_group` requires the user to supply a list of matrices along with metadata and the name of the variable in the metadata that defines the matrix grouping. \autoref{tab:tab-B-1} shows the metadata used in the code snippet, where photo number ('photo_no') defines individual temperature matrices, and replicate identity ('rep_id') defines the grouping of photos. There are two replicates, 'T7P1' and 'T7P2', and each has two associated photos.
 
 ```{r tab-B-1, tidy = FALSE, echo = FALSE}
  # knitr::kable(
