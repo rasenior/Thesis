@@ -1,5 +1,5 @@
-"","forest_type","forest_type.1","tree_stand_BA","plo","phi","dat"
-"newdat.1","Primary","Primary",39.4694185803391,31.7770452585158,47.1617919021625,"tree_stand_BA"
-"newdat.3","Primary","Logged",39.4694185803391,31.7770452585158,47.1617919021625,"tree_stand_BA"
-"newdat.2","Logged","Primary",23.3807532695695,15.6883799477461,31.0731265913928,"tree_stand_BA"
-"newdat.4","Logged","Logged",23.3807532695695,15.6883799477461,31.0731265913928,"tree_stand_BA"
+forest_type,forest_type.1,tree_stand_BA,plo,phi,dat
+Primary,Primary,39.46941858,31.77704526,47.1617919,tree_stand_BA
+Logged,Primary,23.38075327,15.68837995,31.07312659,tree_stand_BA
+Primary,Logged,39.46941858,31.77704526,47.1617919,tree_stand_BA
+Logged,Logged,23.38075327,15.68837995,31.07312659,tree_stand_BA

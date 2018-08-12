@@ -1,5 +1,5 @@
-"","forest_type","forest_type.1","sapling_stand_BA","plo","phi","dat"
-"newdat.1","Primary","Primary",6.77011675455718,4.89848532215142,8.64174818696295,"sapling_stand_BA"
-"newdat.3","Primary","Logged",6.77011675455718,4.89848532215142,8.64174818696295,"sapling_stand_BA"
-"newdat.2","Logged","Primary",9.55280686794493,7.68117543553917,11.4244383003507,"sapling_stand_BA"
-"newdat.4","Logged","Logged",9.55280686794493,7.68117543553917,11.4244383003507,"sapling_stand_BA"
+forest_type,forest_type.1,sapling_stand_BA,plo,phi,dat
+Primary,Primary,6.770116755,4.898485322,8.641748187,sapling_stand_BA
+Logged,Primary,9.552806868,7.681175436,11.4244383,sapling_stand_BA
+Primary,Logged,6.770116755,4.898485322,8.641748187,sapling_stand_BA
+Logged,Logged,9.552806868,7.681175436,11.4244383,sapling_stand_BA
