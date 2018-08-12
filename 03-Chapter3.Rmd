@@ -399,7 +399,7 @@ p3 <-
                     hjust = 0.5,
                     size = lab_size)+
     draw_plot_label(label = paste("(", letters[1:8], ")", sep = ""),
-                    x = rep(c(0.115, 
+                    x = rep(c(0.105, 
                               0.60), times = 4),
                     y = rep(c(1,
                               0.76,
