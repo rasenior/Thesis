@@ -202,7 +202,7 @@ thermal landscape.\\
 \begin{sidewaystable}
 \begin{center}
 \renewcommand{\arraystretch}{1.5} % reduce space between rows
-\setlength{\tabcolsep}{6pt} % reduce space between columns
+\setlength{\tabcolsep}{6.5pt} % reduce space between columns
 \begin{tabular}{ lp{6cm}p{12cm}}
 \toprule
 \bfseries Patch statistic & \bfseries Description & \bfseries Biological relevance \\ 
@@ -257,6 +257,7 @@ p1b <-
                  worldclim_patches$January$patches,
                  bg_poly = worldclim_bg,
                  bg_colour = "grey",
+                 fill_breaks = seq(0, 30, 5),
                  val_pal = viridis(10, option = "A"),
                  print_plot = FALSE, return_plot = TRUE,
                  lab_size = title_size, text_size = text_size, outline_size = 0.3)
@@ -398,7 +399,7 @@ p3 <-
                     hjust = 0.5,
                     size = lab_size)+
     draw_plot_label(label = paste("(", letters[1:8], ")", sep = ""),
-                    x = rep(c(0.11, 
+                    x = rep(c(0.12, 
                               0.6), times = 4),
                     y = rep(c(1,
                               0.76,
