@@ -670,15 +670,13 @@ pd6a <-
     geom_rect(aes(xmin = -Inf,
                   xmax = Inf,
                   ymin = -Inf,
-                  ymax = 0,
-                  colour = NULL),
+                  ymax = 0),
               fill = cbpal2[5],
               alpha = 0.2) +
     geom_rect(aes(xmin = -Inf,
                   xmax = Inf,
                   ymin = 0,
-                  ymax = Inf,
-                  colour = NULL),
+                  ymax = Inf),
               fill = cbpal2[7],
               alpha = 0.1) +
     geom_jitter(data = region_cc_som2,
@@ -699,8 +697,7 @@ pd6a <-
                position = position_dodge(width = 0.5),
                shape = 21,
                size = 2) +
-    geom_text(aes(label = rank,
-                  colour = year),
+    geom_text(aes(label = rank),
               position = position_dodge(width = 0.5),
               size = 1.5,
               show.legend = FALSE) +
@@ -897,7 +894,7 @@ pd4a <-
                   ymin = 0,
                   ymax = Inf),
               fill = cbpal2[7],
-              alpha = 0.2) +
+              alpha = 0.1) +
     geom_jitter(data = region_cc_som1,
                 aes(x = year,
                     y = median_cc,
@@ -1078,7 +1075,8 @@ pd8a <-
                shape = 21,
                size = 2) +
     geom_text(aes(label = rank,
-                  colour = year),
+                  # colour = year
+                  NULL),
               position = position_dodge(width = 0.5),
               size = 1.5,
               show.legend = FALSE) +
@@ -1248,7 +1246,7 @@ The following text provides a step-by-step calculation of climate connectivity i
 
 Climate connectivity is calculated using climate-partitioned patches of natural habitat [@mcguire_achieving_2016]. In this study natural habitat refers to tropical forest, derived from @hansen_high-resolution_2013 for the years 2000 and 2012. For the year 2000, cells were classed as forested if they had > 50% tree cover [\autoref{fig:fig-D-1}a; @hansen_high-resolution_2013]. For the year 2012, cells were classed as forest based on forest loss and forest gain, relative to forest cover in 2000 (\autoref{fig:fig-D-1}b). If a cell experienced forest loss, it had gone from a forested to non-forested state between 2000 and 2012 and was classed as non-forest. If a cell had experienced forest gain, it had gone from a non-forested to forested state between 2000 and 2012; providing there had been no concomitant loss, the cell was classed as forest. All subsequent steps were applied separately to forest cover in 2000 and 2012.
 
-(ref:cap-D-1) Tree cover in the year 2000 (a) ranges from low (white) to high (dark green). Tree cover change from 2000 to 2012 (b) includes: no change (blue), forest loss (purple), forest gain (green) or both loss and gain (yellow). Both layers derive from @hansen_high-resolution_2013, and are used to classify cells into either forest or non-forest in the years 2000 and 2012.
+(ref:cap-D-1) Tree cover in the year 2000 (a) ranges from low (beige) to high (dark green). Tree cover change from 2000 to 2012 (b) includes: no change (blue), forest loss (purple), forest gain (green) or both loss and gain (yellow). Both layers derive from @hansen_high-resolution_2013, and are used to classify cells into either forest or non-forest in the years 2000 and 2012.
 
 ```{r, echo = FALSE, include = FALSE}
 p1a <-
@@ -1359,6 +1357,7 @@ p2b <-
                   label = patch,
                   group = group),
               size = 1.8,
+              fontface = "bold",
               force=1.5,
               segment.size=0.1,
               min.segment.length = unit(0, "lines"),
