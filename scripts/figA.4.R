@@ -8,6 +8,7 @@ title_size <- 10
 
 # Load libraries
 library(ggplot2)
+library(ggrastr)
 library(dplyr)
 library(gridExtra)
 library(grid)
@@ -70,43 +71,57 @@ shading$max[5]<-Inf
 
 
 p1<-ggplot()+
-  geom_jitter(data = dayDat,aes(x=LUT,y=mean_temp),alpha=0)+
-  geom_rect(data=shading,
-            aes(xmin = min, xmax = max, ymin = -Inf, ymax = Inf,
-                fill = factor(labPos)))+
-  geom_jitter(data = dayDat,
-              aes(x=LUT,y=mean_temp,
-                  colour=forest_stratum,shape=season),
-              alpha=0.4)+
-  geom_boxplot(data= dayDat,aes(x=LUT,y=mean_temp),alpha=0.8,
-               width=0.5)+
-  geom_text(data=shading,
-            aes(x = labPos,y = 8, label = labs),
-            colour=rep(textCol,25),size=2.5)+
-  theme_bw(base_size = 10)+
-  ylab(expression(paste("Temperature (",degree*C,")",sep="")))+
-  theme(axis.title.x = element_blank(),
-        axis.text.x=element_blank(),
-        axis.text.y=element_text(size= text_size,
-                                 margin=margin(r = 5,unit = "pt")),
-        axis.title.y = element_text(size= title_size,
-                                    margin=margin(r = 5,unit = "pt")),
-        axis.ticks.x = element_blank(),
-        axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'),
-        strip.text=element_text(size= text_size),
-        strip.background=element_rect(fill="white"),
-        legend.position="top",
-        legend.text=element_text(size= text_size),
-        legend.title=element_blank(),
-        legend.key=element_blank(),
-        legend.spacing=unit(0.2,"cm"),
-        legend.box = "horizontal",
-        legend.box.just = "left",
-        panel.grid=element_blank())+
-  scale_y_continuous(breaks=seq(0,100,5))+
-  scale_fill_manual(values = shades,guide=FALSE)+
-  scale_colour_manual(values=cbPalette[4:3],
-                      guide=guide_legend(order=1))+
-  facet_wrap(~studyID)
+    geom_jitter(data = dayDat,aes(x=LUT,y=mean_temp),alpha=0)+
+    geom_rect(data=shading,
+              aes(xmin = min, xmax = max, ymin = -Inf, ymax = Inf,
+                  fill = factor(labPos)))+
+    # geom_jitter(data = dayDat,
+    #             aes(x=LUT,y=mean_temp,
+    #                 colour=forest_stratum,shape=season),
+    #             alpha=0.4)+
+    geom_point_rast(data = dayDat,
+                    aes(x = jitter(as.numeric(LUT),
+                                   amount = 0.4),
+                        y = mean_temp,
+                        colour=forest_stratum,
+                        shape=season),
+                    size = 6,
+                    alpha = 0.4)+
+    geom_boxplot(data= dayDat,aes(x=LUT,y=mean_temp),alpha=0.8,
+                 width=0.5)+
+    geom_text(data=shading,
+              aes(x = labPos,y = 8, label = labs),
+              colour=rep(textCol,25),size=2.5)+
+    theme_bw(base_size = 10)+
+    ylab(expression(paste("Temperature (",degree*C,")",sep="")))+
+    theme(axis.title.x = element_blank(),
+          axis.text.x=element_blank(),
+          axis.text.y=element_text(size= text_size,
+                                   margin=margin(r = 5,unit = "pt")),
+          axis.title.y = element_text(size= title_size,
+                                      margin=margin(r = 5,unit = "pt")),
+          axis.ticks.x = element_blank(),
+          axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'),
+          strip.text=element_text(size= text_size),
+          strip.background=element_rect(fill="white"),
+          legend.position="top",
+          legend.text=element_text(size= text_size),
+          legend.title=element_blank(),
+          legend.key=element_blank(),
+          legend.spacing=unit(0.2,"cm"),
+          legend.box = "horizontal",
+          legend.box.just = "left",
+          panel.grid=element_blank())+
+    scale_y_continuous(breaks=seq(0,100,5))+
+    scale_fill_manual(values = shades,guide=FALSE)+
+    scale_colour_manual(values=cbPalette[4:3],
+                        guide=guide_legend(order=1, 
+                                           override.aes =list(size = 1,
+                                           alpha = 1)))+
+    scale_shape_discrete(guide=guide_legend(order=2, 
+                                          override.aes =list(size = 1,
+                                                             alpha = 1)))+
+    facet_wrap(~studyID)
+# ggsave(plot = p1,filename =  "old/figA.4.png")
 
-# save(p1, shades, textCol, file = "figs/figA.4.Rdata")
+save(p1, shades, textCol, file = "figs/figA.4.Rdata")

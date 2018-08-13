@@ -5,6 +5,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 # Load libraries
 library(ggplot2)
+library(ggrastr)
 library(dplyr)
 library(gridExtra)
 library(grid)
@@ -43,12 +44,18 @@ dayDat$alpha<-abs(dayDat$densityProp-1)/3
 dayDat$alpha[dayDat$LUT %in% c("Cropland","Pasture")]<-0.6
 
 p1 <-
-ggplot(dayDat,aes(x=LUT,y=mean_temp))+
-    geom_jitter(aes(colour=forest_stratum,
+    ggplot(dayDat,aes(x=LUT,y=mean_temp))+
+    geom_blank() +
+    # geom_jitter(aes(colour=forest_stratum,
+    #                 shape=season,
+    #                 alpha = LUT))+
+    geom_point_rast(aes(x = jitter(as.numeric(LUT),
+                                   amount = 0.4),
+                        colour=forest_stratum,
                     shape=season,
                     alpha = LUT))+
     geom_boxplot(width=0.3,
-                alpha=0.8)+
+                 alpha=0.8)+
     theme_classic(base_size = 10)+
     ylab(expression(paste("Temperature (",degree*C,")",sep="")))+
     theme(axis.title.x = element_blank(),
@@ -82,7 +89,7 @@ ggplot(dayDat,aes(x=LUT,y=mean_temp))+
     scale_x_discrete(labels=labs)+
     scale_colour_manual(values=c("#D55E00","#0072B2"),
                         guide=guide_legend(order=1)) +
-    scale_alpha_manual(values = c(rep(0.5, 3),
+    scale_alpha_manual(values = c(rep(0.2, 3),
                                   rep(0.8, 2)), 
                        guide = FALSE)
 
