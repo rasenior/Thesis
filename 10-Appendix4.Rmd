@@ -2361,13 +2361,17 @@ p1 <-
               align = "hv", 
               labels = c("(a)", "(b)"), 
               label_size = lab_size)
+
+ggsave(plot = p1,filename = "figs/figD.10.png", 
+       width = 23/2.54, height = 10/2.54, 
+       units = "in", dpi = 1500)
 ```
 
 
 (ref:cap-D-10) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with areas of high climate vulnerability for mammals derived from @pacifici_framework_2018 (regions outside of these areas are masked in grey). We defined high vulnerability areas as those where more than 50% of mammal species had a negative predicted response to climate change. As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted land masses in Oceania.
 
 ```{r fig-D-10, fig.cap= "(ref:cap-D-10)", fig.width = 23/2.54, fig.height = 10/2.54}
-p1
+knitr::include_graphics("figs/figD.10.png")
 ```
 
 \newpage
@@ -2551,12 +2555,16 @@ p2 <-
               align = "hv", 
               labels = c("(a)", "(b)"), 
               label_size = lab_size)
+
+ggsave(plot = p2,filename = "figs/figD.11.png", 
+       width = 23/2.54, height = 10/2.54, 
+       units = "in", dpi = 1500)
 ```
 
 (ref:cap-D-11) Climate connectivity in 2012 (a) and change in climate connectivity from 2000 to 2012 (b) overlaid with Key Biodiversity Areas from BirdLife International (regions outside of these areas are masked in grey). As in [Chapter 5](#ch5) (\autoref{fig:fig-5-1}), positive values (blue) indicate successful climate connectivity in panel (a), or a gain of connectivity in panel (b). Negative values (red) indicate unsuccessful climate connectivity in panel (a), or a loss of connectivity in panel (b). To aid visualisation we have shifted land masses in Oceania.
 
 ```{r fig-D-11, fig.cap= "(ref:cap-D-11)", fig.width = 25/2.54, fig.height = 11/2.54}
-p2
+knitr::include_graphics("figs/figD.11.png")
 ```
 
 \elandscape
